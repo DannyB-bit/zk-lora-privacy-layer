@@ -177,11 +177,11 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     
     # Center Logo (Larger)
     if os.path.exists("logo.png"):
-        story.append(Image("logo.png", width=440, height=440, hAlign='CENTER'))
+        story.append(Image("logo.png", width=480, height=480, hAlign='CENTER'))
     else:
-        story.append(Spacer(1, 440))
+        story.append(Spacer(1, 480))
         
-    story.append(Spacer(1, 60))
+    story.append(Spacer(1, 15))
     
     # Bottom Box (Wide Movie-Poster Style Banner)
     rated_zk_style = ParagraphStyle(
@@ -211,6 +211,24 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         ('BOTTOMPADDING', (0,0), (-1,-1), 12),
     ]))
     story.append(box_table)
+    
+    story.append(Spacer(1, 10))
+    
+    # Tiny Disclaimer below the box (Movie-Poster Style)
+    disclaimer_style = ParagraphStyle(
+        'CoverDisclaimer',
+        fontName='Helvetica',
+        fontSize=5.5,
+        leading=7,
+        textColor=colors.HexColor("#52525B"),
+        alignment=1
+    )
+    disclaimer_text = (
+        "<b>LEGAL NOTICE:</b> To safeguard developer intellectual property, the ZK-LoRa codebase and all its multi-language "
+        "implementations are currently published under a protected, proprietary license pending grant evaluation. Upon formal "
+        "approval of the Zcash Community Grant, the entire repository will be re-licensed under the open-source MIT License."
+    )
+    story.append(Paragraph(disclaimer_text, disclaimer_style))
     
     story.append(NextPageTemplate('Normal'))
     story.append(PageBreak())
