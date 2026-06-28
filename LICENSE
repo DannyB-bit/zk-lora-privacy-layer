@@ -1,21 +1,12 @@
-MIT License
+ZK-LoRa Pending-Grant License (Proprietary - Source Available)
 
-Copyright (c) 2026 DannyB-bit / Zymatica
+Copyright (c) 2026 Zymatica / Devs One. All rights reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+This software and its associated documentation files (the "Software") are currently proprietary and source-available. 
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+Permission is hereby granted to the Zcash Community Grants (ZCG) committee and the Zcash Foundation to review, compile, and execute the Software solely for the purpose of evaluating the ZK-LoRa grant proposal. 
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+Non-commercial and commercial copying, distribution, modification, or public hosting of this Software by any other parties is strictly prohibited.
+
+UPON APPROVAL:
+Upon formal approval of the ZK-LoRa grant proposal and disbursement of the initial Startup Funding, the copyright holder will immediately re-license this entire repository under the permissive open-source MIT License.

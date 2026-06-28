@@ -585,16 +585,21 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     
     disclaimer_long = (
         "This whitepaper and proposal are intended for educational and project evaluation purposes only. "
-        "All cryptographic implementations, benchmarks, and multi-node simulations are fully open-source under the MIT License."
+        "This ZK-LoRa codebase is currently pending to be released under the MIT License upon approval of the Grant."
     )
     story.append(Paragraph(disclaimer_long, ParagraphStyle('DisclaimerLong', alignment=1, fontSize=8.5, leading=13, textColor=colors.HexColor("#64748B"))))
-    story.append(Spacer(1, 80))
-    
-    story.append(Paragraph("<font size='14' color='#0F172A'><b>WE ARE</b></font>", ParagraphStyle('WeAre', alignment=1)))
     story.append(Spacer(1, 40))
     
-    logos_style = ParagraphStyle('Logos', fontName='Helvetica-Bold', fontSize=18, leading=22, textColor=colors.HexColor("#94A3B8"), alignment=1)
-    story.append(Paragraph("ZCASH &bull; THE AI COLLECTIVE", logos_style))
+    # Add Zcash logo
+    if os.path.exists("zcash_logo.png"):
+        story.append(Image("zcash_logo.png", width=60, height=60, hAlign='CENTER'))
+        story.append(Spacer(1, 10))
+        
+    story.append(Paragraph("<font size='14' color='#0F172A'><b>WE ARE</b></font>", ParagraphStyle('WeAre', alignment=1)))
+    story.append(Spacer(1, 15))
+    
+    logos_style = ParagraphStyle('Logos', fontName='Helvetica-Bold', fontSize=14, leading=18, textColor=colors.HexColor("#94A3B8"), alignment=1)
+    story.append(Paragraph("THE AI COLLECTIVE", logos_style))
     
     story.append(NextPageTemplate('Last'))
     story.append(PageBreak())
