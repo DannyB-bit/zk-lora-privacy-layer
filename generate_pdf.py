@@ -607,42 +607,6 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Spacer(1, 15))
     story.append(Paragraph("<font color='#64748B'>H U M A N &nbsp; - &nbsp; D N A &nbsp; S E Q U E N C E &nbsp; A T T E S T A T I O N</font>", ParagraphStyle('DnaCaption', alignment=1, fontSize=8, leading=10)))
     
-    story.append(PageBreak())
-    
-    # =========================================================================
-    # PAGE 10: SPECIAL THANKS & ACKNOWLEDGEMENTS
-    # =========================================================================
-    story.append(Spacer(1, 40))
-    thanks_style = ParagraphStyle(
-        'ThanksStyle',
-        fontName='Helvetica-Oblique',
-        fontSize=11,
-        leading=16,
-        textColor=colors.HexColor("#334155"),
-        alignment=1
-    )
-    story.append(Paragraph(
-        "Special thanks to the Zcash Community Grants committee and the Zcash Foundation "
-        "for supporting privacy-preserving decentralized infrastructure and promoting zero-knowledge "
-        "research at the edge.",
-        thanks_style
-    ))
-    story.append(Spacer(1, 40))
-    
-    disclaimer_long = (
-        "This whitepaper and proposal are intended for educational and project evaluation purposes only. "
-        "All cryptographic implementations, benchmarks, and multi-node simulations are fully open-source under the MIT License."
-    )
-    story.append(Paragraph(disclaimer_long, ParagraphStyle('DisclaimerLong', alignment=1, fontSize=8.5, leading=13, textColor=colors.HexColor("#64748B"))))
-    story.append(Spacer(1, 80))
-    
-    story.append(Paragraph("<font size='14' color='#0F172A'><b>WE ARE</b></font>", ParagraphStyle('WeAre', alignment=1)))
-    story.append(Spacer(1, 40))
-    
-    # Draw simple placeholder boxes for Google / Zcash / Kaggle logos if needed, or just text
-    logos_style = ParagraphStyle('Logos', fontName='Helvetica-Bold', fontSize=18, leading=22, textColor=colors.HexColor("#94A3B8"), alignment=1)
-    story.append(Paragraph("ZCASH &bull; THE AI COLLECTIVE", logos_style))
-    
     story.append(NextPageTemplate('Last'))
     story.append(PageBreak())
     
