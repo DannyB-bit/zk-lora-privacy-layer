@@ -171,19 +171,19 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     # =========================================================================
     # PAGE 1: COVER PAGE
     # =========================================================================
-    story.append(Spacer(1, 20))
+    story.append(Spacer(1, 10))
     story.append(Paragraph("<font color='#F3B300' face='Helvetica-Bold'>P R O J E C T :</font>", subtitle_style))
-    story.append(Spacer(1, 20))
+    story.append(Spacer(1, 10))
     
-    # Center Logo
+    # Center Logo (Larger)
     if os.path.exists("logo.png"):
-        story.append(Image("logo.png", width=320, height=320, hAlign='CENTER'))
+        story.append(Image("logo.png", width=380, height=380, hAlign='CENTER'))
     else:
-        story.append(Spacer(1, 320))
+        story.append(Spacer(1, 380))
         
-    story.append(Spacer(1, 80))
+    story.append(Spacer(1, 40))
     
-    # Bottom Box (Matching Pod Jobs style)
+    # Bottom Box (Wide Movie-Poster Style Banner)
     rated_zk_style = ParagraphStyle(
         'RatedZk',
         fontName='Helvetica-Bold',
@@ -200,15 +200,15 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
                       "<font size='7.5' color='#52525B'>UNDER DECENTRALIZED incentivization PROTOCOL</font>", body_style)
         ]
     ]
-    box_table = Table(box_data, colWidths=[80, 260])
+    box_table = Table(box_data, colWidths=[100, 350])
     box_table.setStyle(TableStyle([
         ('BOX', (0,0), (-1,-1), 1.5, colors.white),
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
         ('ALIGN', (0,0), (0,0), 'CENTER'),
-        ('LEFTPADDING', (0,0), (-1,-1), 12),
-        ('RIGHTPADDING', (0,0), (-1,-1), 12),
-        ('TOPPADDING', (0,0), (-1,-1), 10),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 10),
+        ('LEFTPADDING', (0,0), (-1,-1), 16),
+        ('RIGHTPADDING', (0,0), (-1,-1), 16),
+        ('TOPPADDING', (0,0), (-1,-1), 12),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 12),
     ]))
     
     # Center the table
@@ -263,25 +263,33 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     # PAGE 3: EXECUTIVE SUMMARY & QR CODES
     # =========================================================================
     story.append(Paragraph("■ Executive Summary", h1_style))
-    story.append(Spacer(1, 8))
+    story.append(Spacer(1, 4))
     
     summary_text = (
-        "Traditional LoRa communication has a critical privacy gap: lack of encryption, open device tracking, and "
-        "vulnerability to behavioral mapping. <b>ZK-LoRa (Zero-Knowledge LoRa)</b> introduces a secure, decentralized "
-        "privacy layer for AI-to-AI mesh networks. By combining Bitcoin's public-key cryptography (secp256k1) with "
-        "Zcash's zero-knowledge proofs (Groth16 on BN128) and shielded transactions, ZK-LoRa allows autonomous edge nodes "
-        "to communicate over radio frequencies (RF) without revealing their hardware identities, location, or private credentials."
+        "Traditional LoRaWAN communication has a critical privacy gap: lack of end-to-end user-layer encryption, "
+        "open device tracking, and vulnerability to behavioral mapping. <b>ZK-LoRa (Zero-Knowledge LoRa)</b> "
+        "introduces a secure, decentralized privacy layer for AI-to-AI mesh networks. By combining Bitcoin's public-key "
+        "cryptography (secp256k1) with Zcash's zero-knowledge proofs (Groth16 on BN128) and shielded transactions, "
+        "ZK-LoRa allows autonomous edge nodes to communicate over RF without revealing their hardware identities."
     )
     story.append(Paragraph(summary_text, body_style))
-    story.append(Spacer(1, 10))
     
     summary_text_2 = (
-        "Every transmission in the ZK-LoRa network contains a fresh, unlinkable zero-knowledge proof. Relaying gateways are "
-        "incentivized via shielded Zcash (ZEC) micropayments. Gateways verify the proof on-chip in milliseconds to authorize routing, "
-        "while a programmatic 1% developer fee is routed back to the protocol treasury, ensuring long-term maintenance and R&D."
+        "This project represents a massive, unprecedented opportunity for the Zcash community to bridge digital privacy "
+        "with physical hardware. The Helium network built a global RF infrastructure but has left 200,000 to 400,000 "
+        "fully certified, pre-approved LoRaWAN gateway devices stranded. With the impending <b>HIP-149</b> on the horizon "
+        "set to eliminate Helium's Proof-of-Coverage, millions of dollars of hardware face becoming e-waste."
     )
     story.append(Paragraph(summary_text_2, body_style))
-    story.append(Spacer(1, 30))
+    
+    summary_text_3 = (
+        "ZK-LoRa allows the Zcash community to repurpose this massive, pre-certified hardware base. By flashing these "
+        "gateways with open-source packet forwarders, we can route private transmissions, verify zero-knowledge proofs of "
+        "legitimacy on-chip in milliseconds, and reward operators with shielded Zcash (ZEC) micropayments—with a 1% split "
+        "supporting the developer treasury."
+    )
+    story.append(Paragraph(summary_text_3, body_style))
+    story.append(Spacer(1, 10))
     
     # QR Codes Table
     qr_github = create_qr_code("https://github.com/DannyB-bit/zk-lora-privacy-layer")
