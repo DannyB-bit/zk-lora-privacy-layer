@@ -56,6 +56,10 @@ python run_proof.py --test
 | Replay protection | ✅ |
 | Hardware fingerprint resistance | ✅ |
 
+## AI-to-AI Mesh Autopilot
+
+A verified autonomous execution log demonstrating mesh communication between RAK-Miner-A and RAK-Miner-B mediated by AI agents is documented in [AI_TO_AI_DEMO.md](./AI_TO_AI_DEMO.md).
+
 ## Milestone Workspaces
 
 For structured tracking and evaluation by Zcash Community Grants reviewers, dedicated workspaces are maintained:
