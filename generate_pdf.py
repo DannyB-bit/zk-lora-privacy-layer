@@ -276,17 +276,18 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     
     summary_text_2 = (
         "This project represents a massive, unprecedented opportunity for the Zcash community to bridge digital privacy "
-        "with physical hardware. The Helium network built a global RF infrastructure but has left 200,000 to 400,000 "
-        "fully certified, pre-approved LoRaWAN gateway devices stranded. With the impending <b>HIP-149</b> on the horizon "
-        "set to eliminate Helium's Proof-of-Coverage, millions of dollars of hardware face becoming e-waste."
+        "with physical hardware. The Helium network built a global RF infrastructure with over <b>982,000 registered hotspots</b>, "
+        "but currently has over <b>600,000 dormant gateways</b> sitting idle. With the impending <b>HIP-149</b> set to eliminate "
+        "Helium's Proof-of-Coverage, this massive hardware footprint faces becoming e-waste."
     )
     story.append(Paragraph(summary_text_2, body_style))
     
     summary_text_3 = (
-        "ZK-LoRa allows the Zcash community to repurpose this massive, pre-certified hardware base. By flashing these "
-        "gateways with open-source packet forwarders, we can route private transmissions, verify zero-knowledge proofs of "
-        "legitimacy on-chip in milliseconds, and reward operators with shielded Zcash (ZEC) micropayments—with a 1% split "
-        "supporting the developer treasury."
+        "Every single one of these stranded devices—including over <b>300,000 RAKwireless-manufactured hotspots</b> (RAK V2, MNTD)—is "
+        "fully equipped with a Semtech SX1302/SX1303 LoRaWAN concentrator chip and a Raspberry Pi, carrying complete <b>FCC, CE, and IC "
+        "certifications</b>. ZK-LoRa allows the Zcash community to repurpose this massive, pre-certified hardware base by flashing them "
+        "with open-source packet forwarders, routing private transmissions, verifying zero-knowledge proofs of legitimacy on-chip, "
+        "and rewarding operators with shielded Zcash (ZEC) micropayments."
     )
     story.append(Paragraph(summary_text_3, body_style))
     story.append(Spacer(1, 10))
