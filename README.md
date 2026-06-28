@@ -56,6 +56,13 @@ python run_proof.py --test
 | Replay protection | ✅ |
 | Hardware fingerprint resistance | ✅ |
 
+## Milestone Workspaces
+
+For structured tracking and evaluation by Zcash Community Grants reviewers, dedicated workspaces are maintained:
+- **Milestone 1**: [zk-lora-milestone-1](https://github.com/DannyB-bit/zk-lora-milestone-1) (Private) — 100% Completed
+- **Milestone 2**: [zk-lora-milestone-2](https://github.com/DannyB-bit/zk-lora-milestone-2) (Private) — In Progress
+- **Milestone 3**: [zk-lora-milestone-3](https://github.com/DannyB-bit/zk-lora-milestone-3) (Private) — Scheduled
+
 ## License
 
 MIT License — see [LICENSE](./LICENSE)
