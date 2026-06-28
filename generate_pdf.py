@@ -275,19 +275,21 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Paragraph(summary_text, body_style))
     
     summary_text_2 = (
-        "This project represents a massive, unprecedented opportunity for the Zcash community to bridge digital privacy "
-        "with physical hardware. The Helium network built a global RF infrastructure with over <b>982,000 registered hotspots</b>, "
-        "but currently has over <b>600,000 dormant gateways</b> sitting idle. With the impending <b>HIP-149</b> set to eliminate "
-        "Helium's Proof-of-Coverage, this massive hardware footprint faces becoming e-waste."
+        "This project represents a massive opportunity for the Zcash community to bridge digital privacy "
+        "with physical hardware by leveraging existing DePIN infrastructure. Over the past several years, "
+        "hundreds of thousands of LoRaWAN gateways were deployed globally (with over 980,000 registered on-chain). "
+        "As network reward structures and optimization proposals (such as HIP-149) evolve, a significant portion "
+        "of these gateways have become underutilized, offline, or economically dormant."
     )
     story.append(Paragraph(summary_text_2, body_style))
     
     summary_text_3 = (
-        "Every single one of these stranded devices—including over <b>300,000 RAKwireless-manufactured hotspots</b> (RAK V2, MNTD)—is "
-        "fully equipped with a Semtech SX1302/SX1303 LoRaWAN concentrator chip and a Raspberry Pi, carrying complete <b>FCC, CE, and IC "
-        "certifications</b>. ZK-LoRa allows the Zcash community to repurpose this massive, pre-certified hardware base by flashing them "
-        "with open-source packet forwarders, routing private transmissions, verifying zero-knowledge proofs of legitimacy on-chip, "
-        "and rewarding operators with shielded Zcash (ZEC) micropayments."
+        "ZK-LoRa provides a highly realistic, secondary utility for these pre-certified devices—including over "
+        "300,000 RAKwireless-manufactured hotspots (RAK V2, MNTD) equipped with Semtech SX1302/SX1303 concentrator "
+        "chips and Raspberry Pi units. By running open-source packet forwarders alongside or in place of original "
+        "firmware, operators can participate in private edge routing, verify zero-knowledge proofs on-chip in "
+        "milliseconds, and earn shielded Zcash (ZEC) micropayments. This breathes new life into existing hardware "
+        "while expanding the physical footprint of the Zcash privacy ecosystem."
     )
     story.append(Paragraph(summary_text_3, body_style))
     story.append(Spacer(1, 10))
