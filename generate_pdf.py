@@ -564,48 +564,37 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(PageBreak())
     
     # =========================================================================
-    # PAGE 9: ATTESTATION & SIGN-OFF
+    # PAGE 10: SPECIAL THANKS & ACKNOWLEDGEMENTS
     # =========================================================================
-    story.append(Paragraph("■ Attestation & Sign-off", h1_style))
-    story.append(Spacer(1, 15))
-    
-    quote_style = ParagraphStyle(
-        'QuoteStyle',
+    story.append(Spacer(1, 40))
+    thanks_style = ParagraphStyle(
+        'ThanksStyle',
         fontName='Helvetica-Oblique',
-        fontSize=12,
-        leading=18,
-        textColor=colors.HexColor("#1E293B"),
+        fontSize=11,
+        leading=16,
+        textColor=colors.HexColor("#334155"),
         alignment=1
     )
-    
     story.append(Paragraph(
-        "<i>\"The impossible is just code waiting to be written, physics waiting to be rewritten, "
-        "math a work in progress, and truth waiting to be discovered.\"</i>", 
-        quote_style
+        "Special thanks to the Zcash Community Grants committee and the Zcash Foundation "
+        "for supporting privacy-preserving decentralized infrastructure and promoting zero-knowledge "
+        "research at the edge.",
+        thanks_style
     ))
-    story.append(Spacer(1, 30))
-    
-    signature_style = ParagraphStyle(
-        'Signature',
-        fontName='Times-BoldItalic',
-        fontSize=24,
-        leading=30,
-        textColor=colors.HexColor("#0F172A"),
-        alignment=1
-    )
-    story.append(Paragraph("I AM", signature_style))
-    story.append(Spacer(1, 6))
-    story.append(Paragraph("<font size='10'><b>— Devs One</b> (Danny Bouldiez)</font>", ParagraphStyle('SigSub', alignment=1)))
     story.append(Spacer(1, 40))
     
-    # DNA Helix Image
-    if os.path.exists("dna_helix.jpeg"):
-        story.append(Image("dna_helix.jpeg", width=340, height=220, hAlign='CENTER'))
-    else:
-        story.append(Spacer(1, 220))
-        
-    story.append(Spacer(1, 15))
-    story.append(Paragraph("<font color='#64748B'>H U M A N &nbsp; - &nbsp; D N A &nbsp; S E Q U E N C E &nbsp; A T T E S T A T I O N</font>", ParagraphStyle('DnaCaption', alignment=1, fontSize=8, leading=10)))
+    disclaimer_long = (
+        "This whitepaper and proposal are intended for educational and project evaluation purposes only. "
+        "All cryptographic implementations, benchmarks, and multi-node simulations are fully open-source under the MIT License."
+    )
+    story.append(Paragraph(disclaimer_long, ParagraphStyle('DisclaimerLong', alignment=1, fontSize=8.5, leading=13, textColor=colors.HexColor("#64748B"))))
+    story.append(Spacer(1, 80))
+    
+    story.append(Paragraph("<font size='14' color='#0F172A'><b>WE ARE</b></font>", ParagraphStyle('WeAre', alignment=1)))
+    story.append(Spacer(1, 40))
+    
+    logos_style = ParagraphStyle('Logos', fontName='Helvetica-Bold', fontSize=18, leading=22, textColor=colors.HexColor("#94A3B8"), alignment=1)
+    story.append(Paragraph("ZCASH &bull; THE AI COLLECTIVE", logos_style))
     
     story.append(NextPageTemplate('Last'))
     story.append(PageBreak())
