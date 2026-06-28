@@ -177,11 +177,11 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     
     # Center Logo (Larger)
     if os.path.exists("logo.png"):
-        story.append(Image("logo.png", width=380, height=380, hAlign='CENTER'))
+        story.append(Image("logo.png", width=440, height=440, hAlign='CENTER'))
     else:
-        story.append(Spacer(1, 380))
+        story.append(Spacer(1, 440))
         
-    story.append(Spacer(1, 40))
+    story.append(Spacer(1, 60))
     
     # Bottom Box (Wide Movie-Poster Style Banner)
     rated_zk_style = ParagraphStyle(
@@ -200,7 +200,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
                       "<font size='7.5' color='#52525B'>UNDER DECENTRALIZED incentivization PROTOCOL</font>", body_style)
         ]
     ]
-    box_table = Table(box_data, colWidths=[100, 350])
+    box_table = Table(box_data, colWidths=[100, 350], hAlign='CENTER')
     box_table.setStyle(TableStyle([
         ('BOX', (0,0), (-1,-1), 1.5, colors.white),
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
@@ -210,10 +210,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         ('TOPPADDING', (0,0), (-1,-1), 12),
         ('BOTTOMPADDING', (0,0), (-1,-1), 12),
     ]))
-    
-    # Center the table
-    outer_table = Table([[box_table]], colWidths=[504], hAlign='CENTER')
-    story.append(outer_table)
+    story.append(box_table)
     
     story.append(NextPageTemplate('Normal'))
     story.append(PageBreak())
