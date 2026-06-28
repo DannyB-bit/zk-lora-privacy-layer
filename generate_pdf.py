@@ -171,22 +171,30 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     # =========================================================================
     # PAGE 1: COVER PAGE
     # =========================================================================
-    story.append(Spacer(1, 40))
+    story.append(Spacer(1, 20))
     story.append(Paragraph("<font color='#F3B300' face='Helvetica-Bold'>P R O J E C T :</font>", subtitle_style))
-    story.append(Spacer(1, 40))
+    story.append(Spacer(1, 20))
     
     # Center Logo
     if os.path.exists("logo.png"):
-        story.append(Image("logo.png", width=240, height=240))
+        story.append(Image("logo.png", width=320, height=320, hAlign='CENTER'))
     else:
-        story.append(Spacer(1, 240))
+        story.append(Spacer(1, 320))
         
     story.append(Spacer(1, 80))
     
     # Bottom Box (Matching Pod Jobs style)
+    rated_zk_style = ParagraphStyle(
+        'RatedZk',
+        fontName='Helvetica-Bold',
+        fontSize=11,
+        leading=14,
+        textColor=colors.white,
+        alignment=1
+    )
     box_data = [
         [
-            Paragraph("<font size='11' color='white'><b>RATED</b></font><br/><font size='16' color='#F3B300'><b>ZK</b></font>", body_style),
+            Paragraph("<font size='10'>RATED</font><br/><font size='18' color='#F3B300'>ZK</font>", rated_zk_style),
             Paragraph("<font size='10' color='white'><b>FOR: ZK-LORA PRIVACY LAYER</b></font><br/>"
                       "<font size='8.5' color='#A1A1AA'>ZERO-KNOWLEDGE AI-TO-AI MESH NETWORKS</font><br/>"
                       "<font size='7.5' color='#52525B'>UNDER DECENTRALIZED incentivization PROTOCOL</font>", body_style)
@@ -220,10 +228,10 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     
     meta_data = [
         [Paragraph("Proposal Type:", meta_style_left), Paragraph("Zcash Community Grants — Research & Development", meta_style_right)],
-        [Paragraph("Architects:", meta_style_left), Paragraph("zymatica.space, astronautshe.com, Devs One", meta_style_right)],
+        [Paragraph("Architects:", meta_style_left), Paragraph("zymatica.space, astronautshe.com, Devs One (Danny Bouldiez)", meta_style_right)],
         [Paragraph("Roles:", meta_style_left), Paragraph("zymatica (Lead Cryptographer), astronautshe (Edge Systems Engineer), Devs One (AI Swarm)", meta_style_right)],
         [Paragraph("Platform:", meta_style_left), Paragraph("Zcash Shielded Pool, Raspberry Pi OS, Semtech SX1302/1303 HAL", meta_style_right)],
-        [Paragraph("Status:", meta_style_left), Paragraph("Milestone 2 Verified & Deployed on Physical RAK Miner Nodes", meta_style_right)],
+        [Paragraph("Status:", meta_style_left), Paragraph("Milestone 1 Verified & Achieved // Milestone 2 Pending Approval // Milestone 3 Pending Approval", meta_style_right)],
     ]
     meta_table = Table(meta_data, colWidths=[100, 404])
     meta_table.setStyle(TableStyle([
