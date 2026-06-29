@@ -343,7 +343,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         [Paragraph("HUMANS:", meta_style_left), Paragraph("LEAD ARCHITECT: Danny Bouldiez + 2 human Devs", meta_style_right)],
         [Paragraph("Roles:", meta_style_left), Paragraph("zymatica (Lead Cryptographer), astronautshe (Edge Systems Engineer), Devs One (AI Swarm)", meta_style_right)],
         [Paragraph("Platform:", meta_style_left), Paragraph("Zcash Shielded Pool, Raspberry Pi OS, Semtech SX1302/1303 HAL", meta_style_right)],
-        [Paragraph("Status:", meta_style_left), Paragraph("Milestone 1 Verified & Achieved // Milestone 2 Pending Approval // Milestone 3 Pending Approval", meta_style_right)],
+        [Paragraph("Status:", meta_style_left), Paragraph("Milestone 1 (Prototype) Completed // Milestone 2 (Integration) Planned // Milestone 3 (Hardware Mesh) Planned", meta_style_right)],
     ]
     meta_table = Table(meta_data, colWidths=[100, 404])
     meta_table.setStyle(TableStyle([
@@ -403,10 +403,10 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "spectrum licensing. This enables permissionless, low-cost deployments achieving ranges of 2–5 km in urban "
         "settings and 10–15+ km in clear line-of-sight. Operators can participate in private edge routing, verify ZK-proofs "
         "on-chip, and earn shielded Zcash (ZEC) micropayments. Thanks to Zcash's multi-output transaction architecture, "
-        "the payment split is completely programmable, allowing a custom percentage to support the Zcash Foundation, "
+        "the payment split is designed to be configurable, allowing a custom percentage to support the Zcash Foundation, "
         "and/or any developer that forks this codebase to add their own percentage based on their contributions to improve "
-        "the code (subject to Foundation approval), with a 2% split supporting us—the developer/inventor treasury—to ensure "
-        "ongoing R&amp;D."
+        "the code, with a proposed 2% split supporting the developer/inventor treasury to support "
+        "ongoing research and development."
     )
     story.append(Paragraph(summary_text_3, body_style))
     story.append(Spacer(1, 10))
@@ -424,15 +424,15 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         [qr_github, qr_m1, qr_m2, qr_m3],
         [
             Paragraph("GitHub: Main Repository<br/><font color='#F3B300'><b>zk-lora-privacy-layer</b></font>", qr_label_style),
-            Paragraph("GitHub: Milestone 1 Workspace<br/><font color='#F3B300'><b>Multi-Language Proofs</b></font>", qr_label_style),
-            Paragraph("GitHub: Milestone 2 Workspace<br/><font color='#F3B300'><b>Zcash Mempool Scanner</b></font>", qr_label_style),
-            Paragraph("GitHub: Milestone 3 Workspace<br/><font color='#F3B300'><b>Multi-Hop Mesh & HAL</b></font>", qr_label_style)
+            Paragraph("GitHub: Milestone 1 Workspace<br/><font color='#F3B300'><b>Completed Prototype</b></font>", qr_label_style),
+            Paragraph("GitHub: Milestone 2 Workspace<br/><font color='#F3B300'><b>Zcash Integration (Planned)</b></font>", qr_label_style),
+            Paragraph("GitHub: Milestone 3 Workspace<br/><font color='#F3B300'><b>Hardware Mesh (Planned)</b></font>", qr_label_style)
         ],
         [
-            Paragraph("<b>Covers:</b> Core SX1302/3 HAL drivers, ECIES encryption, secp256k1 identity, and 20-language proof validation.<br/><b>Achieves:</b> Complete off-grid identity masking and end-to-end message privacy over public RF bands.", qr_desc_style),
-            Paragraph("<b>Covers:</b> secp256k1 key generation, Ripemd160/SHA256 address derivation, Groth16 ZK-SNARK compiler, and 20-language proof verifiers.<br/><b>Achieves:</b> Cryptographic proof of node legitimacy without revealing hardware or network identities.", qr_desc_style),
-            Paragraph("<b>Covers:</b> Rust/Go/TS mempool scanners, shielded memo decryption via Incoming Viewing Keys (IVKs), and 2% developer fee validation.<br/><b>Achieves:</b> Zero-latency, off-chain routing authorization triggered instantly by pending Zcash mempool transactions.", qr_desc_style),
-            Paragraph("<b>Covers:</b> Multi-hop mesh routing, P2P data marketplace, multi-curve prover (BN254, BLS12-381, Pasta), SessionSecurity, and MempoolProtection.<br/><b>Achieves:</b> Absolute network resilience against Gorgon, Sybil, Eclipse, and Free Rider attacks.", qr_desc_style)
+            Paragraph("<b>Covers:</b> Core SX1302/3 HAL drivers, ECIES encryption, secp256k1 identity, and 20-language proof validation.<br/><b>Achieves:</b> Off-grid identity masking and privacy-preserving message privacy over public RF bands.", qr_desc_style),
+            Paragraph("<b>Covers:</b> secp256k1 key generation, Ripemd160/SHA256 address derivation, Groth16 ZK-SNARK compiler, and 20-language proof verifiers.<br/><b>Achieves:</b> Cryptographic proof designed to demonstrate node legitimacy without revealing hardware or network identities.", qr_desc_style),
+            Paragraph("<b>Planned Work:</b> Real Zcash testnet/regtest wallet/light-client integration, shielded memo decryption via Incoming Viewing Keys (IVKs), and configurable fee validation.<br/><b>Goal:</b> Routing authorization triggered by decrypted wallet/light-client payment events.", qr_desc_style),
+            Paragraph("<b>Planned Work:</b> RF/hardware mesh proof, multi-hop routing, P2P data marketplace, multi-curve proof integration, and physical verification.<br/><b>Goal:</b> Privacy-preserving network resilience against mesh-layer routing attacks.", qr_desc_style)
         ]
     ]
     qr_table = Table(qr_data, colWidths=[126, 126, 126, 126])
@@ -528,7 +528,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     
     story.append(Paragraph("Layer 2: Recipient-Only ECIES Encryption", h2_style))
     l2_text = (
-        "To ensure absolute confidentiality over public RF bands, payloads are encrypted using the Elliptic Curve Integrated "
+        "To ensure privacy-preserving confidentiality over public RF bands, payloads are encrypted using the Elliptic Curve Integrated "
         "Encryption Scheme (ECIES). The sender uses the recipient's public key to derive a shared secret, encrypts the payload "
         "using AES-128-GCM, and attaches the ephemeral public key to the frame. Only the holder of the recipient's private key "
         "can decrypt the message."
@@ -617,12 +617,12 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Paragraph("4.2 The Zcash Shielded Solution", h2_style))
     payout_solution = (
         "ZK-LoRa solves this by using Zcash Orchard/Sapling Shielded Transactions. Zcash is the only blockchain that "
-        "offers fully shielded transactions with an encrypted memo field (512 bytes). This allows ZK-LoRa to bind a "
-        "financial payment to a physical radio packet completely in secret, leaving no trace on the public ledger. "
+        "offers shielded transactions with an encrypted memo field (512 bytes). This allows ZK-LoRa to bind a "
+        "financial payment to a physical radio packet in secret, leaving no trace on the public ledger. "
         "Furthermore, because Zcash shielded transactions support multiple outputs within a single transaction bundle, "
-        "the payment split is completely programmable. In addition to a 2% split supporting the developer treasury (for protocol "
-        "maintenance), a custom percentage (e.g., 5% or 10%) can be routed directly to the Zcash Foundation to support "
-        "the ecosystem, with the gateway node keeping the remaining portion as its routing fee."
+        "the payment split is designed to be configurable. In addition to a proposed 2% split supporting the developer treasury (for protocol "
+        "maintenance), a custom percentage (e.g., 5% or 10%) can be routed to the Zcash Foundation or other ecosystem contributors, "
+        "with the gateway node keeping the remaining portion as its routing fee."
     )
     story.append(Paragraph(payout_solution, body_style))
     
@@ -636,7 +636,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "         │                                                         │\n"
         "         │  3. Sends Shielded ZEC Transaction                      │\n"
         "         │     Memo: \"ref:<Hash_H>\"                                │\n"
-        "         │  ─────────────────────────────────────────────────────> │ (Enters Zcash Mempool)\n"
+        "         │  ─────────────────────────────────────────────────────> │ (Broadcasts Zcash TX)\n"
         "         │                                                         │\n"
         "         │                                                         │ 4. Decrypts Memo using Viewing Key\n"
         "         │                                                         │ 5. Matches \"ref:<Hash_H>\"\n"
@@ -645,7 +645,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "         │  7. Transmits LoRa Packet (H)                           │\n"
         "         │  ─────────────────────────────────────────────────────> │\n"
         "         │                                                         │ 8. Gateway receives packet,\n"
-        "         │                                                         │    verifies payment in mempool,\n"
+        "         │                                                         │    verifies wallet/light-client event,\n"
         "         │                                                         │    and relays to WAN.\n"
     )
     story.append(make_code_block(ascii_flow, styles, title="zk-lora-operator ~ micropayment_flow.sh"))
@@ -662,9 +662,9 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "<b>1. Packet Hash Generation:</b> When the sender agent prepares a LoRa packet, it hashes the payload to generate a unique Packet Hash (H).<br/>"
         "<b>2. Shielded Payment:</b> The sender sends a tiny amount of ZEC (e.g., 0.0001 ZEC) to the gateway's shielded address.<br/>"
         "<b>3. The Cryptographic Bind:</b> Inside the encrypted Zcash memo field, the sender writes <i>ref:&lt;Hash_H&gt;</i>.<br/>"
-        "<b>4. Mempool Scanning:</b> The gateway runs the <i>ZcashMempoolScanner</i> (the Rust/Python engine built in Milestone 2) to scan the Zcash mempool and decrypt incoming memos using its Incoming Viewing Key (IVK).<br/>"
-        "<b>5. Instant Verification:</b> The moment the scanner detects a pending transaction in the mempool containing <i>ref:&lt;Hash_H&gt;</i>, the gateway knows the packet has been paid.<br/>"
-        "<b>6. Programmatic Split:</b> Thanks to Zcash's multi-output transaction architecture, the payment split is completely programmable, allowing a custom percentage to support the Zcash Foundation, and/or any developer that forks this codebase to add their own percentage based on their contributions to improve the code (subject to Foundation approval), with a 2% split supporting us—the developer/inventor treasury—to ensure ongoing R&amp;D. The scanner verifies that the transaction programmatically routed this 2% split to the developer/inventor treasury address:<br/>"
+        "<b>4. Payment Verification:</b> The gateway verifies decrypted shielded payment events produced by a Zcash wallet or light-client with the appropriate viewing capability (using the gateway's Incoming Viewing Key (IVK)).<br/>"
+        "<b>5. Verification:</b> The moment a transaction containing the reference <i>ref:&lt;Hash_H&gt;</i> is verified via decrypted wallet/light-client event data, the gateway knows the packet has been paid.<br/>"
+        "<b>6. Configurable Split:</b> Thanks to Zcash's multi-output transaction architecture, the payment split is designed to be configurable, allowing a custom percentage to support the Zcash Foundation, and/or any developer that forks this codebase to add their own percentage based on their contributions to improve the code, with a proposed 2% split supporting the developer/inventor treasury to support ongoing research and development. The verifier validates that the transaction programmatically routed this 2% split to the developer/inventor treasury address:<br/>"
     )
     story.append(Paragraph(flow_detail, body_style))
     
@@ -672,7 +672,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         [
             Paragraph("<b>Developer/Inventor Treasury Address (Shielded Unified Address):</b><br/>"
                       "<font size='6.2' face='Courier'>u10rjztjhk6c2caz6t6hdh32zcf22exhumlm388vtd7exm63vsgwphhm5gt2azgzdksaumr9hn5hx7yy3tdjvdpt875c9tjqswwshz2v9d</font><br/>"
-                      "<font size='8' color='#64748B'>Programmatic 2% developer/inventor treasury split verified on-chain via Orchard/Sapling light client</font>", body_style)
+                      "<font size='8' color='#64748B'>Proposed 2% developer/inventor treasury split verified via Orchard/Sapling light client</font>", body_style)
         ]
     ]
     fee_box_table = Table(fee_box_data, colWidths=[504])
@@ -687,21 +687,21 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Paragraph("4.4 What We Are Inventing (The ZK-LoRa Innovations)", h2_style))
     
     innovations_text = (
-        "<b>🚀 Innovation A: Mempool-Triggered RF Routing (Zcash-to-Radio Binding)</b><br/>"
-        "Nobody has ever used the Zcash mempool as an instant, off-chain routing authorization trigger for physical radio waves. "
-        "Standard setups require waiting for block confirmations (which takes minutes) or using centralized payment gateways. "
-        "We invented a gateway node that actively sniffs the Zcash mempool, decrypts shielded memos, matches them to physical radio "
-        "packet hashes, and routes the radio packets in real-time. This is a brand-new way to operate a DePIN.<br/><br/>"
+        "<b>🚀 Innovation A: Wallet-Event-Triggered RF Routing (Zcash-to-Radio Binding)</b><br/>"
+        "We propose a gateway architecture that verifies routing authorization based on decrypted shielded payment events. "
+        "Instead of waiting for block confirmations or using centralized payment gateways, the gateway verifies Zcash "
+        "shielded memos via wallet/light-client viewing capabilities, matching them to physical radio packet hashes to authorize routing. "
+        "This represents a novel, privacy-preserving approach to DePIN operation.<br/><br/>"
         "<b>🚀 Innovation B: Zero-Knowledge RF Identity Masking</b><br/>"
         "Standard LoRaWAN is highly vulnerable to physical tracking because it broadcasts static device IDs (DevAddr/DevEUI) in the clear. "
         "We invented a system where nodes generate a fresh ZK-SNARK proof for every single packet. The gateway verifies the proof "
-        "to know the node is authorized, but never learns who the node is, making physical tracking impossible.<br/><br/>"
+        "to know the node is authorized, but never learns who the node is, designed to prevent physical tracking.<br/><br/>"
         "<b>🚀 Innovation C: Native Zcash DePIN (No Custom Token Needed)</b><br/>"
         "Most DePIN projects (like Helium, Helium Mobile, or Hivemapper) launch their own custom tokens (like HNT, MOBILE, or HONEY) "
         "on Solana or custom chains. This adds massive complexity, regulatory risk, and economic volatility. ZK-LoRa runs natively "
-        "on Zcash, using ZEC directly for private routing fees. The payment split is completely programmable, allowing a custom percentage "
+        "on Zcash, using ZEC directly for private routing fees. The payment split is designed to be configurable, allowing a custom percentage "
         "to support the Zcash Foundation, and/or any developer that forks this codebase to add their own percentage based on their contributions "
-        "to improve the code (subject to Foundation approval), with a 2% split supporting us—the developer/inventor treasury—to ensure ongoing R&amp;D."
+        "to improve the code, with a proposed 2% split supporting the developer/inventor treasury to support ongoing research and development."
     )
     story.append(Paragraph(innovations_text, body_style))
     
@@ -709,9 +709,9 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Paragraph("4.5 Why This is a Breakthrough for the Zcash Ecosystem", h2_style))
     
     breakthrough_text = (
-        "<b>• Zero-Latency Routing:</b> By verifying payments in the mempool rather than waiting for block confirmations (which take 75 seconds), ZK-LoRa achieves near-instantaneous packet relaying.<br/>"
+        "<b>• Near-Instantaneous Routing:</b> By verifying payments via decrypted wallet/light-client event data before block confirmation, ZK-LoRa achieves near-instantaneous packet relaying.<br/>"
         "<b>• Unlinkable Physical-to-Financial Mapping:</b> To an outside observer, the Zcash transaction is just encrypted noise on the blockchain, and the LoRa packet is just an encrypted RF burst. There is no mathematical way for an eavesdropper to link the two.<br/>"
-        "<b>• Sustainable Open Source:</b> The fee split is programmatically enforced on-chip by the gateway. Senders can route custom percentages to support the Zcash Foundation and/or any developer that forks this codebase to improve it (subject to Foundation approval), alongside the 2% split supporting the developer/inventor treasury. If a sender tries to bypass these required splits, the gateway's mempool scanner rejects the transaction, and the gateway refuses to route the packet, creating a self-sustaining funding loop for the entire ecosystem."
+        "<b>• Sustainable Open Source:</b> The fee split is designed to be configurable. Senders can route custom percentages to support the Zcash Foundation and/or any developer that forks this codebase to improve it, alongside the proposed 2% split supporting the developer/inventor treasury. If a sender tries to bypass these splits, the gateway's verification module rejects the transaction, creating a self-sustaining funding loop for the entire ecosystem."
     )
     story.append(Paragraph(breakthrough_text, body_style))
     
@@ -767,7 +767,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "        │    - 0.00004 ZEC to Dev (2%)     │                                  │                               │\n"
         "        │    - 0.00010 ZEC to Gateway      │                                  │                               │\n"
         "        │ ─────────────────────────────────┼─────────────────────────────────>│                               │\n"
-        "        │                                  │                                  │ 4. Scans TX in mempool        │\n"
+        "        │                                  │                                  │ 4. Receives TX event          │\n"
         "        │                                  │                                  │ 5. Verifies its own fee       │\n"
         "        │                                  │                                  │ 6. Verifies 2% Dev fee        │\n"
         "        │                                  │                                  │                               │\n"
@@ -822,7 +822,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
 
     story.append(Paragraph("6.2 Advanced Hardware Scams & ZKCP", h2_style))
     sec_details_2 = (
-        "<b>The Gorgon Attack (Selective Dropping)</b>: A malicious gateway claims its routing fee in the mempool but drops the packet. "
+        "<b>The Gorgon Attack (Selective Dropping)</b>: A malicious gateway receives its routing fee from the transaction but drops the packet. "
         "We solve this via <b>Zero-Knowledge Proof-of-Delivery (ZK-PoD)</b>: the routing fee output is locked until the gateway presents a "
         "cryptographic receipt signed by the destination node.<br/>"
         "<b>The Eclipse Attack (Location Spoofing)</b>: Attacking nodes spoof coordinates to hijack routing. We enforce physical "
@@ -1032,9 +1032,8 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "existed in the cryptographic circuit since Orchard's activation in May 2022. Had it been exploited, "
         "it would have allowed an attacker to mint unlimited, undetectable ZEC out of thin air, as the zero-knowledge "
         "proof system would have verified the fraudulent transactions as valid without requiring on-chain signatures.<br/><br/>"
-        "While Zcash developers successfully deployed an emergency patch via a hard fork, this incident highlighted the "
         "extreme systemic risk of coupling zero-knowledge proof verification directly to monetary supply consensus. "
-        "ZK-LoRa is architected from the ground up to be immune to such catastrophic failures."
+        "ZK-LoRa is designed to be immune to such catastrophic failures."
     )
     story.append(Paragraph(soundness_intro, body_style_compact))
     story.append(Spacer(1, 10))
@@ -1045,7 +1044,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "<b>A. Decoupled Layering (Separation of Concerns):</b> ZK-LoRa operates strictly as a routing and identity "
         "layer, not a monetary consensus layer. ZK-LoRa does not mint, print, or manage the supply of ZEC. All payments "
         "(routing fees and P2P data settlements) are settled directly on the Zcash L1 blockchain. Even if an attacker "
-        "exploited a soundness bug in the ZK-LoRa circuit, the absolute worst they could do is forge a proof of "
+        "exploited a soundness bug in the ZK-LoRa circuit, the worst they could do is forge a proof of "
         "\"legitimate node identity\" to get a packet routed for free. They cannot counterfeit ZEC because the Zcash L1 "
         "blockchain verifies the actual coin transfer.<br/>"
         "<b>B. Pre-Circuit Range Filtering (Double-Validation):</b> Soundness bugs often rely on feeding out-of-bounds "
@@ -1058,12 +1057,12 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "verified for every single transaction, giving attackers infinite opportunities to submit malicious proofs. ZK-LoRa's "
         "<font face='Courier'>SessionSecurity</font> module (<font face='Courier'>rust/src/main.rs:L917</font>) verifies the ZK proof "
         "only once during the session handshake. Subsequent data packets are secured by fast-path symmetric HMACs, reducing the "
-        "ZK attack surface by 99% during active transmission.<br/>"
+        "ZK attack surface significantly during active transmission.<br/>"
         "<b>D. Mandatory Static Analysis & Tooling:</b> To prevent under-constrained circuits from reaching production, ZK-LoRa's "
         "development pipeline mandates running all circuits through <b>Circomspect</b> and <b>Veridise</b> static analysis tools to "
         "automatically flag unconstrained signals. Furthermore, our Multi-Curve Verifier (<font face='Courier'>ZKProver</font> in "
         "<font face='Courier'>rust/src/main.rs:L30</font>) allows developers to cross-verify proofs across multiple elliptic curves "
-        "(BN254, BLS12-381, Pallas, Vesta) to ensure absolute mathematical consistency."
+        "(BN254, BLS12-381, Pallas, Vesta) to ensure mathematical consistency."
     )
     story.append(Paragraph(soundness_details, body_style_compact))
     story.append(Spacer(1, 10))
@@ -1072,20 +1071,20 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     
     redundancies_text = (
         "Even if an attacker successfully exploits an unknown soundness flaw in the ZK circuit to forge a proof of "
-        "identity, ZK-LoRa implements three additional layers of physical and network-layer defense to prevent unauthorized routing:<br/>"
+        "identity, ZK-LoRa is designed with three additional layers of physical and network-layer defense to mitigate unauthorized routing:<br/>"
         "<b>1. Time-of-Flight (ToF) Physical Bounding:</b> Senders must communicate over physical radio waves. The gateway uses "
         "Semtech SX1302/1303 internal hardware timers to measure the Round-Trip Time (RTT) of the signal at the speed of light. If the physical "
-        "distance does not match the declared coordinate claims, the packet is immediately dropped as a location spoof, preventing remote "
+        "distance does not match the declared coordinate claims, the packet is immediately dropped as a location spoof, designed to prevent remote "
         "attackers from abusing forged proofs (See <font face='Courier'>ToF Boundary</font> in <font face='Courier'>rust/src/main.rs:L1010</font>).<br/>"
         "<b>2. Session-Locked HMACs & Nonces:</b> The ZK proof is only verified once during the initial session handshake. Subsequent data packets "
         "require a valid HMAC keyed with a session-specific, single-use nonce. An attacker with a forged ZK proof cannot generate valid HMACs for "
-        "new data packets without the ephemeral session key, rendering the forged proof useless for actual routing (See <font face='Courier'>SessionSecurity</font> "
+        "new data packets without the ephemeral session key, designed to render the forged proof useless for actual routing (See <font face='Courier'>SessionSecurity</font> "
         "in <font face='Courier'>rust/src/main.rs:L917</font>).<br/>"
         "<b>3. Neighbor Auditing & Reputation:</b> Neighboring relay nodes passively listen to the RF spectrum to audit their peers' behavior. "
         "If a node attempts to spam the network or use forged sessions, neighboring nodes flag the anomaly, decrement its reputation score, "
         "and dynamically route around it (See <font face='Courier'>Neighbor Audit</font> in <font face='Courier'>rust/src/main.rs:L1022</font>).<br/>"
         "<b>4. ZK-PoW Rate Limiting (Anti-DoS):</b> Senders must solve a Proof-of-Work (PoW) puzzle (similar to Hashcash) before the gateway will "
-        "execute the ZK-verifier. This makes spamming forged proofs computationally and energetically expensive, preventing CPU-exhaustion attacks."
+        "execute the ZK-verifier. This makes spamming forged proofs computationally and energetically expensive, mitigating CPU-exhaustion attacks."
     )
     story.append(Paragraph(redundancies_text, body_style_compact))
     story.append(Spacer(1, 15))
@@ -1097,7 +1096,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Spacer(1, 8))
     
     audit_intro = (
-        "For ZK-LoRa to achieve absolute Zcash-grade security, we must audit the underlying mathematics, "
+        "For ZK-LoRa to achieve high-assurance Zcash-grade security, we must audit the underlying mathematics, "
         "cryptographic curves, and hardware implementations of our zero-knowledge systems. Below is a forensic "
         "breakdown of key vulnerabilities, reviewer critiques, and their corresponding real-world code solutions."
     )
@@ -1117,7 +1116,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "<font face='Courier'>rust/src/main.rs:L30</font>).<br/>"
         "<b>3. Proof Malleability:</b> Groth16 proofs are malleable; an adversary can mutate proof bytes and replay them. "
         "<i>Mitigation:</i> Senders bind the proof to the transaction payload and sign the packet. The receiver verifies the signature "
-        "before processing the proof, preventing mutated replays. (See <font face='Courier'>ZymaticaVoiceApp::receive</font> in "
+        "before processing the proof, mitigating mutated replays. (See <font face='Courier'>ZymaticaVoiceApp::receive</font> in "
         "<font face='Courier'>rust/src/main.rs:L333</font>).<br/>"
         "<b>4. Under-Constrained Circuits:</b> Missing constraints in Circom allow provers to cheat. "
         "<i>Mitigation:</i> Circuits are static-analyzed via <b>Circomspect</b>, and the Rust engine enforces strict coordinate "
@@ -1141,7 +1140,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "<b>• LoRa Bandwidth Constraints (Session-Based ZK):</b> Fitting a 192-byte BLS12-381 proof and an ECIES payload into a single "
         "222-byte LoRa packet is extremely tight. We solve this by splitting the protocol: the sender transmits the full 192-byte proof "
         "<i>once</i> during the session handshake to establish a shared key. Subsequent data packets only carry a tiny <b>8-byte HMAC</b>, "
-        "reducing packet overhead by 96% while maintaining 100% ZK-security. (See <font face='Courier'>SessionSecurity</font> in "
+        "reducing packet overhead by 96% while maintaining ZK-security. (See <font face='Courier'>SessionSecurity</font> in "
         "<font face='Courier'>rust/src/main.rs:L917</font>)."
     )
     story.append(Paragraph(critique_text, body_style_compact))
@@ -1155,16 +1154,14 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     
     roadmap_intro = (
         "The ZK-LoRa project bridges digital privacy with physical DePIN infrastructure. Below is the phased "
-        "development roadmap for transitioning from the current working prototype to full production deployment "
-        "on the Zcash mainnet."
+        "development roadmap for transitioning from the current prototype to a production-grade deployment."
     )
     story.append(Paragraph(roadmap_intro, body_style_compact))
     story.append(Spacer(1, 12))
     
     story.append(Paragraph("10.1 Short-Term (v2.0) — Zcash Testnet Integration", h2_style))
     st_text = (
-        "<b>• Production ZK Proofs:</b> Integrate <font face='Courier'>gnark</font> or <font face='Courier'>arkworks</font> "
-        "provers for production-grade ZK-proof generation on embedded hardware.<br/>"
+        "<b>• Production ZK Proofs:</b> Integrate production-grade ZK-proof generation on embedded hardware (e.g., using gnark or arkworks).<br/>"
         "<b>• Shielded Transaction Gen:</b> Integrate shielded ZEC transaction generation directly in the gateway routing loop.<br/>"
         "<b>• Unlinkable Transmission Mode:</b> Implement randomized delays and packet shuffling to prevent timing-based correlation "
         "attacks by observers monitoring the RF spectrum.<br/>"

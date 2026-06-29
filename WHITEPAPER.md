@@ -6,7 +6,7 @@
 
 ## Abstract
 
-We present ZK-LoRa, a revolutionary privacy-preserving identity layer for LoRa mesh networks that combines Bitcoin's public-key cryptography with Zcash's zero-knowledge proof and shielded transaction architecture. ZK-LoRa enables AI agents to communicate securely over RF without revealing their real hardware identities, enabling unlinkable transactions, selective disclosure, and proof-of-useful-work consensus for decentralized AI coordination — with every routing fee compensated securely in ZEC via Zcash shielded transactions. The payment split is completely programmable. This allows a custom percentage to support the Zcash Foundation, and/or any developer that forks this codebase to add their own percentage based on their contributions to improve the code (subject to Foundation approval), with a 2% split supporting us — the developer/inventor treasury — to ensure ongoing R&D.
+We present ZK-LoRa, a revolutionary privacy-preserving identity layer for LoRa mesh networks that combines Bitcoin's public-key cryptography with Zcash's zero-knowledge proof and shielded transaction architecture. ZK-LoRa enables AI agents to communicate securely over RF without revealing their real hardware identities, enabling unlinkable transactions, selective disclosure, and proof-of-useful-work consensus for decentralized AI coordination — with every routing fee compensated securely in ZEC via Zcash shielded transactions. The payment split is designed to be configurable. This allows a custom percentage to support the Zcash Foundation, and/or any developer that forks this codebase to add their own percentage based on their contributions to improve the code, with a proposed 2% split supporting the developer/inventor treasury to support ongoing research and development.
 
 **Key Innovation:** Agents broadcast zero-knowledge proofs of legitimacy instead of static identifiers, making eavesdropping useless while maintaining verifiable authenticity.
 
@@ -27,7 +27,7 @@ For AI agent collaboration (researcher-1 ↔ researcher-2), this creates vulnera
 - Eavesdroppers can map agent behaviors
 - Hardware serials could be exposed
 - No way to prove "I am authorized" without revealing identity
-- Impossible to build trustless mesh networks
+- Challenging to build trustless mesh networks
 
 ### 1.2 The Solution: ZK-LoRa
 
@@ -173,7 +173,7 @@ if is_valid:
 
 ### 3.1 Unlinkability
 
-Each transmission uses a **fresh ZK proof**, making it impossible to link packets to the same agent without the shared decryption key.
+Each transmission uses a **fresh ZK proof**, designed to prevent linking packets to the same agent without the shared decryption key.
 
 **Scenario:**
 -researcher-1 sends 100 packets
@@ -244,7 +244,7 @@ Generation: O(n) time (seconds, tunable via difficulty)
   - **2%** $\rightarrow$ Developer/Inventor Treasury (supporting us to ensure ongoing R&D, and/or any developer that forks this codebase to add their own percentage based on their contributions to improve the code, subject to Foundation approval).
   - **Custom $X\%$ (e.g., 5% or 10%)** $\rightarrow$ **Zcash Foundation / Community Fund** (Directly contributing back to the Zcash ecosystem to support future research and development).
   - **Remainder ($98 - X\%$)** $\rightarrow$ **LoRa Gateway** (Bandwidth and hardware compensation).
-  This three-way split is verified on-chip by the gateway's mempool scanner before routing.
+  This three-way split is verified on-chip by the gateway's verifier module before routing.
 
 ### 4.4 Practical Use Case Scenarios
 
@@ -266,7 +266,7 @@ In this scenario, an autonomous drone (Agent-A) and a ground-based weather senso
         │    - 0.00004 ZEC to Dev (2%)     │                                  │                               │
         │    - 0.00010 ZEC to Gateway      │                                  │                               │
         │ ─────────────────────────────────┼─────────────────────────────────>│                               │
-        │                                  │                                  │ 4. Scans TX in mempool        │
+        │                                  │                                  │ 4. Receives TX event        │
         │                                  │                                  │ 5. Verifies its own fee       │
         │                                  │                                  │ 6. Verifies 2% Dev fee        │
         │                                  │                                  │                               │
@@ -297,9 +297,9 @@ Tens of thousands of soil moisture and wildfire detection sensors are scattered 
 
 ### 4.5 Why This is a Breakthrough for the Zcash Ecosystem
 
-*   **Zero-Latency Routing**: By verifying payments in the mempool rather than waiting for block confirmations (which take 75 seconds), ZK-LoRa achieves near-instantaneous packet relaying.
+*   **Zero-Latency Routing**: By verifying payments via decrypted wallet/light-client event data before block confirmation, ZK-LoRa achieves near-instantaneous packet relaying.
 *   **Unlinkable Physical-to-Financial Mapping**: To an outside observer, the Zcash transaction is just encrypted noise on the blockchain, and the LoRa packet is just an encrypted RF burst. There is no mathematical way for an eavesdropper to link the two.
-*   **Sustainable Open Source**: The fee split is programmatically enforced on-chip by the gateway. Senders can route custom percentages to support the Zcash Foundation and/or any developer that forks this codebase to improve it (subject to Foundation approval), alongside the 2% split supporting the developer/inventor treasury. If a sender tries to bypass these required splits, the gateway's mempool scanner rejects the transaction, and the gateway refuses to route the packet, creating a self-sustaining funding loop for the entire ecosystem.
+*   **Sustainable Open Source**: The fee split is designed to be configurable. Senders can route custom percentages to support the Zcash Foundation and/or any developer that forks this codebase to improve it, alongside the proposed 2% split supporting the developer/inventor treasury. If a sender tries to bypass these splits, the gateway's verification module rejects the transaction, creating a self-sustaining funding loop for the entire ecosystem.
 
 ### 4.6 The Prover-Miner Division: How Shielded DePIN Actually Works
 
@@ -441,7 +441,7 @@ An adversary in the ZK-LoRa network is assumed to have the following capabilitie
   1. **HMAC Pre-Filters**: Legitimate registered devices include a symmetric Keyed-Hash Message Authentication Code (HMAC) in the packet header using a session key derived via Diffie-Hellman during node registration. The gateway verifies the HMAC in <1µs. If invalid, the packet is discarded immediately without touching the ZK-SNARK engine.
   2. **RF-Proof-of-Work**: For public packets, the gateway enforces a hash challenge:
      $$\text{SHA-256}(\text{PacketPayload} \parallel \text{Nonce}) < \text{TargetDifficulty}$$
-     This takes legitimate nodes <100ms to solve but makes high-frequency spamming computationally impossible for attackers.
+     This takes legitimate nodes <100ms to solve but makes high-frequency spamming computationally expensive for jammers.
 
 #### C. Lying/Colluding Gateway Mitigation (Double-Spend Relay)
 - **Threat**: A gateway colludes with a buyer (Drone) to show a fake mempool state to the off-grid seller (Sensor). The gateway sends a fake transaction confirmation, the Sensor releases the decryption key $K$, and the gateway never broadcasts the Zcash transaction, leaving the Sensor unpaid.
@@ -450,7 +450,7 @@ An adversary in the ZK-LoRa network is assumed to have the following capabilitie
   2. **PoW Verification**: For high-value transactions, the Sensor enforces a **Block Confirmation Threshold**. The Gateway must provide a valid Zcash block header chain containing the transaction. Since Zcash's block headers are bound by Equihash Proof-of-Work, a lying gateway cannot forge confirmations without spending millions of dollars in mining power.
 
 #### D. Miner Extractable Value (MEV) & Fee Front-Running
-- **Threat**: A malicious gateway or miner sniffs the mempool, identifies the routing fee output, and modifies the transaction to redirect the fee to their own address.
+- **Threat**: A malicious gateway or miner identifies the routing fee output from the transaction, and modifies the transaction to redirect the fee to their own address.
 - **Solution**: The routing fee output is cryptographically bound to the specific gateway's Zcash address (`address_gateway`) inside the transaction structure. Because Zcash transactions are secured by the sender's signature (Spend Authorization), any attempt to modify the destination address of the fee output invalidates the signature, causing the network to reject the transaction.
 
 #### E. The "Lazy Prover" or Key Substitution Attack (P2P Exchange)
@@ -463,13 +463,13 @@ An adversary in the ZK-LoRa network is assumed to have the following capabilitie
   The buyer verifies the ZK-proof ($\pi$) locally before paying. The mathematical soundness of the SNARK guarantees that the ciphertext $C$ contains the data, and the seller can only claim the Zcash payment by revealing the exact decryption key $K$ on-chain.
 
 #### F. Temporal Correlation & Metadata Leakage
-- **Threat**: An observer correlates the timestamp of an RF transmission with the timestamp of a Zcash transaction appearing in the public mempool to identify the sender.
+- **Threat**: An observer correlates the timestamp of an RF transmission with the timestamp of a Zcash transaction appearing on the ledger to identify the sender.
 - **Solution**: 
   1. **Batched Shuffling**: Gateways hold transactions in a local buffer and broadcast them in shuffled batches at randomized intervals.
   2. **Pre-Funded Routing Credits**: Clients can pre-fund a shielded Zcash pool with a gateway. The client gets a set of single-use cryptographic tokens (blind signatures) to pay for routing, completely breaking any temporal correlation between Zcash transactions and physical RF transmissions.
 
 #### G. The "Gorgon" Attack (Silent Selective Dropping)
-- **Threat**: A malicious gateway wants to collect routing fees without actually delivering the data to the destination. It detects a Zcash transaction in the mempool, decrypts the memo, matches the packet hash, and broadcasts the transaction to the network to claim its fee. However, it silently drops the actual data packet instead of routing it.
+- **Threat**: A malicious gateway wants to collect routing fees without actually delivering the data to the destination. It detects a Zcash transaction, decrypts the memo, matches the packet hash, and broadcasts the transaction to the network to claim its fee. However, it silently drops the actual data packet instead of routing it.
 - **Solution: Zero-Knowledge Proof-of-Delivery (ZK-PoD)**:
   * The routing fee output in the Zcash transaction is locked by a **Proof-of-Delivery signature** ($S_{\text{dest}}$) from the destination node.
   * When the destination node receives the routed packet, it generates a signed receipt: $S_{\text{dest}} = \text{Sign}(\text{PacketHash} \parallel \text{Timestamp}, \text{PrivateKey}_{\text{dest}})$.
@@ -577,28 +577,28 @@ This validation demonstrates that when utilizing optimized sub-236-byte packets 
 
 In June 2026, Zcash (ZEC) experienced a major incident when developers disclosed a critical, dormant soundness vulnerability in the Orchard shielded pool. The flaw (discovered via AI-assisted analysis) existed in the cryptographic circuit since Orchard's activation in May 2022. Had it been exploited, it would have allowed an attacker to mint unlimited, undetectable ZEC out of thin air, as the zero-knowledge proof system would have verified the fraudulent transactions as valid without requiring on-chain signatures.
 
-While Zcash developers successfully deployed an emergency patch via a hard fork, this incident highlighted the extreme systemic risk of coupling zero-knowledge proof verification directly to monetary supply consensus. ZK-LoRa is architected from the ground up to be immune to such catastrophic failures.
+While Zcash developers successfully deployed an emergency patch via a hard fork, this incident highlighted the extreme systemic risk of coupling zero-knowledge proof verification directly to monetary supply consensus. ZK-LoRa is designed to be immune to such catastrophic failures.
 
 ### 9.1 How ZK-LoRa Avoids Soundness Failures
 
-*   **Decoupled Layering (Separation of Concerns):** ZK-LoRa operates strictly as a routing and identity layer, not a monetary consensus layer. ZK-LoRa does not mint, print, or manage the supply of ZEC. All payments (routing fees and P2P data settlements) are settled directly on the Zcash L1 blockchain. Even if an attacker exploited a soundness bug in the ZK-LoRa circuit, the absolute worst they could do is forge a proof of "legitimate node identity" to get a packet routed for free. They cannot counterfeit ZEC because the Zcash L1 blockchain verifies the actual coin transfer.
+*   **Decoupled Layering (Separation of Concerns):** ZK-LoRa operates strictly as a routing and identity layer, not a monetary consensus layer. ZK-LoRa does not mint, print, or manage the supply of ZEC. All payments (routing fees and P2P data settlements) are settled directly on the Zcash L1 blockchain. Even if an attacker exploited a soundness bug in the ZK-LoRa circuit, the worst they could do is forge a proof of "legitimate node identity" to get a packet routed for free. They cannot counterfeit ZEC because the Zcash L1 blockchain verifies the actual coin transfer.
 *   **Pre-Circuit Range Filtering (Double-Validation):** Soundness bugs often rely on feeding out-of-bounds or malicious inputs into the ZK prover to trigger field overflows. ZK-LoRa prevents this by enforcing strict bounds checking at the application layer before the data reaches the ZK engine. For example, in the Rust engine (`ZymaticaVoiceApp::encode_semantic_coordinates` in [main.rs:L238](file:///c:/Users/DannyB/Downloads/zk_lora_milestone_3_clone/Full_Projects/rust/src/main.rs#L238)), coordinates undergo strict range and projection checks. Any malicious inputs designed to overflow the prime field are rejected at the gateway boundary.
-*   **Session-Based ZK (Attack Surface Reduction):** In traditional shielded networks, a ZK proof must be generated and verified for every single transaction, giving attackers infinite opportunities to submit malicious proofs. ZK-LoRa's `SessionSecurity` module ([main.rs:L917](file:///c:/Users/DannyB/Downloads/zk_lora_milestone_3_clone/Full_Projects/rust/src/main.rs#L917)) verifies the ZK proof only once during the initial session handshake. Subsequent data packets are secured by fast-path symmetric HMACs, reducing the ZK attack surface by 99% during active transmission.
-*   **Mandatory Static Analysis & Tooling:** To prevent under-constrained circuits from reaching production, ZK-LoRa's development pipeline mandates running all circuits through **Circomspect** and **Veridise** static analysis tools to automatically flag unconstrained signals. Furthermore, our Multi-Curve Verifier (`ZKProver` in [main.rs:L30](file:///c:/Users/DannyB/Downloads/zk_lora_milestone_3_clone/Full_Projects/rust/src/main.rs#L30)) allows developers to cross-verify proofs across multiple elliptic curves (BN254, BLS12-381, Pallas, Vesta) to ensure absolute mathematical consistency.
+*   **Session-Based ZK (Attack Surface Reduction):** In traditional shielded networks, a ZK proof must be generated and verified for every single transaction, giving attackers infinite opportunities to submit malicious proofs. ZK-LoRa's `SessionSecurity` module ([main.rs:L917](file:///c:/Users/DannyB/Downloads/zk_lora_milestone_3_clone/Full_Projects/rust/src/main.rs#L917)) verifies the ZK proof only once during the initial session handshake. Subsequent data packets are secured by fast-path symmetric HMACs, reducing the ZK attack surface significantly during active transmission.
+*   **Mandatory Static Analysis & Tooling:** To prevent under-constrained circuits from reaching production, ZK-LoRa's development pipeline mandates running all circuits through **Circomspect** and **Veridise** static analysis tools to automatically flag unconstrained signals. Furthermore, our Multi-Curve Verifier (`ZKProver` in [main.rs:L30](file:///c:/Users/DannyB/Downloads/zk_lora_milestone_3_clone/Full_Projects/rust/src/main.rs#L30)) allows developers to cross-verify proofs across multiple elliptic curves (BN254, BLS12-381, Pallas, Vesta) to ensure mathematical consistency.
 
 ### 9.2 Physical & Network-Layer Redundancies (Defense-in-Depth)
 
-Even if an attacker successfully exploits an unknown soundness flaw in the ZK circuit to forge a proof of identity, ZK-LoRa implements three additional layers of physical and network-layer defense to prevent unauthorized routing:
-*   **Time-of-Flight (ToF) Physical Bounding:** Senders must communicate over physical radio waves. The gateway uses Semtech SX1302/1303 internal hardware timers to measure the Round-Trip Time (RTT) of the signal at the speed of light. If the physical distance does not match the declared coordinate claims, the packet is immediately dropped as a location spoof, preventing remote attackers from abusing forged proofs (See `ToF Boundary` in [main.rs:L1010](file:///c:/Users/DannyB/Downloads/zk_lora_milestone_3_clone/Full_Projects/rust/src/main.rs#L1010)).
-*   **Session-Locked HMACs & Nonces:** The ZK proof is only verified once during the initial session handshake. Subsequent data packets require a valid HMAC keyed with a session-specific, single-use nonce. An attacker with a forged ZK proof cannot generate valid HMACs for new data packets without the ephemeral session key, rendering the forged proof useless for actual routing (See `SessionSecurity` in [main.rs:L917](file:///c:/Users/DannyB/Downloads/zk_lora_milestone_3_clone/Full_Projects/rust/src/main.rs#L917)).
+Even if an attacker successfully exploits an unknown soundness flaw in the ZK circuit to forge a proof of identity, ZK-LoRa is designed with three additional layers of physical and network-layer defense to mitigate unauthorized routing:
+*   **Time-of-Flight (ToF) Physical Bounding:** Senders must communicate over physical radio waves. The gateway uses Semtech SX1302/1303 internal hardware timers to measure the Round-Trip Time (RTT) of the signal at the speed of light. If the physical distance does not match the declared coordinate claims, the packet is immediately dropped as a location spoof, designed to prevent remote attackers from abusing forged proofs (See `ToF Boundary` in [main.rs:L1010](file:///c:/Users/DannyB/Downloads/zk_lora_milestone_3_clone/Full_Projects/rust/src/main.rs#L1010)).
+*   **Session-Locked HMACs & Nonces:** The ZK proof is only verified once during the initial session handshake. Subsequent data packets require a valid HMAC keyed with a session-specific, single-use nonce. An attacker with a forged ZK proof cannot generate valid HMACs for new data packets without the ephemeral session key, designed to render the forged proof useless for actual routing (See `SessionSecurity` in [main.rs:L917](file:///c:/Users/DannyB/Downloads/zk_lora_milestone_3_clone/Full_Projects/rust/src/main.rs#L917)).
 *   **Neighbor Auditing & Reputation:** Neighboring relay nodes passively listen to the RF spectrum to audit their peers' behavior. If a node attempts to spam the network or use forged sessions, neighboring nodes flag the anomaly, decrement its reputation score, and dynamically route around it (See `Neighbor Audit` in [main.rs:L1022](file:///c:/Users/DannyB/Downloads/zk_lora_milestone_3_clone/Full_Projects/rust/src/main.rs#L1022)).
-*   **ZK-PoW Rate Limiting (Anti-DoS):** Senders must solve a Proof-of-Work (PoW) puzzle (similar to Hashcash) before the gateway will execute the ZK-verifier. This makes spamming forged proofs computationally and energetically expensive, preventing CPU-exhaustion attacks.
+*   **ZK-PoW Rate Limiting (Anti-DoS):** Senders must solve a Proof-of-Work (PoW) puzzle (similar to Hashcash) before the gateway will execute the ZK-verifier. This makes spamming forged proofs computationally and energetically expensive, mitigating CPU-exhaustion attacks.
 
 ---
 
 ## 10. Cryptographic Audit & Deep Vulnerability Analysis
 
-For ZK-LoRa to achieve absolute Zcash-grade security, we must audit the underlying mathematics, cryptographic curves, and hardware implementations of our zero-knowledge systems. Below is a forensic breakdown of key vulnerabilities, reviewer critiques, and their corresponding real-world code solutions.
+For ZK-LoRa to achieve high-assurance Zcash-grade security, we must audit the underlying mathematics, cryptographic curves, and hardware implementations of our zero-knowledge systems. Below is a forensic breakdown of key vulnerabilities, reviewer critiques, and their corresponding real-world code solutions.
 
 ### 10.1 Key Cryptographic Vulnerabilities & Rust Code Mitigations
 
@@ -607,7 +607,7 @@ For ZK-LoRa to achieve absolute Zcash-grade security, we must audit the underlyi
 2.  **Curve Security (BN254)**: Recent NFS advances reduce BN254's security to ~100 bits, falling short of the modern 128-bit security standard.
     *   *Mitigation*: Fully implemented. Senders can select 128-bit **BLS12-381** (Zcash Sapling standard) or the Pasta curves (Pallas/Vesta) for Orchard-level security. The Rust engine natively processes 192-byte BLS12-381 compressed proofs and Pasta curve evaluations on-chip. (See `ZKProver` in [main.rs:L30](file:///c:/Users/DannyB/Downloads/zk_lora_milestone_3_clone/Full_Projects/rust/src/main.rs#L30)).
 3.  **Proof Malleability**: Groth16 proofs are malleable; an adversary can mutate proof bytes and replay them.
-    *   *Mitigation*: Senders bind the proof to the transaction payload and sign the packet. The receiver verifies the signature before processing the proof, preventing mutated replays. (See `ZymaticaVoiceApp::receive` in [main.rs:L333](file:///c:/Users/DannyB/Downloads/zk_lora_milestone_3_clone/Full_Projects/rust/src/main.rs#L333)).
+    *   *Mitigation*: Senders bind the proof to the transaction payload and sign the packet. The receiver verifies the signature before processing the proof, mitigating mutated replays. (See `ZymaticaVoiceApp::receive` in [main.rs:L333](file:///c:/Users/DannyB/Downloads/zk_lora_milestone_3_clone/Full_Projects/rust/src/main.rs#L333)).
 4.  **Under-Constrained Circuits**: Missing constraints in Circom allow provers to cheat by inputting values outside the field size.
     *   *Mitigation*: Circuits are static-analyzed via **Circomspect**, and the Rust engine enforces strict coordinate projection bounds before the prover runs. (See `ZymaticaVoiceApp::encode_semantic_coordinates` in [main.rs:L238](file:///c:/Users/DannyB/Downloads/zk_lora_milestone_3_clone/Full_Projects/rust/src/main.rs#L238)).
 5.  **Side-Channel Attacks**: Physical access to edge nodes allows key extraction via power analysis (DPA).
@@ -616,7 +616,7 @@ For ZK-LoRa to achieve absolute Zcash-grade security, we must audit the underlyi
 ### 10.2 Ironclad Solutions to Core Reviewer Critiques
 
 *   **Mempool Double-Spend Mitigation**: Reviewers note that a sender could broadcast a transaction to the mempool, get their packet routed, and then double-spend/evict the transaction via RBF. We resolve this by programmatically verifying that the transaction fee rate is above the network average, checking that it has propagated to at least 90% of peer nodes, and verifying that the routing fee is locked on-chain via a **Hash Time-Locked Contract (HTLC)**. (See `MempoolProtection` in [main.rs:L965](file:///c:/Users/DannyB/Downloads/zk_lora_milestone_3_clone/Full_Projects/rust/src/main.rs#L965)).
-*   **LoRa Bandwidth Constraints (Session-Based ZK)**: Fitting a 192-byte BLS12-381 proof and an ECIES payload into a single 222-byte LoRa packet is extremely tight. We solve this by splitting the protocol: the sender transmits the full 192-byte proof *once* during the session handshake to establish a shared key. Subsequent data packets only carry a tiny **8-byte HMAC**, reducing packet overhead by 96% while maintaining 100% ZK-security. (See `SessionSecurity` in [main.rs:L917](file:///c:/Users/DannyB/Downloads/zk_lora_milestone_3_clone/Full_Projects/rust/src/main.rs#L917)).
+*   **LoRa Bandwidth Constraints (Session-Based ZK)**: Fitting a 192-byte BLS12-381 proof and an ECIES payload into a single 222-byte LoRa packet is extremely tight. We solve this by splitting the protocol: the sender transmits the full 192-byte proof *once* during the session handshake to establish a shared key. Subsequent data packets only carry a tiny **8-byte HMAC**, reducing packet overhead by 96% while maintaining ZK-security. (See `SessionSecurity` in [main.rs:L917](file:///c:/Users/DannyB/Downloads/zk_lora_milestone_3_clone/Full_Projects/rust/src/main.rs#L917)).
 
 ---
 
@@ -629,7 +629,7 @@ For ZK-LoRa to achieve absolute Zcash-grade security, we must audit the underlyi
 - [ ] Integrate shielded ZEC transaction generation in gateway routing loop
 - [ ] Add unlinkable transmission mode
 - [ ] Benchmark proof generation/verification on edge hardware
-- [ ] Implement mempool scanner to verify inbound shielded Zcash payments
+- [ ] Implement wallet/light-client integration to verify inbound shielded Zcash payments
 
 ### 10.2 Medium-Term (v3.0) — Zcash Mainnet
 
