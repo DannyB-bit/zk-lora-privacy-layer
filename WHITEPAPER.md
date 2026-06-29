@@ -493,7 +493,7 @@ An adversary in the ZK-LoRa network is assumed to have the following capabilitie
 
 ## 8. Performance & Bandwidth Analysis
 
-### 8.1 Computational Overhead
+### 8.1 Computational Overhead & Power Consumption
 
 | Operation | Time (estimated) | Impact |
 |-----------|-----------------|--------|
@@ -507,6 +507,15 @@ An adversary in the ZK-LoRa network is assumed to have the following capabilitie
 - Pre-generate ZK proofs (cache for rapid TX)
 - Use SNARKs over STARKs (smaller proofs, faster verification)
 - Parallel proof generation for multi-packet bursts
+
+**Helium E-Waste Repurposing & Power Efficiency:**
+A major design goal of ZK-LoRa is to breathe new life into the hundreds of thousands of dormant Helium hotspots (such as the RAK V2 and MNTD) currently left behind and collecting dust. Instead of becoming electronic waste, these pre-certified devices are repurposed as private, zero-knowledge routing nodes. 
+
+A standard node, comprising a Raspberry Pi 4 compute unit and a Semtech SX1302/SX1303 LoRa concentrator, has a very small power footprint:
+- **Idle / Packet-Routing Mode:** Consumes approximately **3.5 Watts**.
+- **Peak Load (ZK Proof Proving + RF Transmission):** Draws a maximum of **7.5 Watts**.
+
+This ultra-low energy consumption makes it highly feasible to run these nodes completely off-grid using a compact 10W solar panel and a small 12V battery, creating an eco-friendly, self-sustaining physical network.
 
 ### 8.2 Bandwidth & Regulatory Constraints
 
@@ -534,7 +543,7 @@ ZK-LoRa supports an **Unfragmented Single-Packet Mode** (sub-236 bytes) by compr
 
 ### 8.3 Real-World Long-Range Validation (Lake Ontario Over-Water Link)
 
-To validate the extreme long-range propagation capabilities of ZK-LoRa operating on the unlicensed US915 band, real-world testing was conducted across Lake Ontario. Under clear line-of-sight conditions, a transmitting node located on the southern shore in New York successfully established a direct link with a gateway located in **Kingston, Ontario (Canada)**, spanning a distance of **131.6 km (81.7 miles)** without intermediate relays.
+To validate the extreme long-range propagation capabilities of ZK-LoRa operating on the unlicensed US915 band, real-world testing was conducted across Lake Ontario. Under clear line-of-sight conditions, a transmitting node located on the southern shore in New York—utilizing a **5W RAK miner** connected to a **13 dBi Omni-directional antenna** mounted on a balcony on the **14th floor of an apartment**—successfully established a direct link with a gateway located in **Kingston, Ontario (Canada)**, spanning a distance of **131.6 km (81.7 miles)** without intermediate relays.
 
 ![Figure 8.1: Real-world 131.6 km US915 LoRa link across Lake Ontario](./lake_ontario_range.png)
 *Figure 8.1: Real-world 131.6 km (81.7-mile) US915 LoRa link across Lake Ontario (New York to Kingston, Ontario), demonstrating unfragmented packet reception.*

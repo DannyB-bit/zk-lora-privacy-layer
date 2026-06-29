@@ -891,10 +891,16 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(bw_table)
     story.append(Spacer(1, 20))
     
-    story.append(Paragraph("7.2 Computational Overhead on Edge Hardware", h2_style))
+    story.append(Paragraph("7.2 Computational Overhead & Power Consumption on Edge Hardware", h2_style))
     comp_text = (
         "Edge hardware is resource-constrained. The table below shows estimated execution times for core "
-        "cryptographic operations on a Raspberry Pi 4 / RAK Gateway node."
+        "cryptographic operations on a Raspberry Pi 4 / RAK Gateway node.<br/><br/>"
+        "<b>Helium E-Waste Repurposing & Power Efficiency:</b> A significant advantage of ZK-LoRa is its ability "
+        "to run on underutilized, pre-certified Helium hotspots (RAK V2, MNTD) that would otherwise become electronic waste. "
+        "A standard node (Raspberry Pi 4 compute unit + Semtech SX1302/SX1303 LoRa concentrator) consumes only "
+        "<b>3.5 Watts</b> in idle/routing mode. Under peak computational load—when actively generating a ZK-SNARK "
+        "proof on the CPU and transmitting over the RF interface—the device draws a maximum of <b>7.5 Watts</b>. This "
+        "ultra-low power profile enables completely off-grid operation powered by a small 10W solar panel and a 12V battery."
     )
     story.append(Paragraph(comp_text, body_style))
     story.append(Spacer(1, 10))
@@ -925,8 +931,9 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     val_text = (
         "To validate the extreme long-range propagation capabilities of ZK-LoRa operating on the unlicensed "
         "US915 band, real-world testing was conducted across Lake Ontario. Under clear line-of-sight conditions, "
-        "a transmitting node located on the southern shore in New York successfully established a direct link "
-        "with a gateway located in <b>Kingston, Ontario (Canada)</b>, spanning a distance of <b>131.6 km (81.7 miles)</b> "
+        "a transmitting node located on the southern shore in New York—utilizing a <b>5W RAK miner</b> connected to a "
+        "<b>13 dBi Omni-directional antenna</b> mounted on a balcony on the <b>14th floor of an apartment</b>—successfully established "
+        "a direct link with a gateway located in <b>Kingston, Ontario (Canada)</b>, spanning a distance of <b>131.6 km (81.7 miles)</b> "
         "without intermediate relays.<br/><br/>"
         "This validation demonstrates that when utilizing optimized sub-236-byte packets (minimizing time-on-air and "
         "maximizing link budget at Spreading Factor 9), ZK-LoRa can achieve highly resilient, ultra-long-range "
@@ -1023,8 +1030,11 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Paragraph(disclaimer_long, ParagraphStyle('DisclaimerLong', alignment=1, fontSize=8.5, leading=13, textColor=colors.HexColor("#94A3B8"))))
     story.append(Spacer(1, 20))
     
-    # Add Zcash logo
-    if os.path.exists("zcash_logo.png"):
+    # Add Zcash Eco-Recycle Logo
+    if os.path.exists("zcash_eco_recycle_logo.png"):
+        story.append(Image("zcash_eco_recycle_logo.png", width=70, height=70, hAlign='CENTER'))
+        story.append(Spacer(1, 10))
+    elif os.path.exists("zcash_logo.png"):
         story.append(Image("zcash_logo.png", width=40, height=40, hAlign='CENTER'))
         story.append(Spacer(1, 10))
         
