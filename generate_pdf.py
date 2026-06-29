@@ -242,6 +242,17 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         spaceAfter=8
     )
 
+    caption_style = ParagraphStyle(
+        'CaptionStyle',
+        parent=body_style,
+        fontName='Helvetica',
+        fontSize=8,
+        leading=11,
+        textColor=colors.HexColor("#64748B"),
+        alignment=1, # Centered
+        spaceAfter=10
+    )
+
     story = []
     
     # =========================================================================
@@ -378,11 +389,13 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     summary_text_3 = (
         "ZK-LoRa provides a highly realistic, secondary utility for these pre-certified devices—including over "
         "300,000 RAKwireless-manufactured hotspots (RAK V2, MNTD) equipped with Semtech SX1302/SX1303 concentrator "
-        "chips and Raspberry Pi units. By running open-source packet forwarders alongside or in place of original "
-        "firmware, operators can participate in private edge routing, verify zero-knowledge proofs on-chip in "
-        "milliseconds, and earn shielded Zcash (ZEC) micropayments. Thanks to Zcash's multi-output transaction "
-        "architecture, this payment split is completely programmable, allowing a custom percentage (e.g., 5% or 10%) "
-        "to support the Zcash Foundation, with a 2% split supporting the developer treasury."
+        "chips and Raspberry Pi units. Operating on unlicensed, globally available ISM bands—such as US915 (902–928 MHz) "
+        "in North America, EU868 (863–870 MHz) in Europe, and AU915 in South America—nodes require no FCC or local "
+        "spectrum licensing. This enables permissionless, low-cost deployments achieving ranges of 2–5 km in urban "
+        "settings and 10–15+ km in clear line-of-sight. Operators can participate in private edge routing, verify ZK-proofs "
+        "on-chip, and earn shielded Zcash (ZEC) micropayments. Thanks to Zcash's multi-output transaction architecture, "
+        "the payment split is completely programmable, allowing a custom percentage to support the Zcash Foundation, "
+        "with a 2% split supporting the developer treasury."
     )
     story.append(Paragraph(summary_text_3, body_style))
     story.append(Spacer(1, 10))
@@ -742,7 +755,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "drones by monitoring their RF signatures. They pay local relay nodes in ZEC to extend their coordination range."
     )
     story.append(Paragraph(scenario_b_text, body_style))
-    story.append(PageBreak())
+    story.append(Spacer(1, 15))
     
     story.append(Paragraph("5.3 Scenario C: Smart Agriculture & Environmental Health Monitoring", h2_style))
     scenario_c_text = (
@@ -842,11 +855,20 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Paragraph("■ Performance & Bandwidth Analysis", h1_style))
     story.append(Spacer(1, 10))
     
-    story.append(Paragraph("7.1 Link Budget & Bandwidth Overhead", h2_style))
+    story.append(Paragraph("7.1 Link Budget, Bandwidth, & Regulatory Constraints", h2_style))
     perf_text = (
-        "Because LoRa is a low-bandwidth modulation scheme, packet size is critical. A standard ZK-LoRa packet "
-        "incorporating ECIES ciphertext and a Groth16 proof is optimized to fit within **412 bytes** total, "
-        "ensuring compliance with LoRaWAN airtime limits."
+        "Because LoRa is a low-bandwidth modulation scheme operating in unlicensed Industrial, Scientific, and Medical (ISM) "
+        "radio bands, packet size and regulatory compliance are critical. ZK-LoRa operates on license-free spectrum "
+        "globally, including <b>US915</b> (902–928 MHz) in North America, <b>EU868</b> (863–870 MHz) in Europe (subject to "
+        "a strict 1% duty cycle limit), <b>AU915</b> in South America, and <b>AS923</b> in Asia. This allows completely "
+        "permissionless deployment with typical transmission ranges of <b>2 to 5 km</b> in urban areas, <b>10 to 15 km</b> "
+        "in rural line-of-sight, and up to <b>30+ km</b> from high-elevation nodes (such as hilltops or drones).<br/><br/>"
+        "To maximize efficiency and avoid packet fragmentation, ZK-LoRa optimizes its packet size. While the physical layer "
+        "limit of Semtech transceivers is 255 bytes, standard unfragmented LoRaWAN payloads are capped between 222 and 242 bytes "
+        "depending on Spreading Factor. ZK-LoRa supports an <b>Unfragmented Single-Packet Mode</b> (sub-236 bytes) by compressing "
+        "the ECIES encrypted payload to 64 bytes and the Groth16 proof to 128 bytes (totaling 222 bytes with headers). For larger "
+        "payloads, a <b>Dual-Fragment Assembly Protocol</b> is used to split the data into two sub-222-byte packets, avoiding "
+        "airtime violations."
     )
     story.append(Paragraph(perf_text, body_style))
     story.append(Spacer(1, 10))
@@ -894,6 +916,48 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     ]))
     story.append(comp_table)
     
+    story.append(PageBreak())
+    
+    # =========================================================================
+    # PAGE 14: REAL-WORLD RANGE VALIDATION
+    # =========================================================================
+    story.append(Paragraph("7.3 Real-World Long-Range Validation (Lake Ontario Over-Water Link)", h2_style))
+    val_text = (
+        "To validate the extreme long-range propagation capabilities of ZK-LoRa operating on the unlicensed "
+        "US915 band, real-world testing was conducted across Lake Ontario. Under clear line-of-sight conditions, "
+        "a transmitting node located on the southern shore in New York successfully established a direct link "
+        "with a gateway located in <b>Kingston, Ontario (Canada)</b>, spanning a distance of <b>131.6 km (81.7 miles)</b> "
+        "without intermediate relays.<br/><br/>"
+        "This validation demonstrates that when utilizing optimized sub-236-byte packets (minimizing time-on-air and "
+        "maximizing link budget at Spreading Factor 9), ZK-LoRa can achieve highly resilient, ultra-long-range "
+        "cross-border communication. This is critical for off-grid coordination and distributed sensor networks "
+        "operating in remote or coastal environments."
+    )
+    story.append(Paragraph(val_text, body_style))
+    story.append(Spacer(1, 10))
+    
+    # Render the cropped Mapbox map image
+    if os.path.exists("lake_ontario_range.png"):
+        img_width = 220
+        img_height = 220 * (1661 / 1079)
+        range_img = Image('lake_ontario_range.png', width=img_width, height=img_height)
+        range_img.hAlign = 'CENTER'
+        
+        # Display within a gold-bordered frame
+        fig_table = Table([[range_img]], colWidths=[230], rowHeights=[img_height + 10])
+        fig_table.setStyle(TableStyle([
+            ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+            ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+            ('BOX', (0,0), (-1,-1), 1.5, colors.HexColor("#F3B300")),
+            ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#0F172A")),
+            ('BOTTOMPADDING', (0,0), (-1,-1), 5),
+            ('TOPPADDING', (0,0), (-1,-1), 5),
+        ]))
+        fig_table.hAlign = 'CENTER'
+        story.append(fig_table)
+        story.append(Spacer(1, 6))
+        story.append(Paragraph("<font size=8><b>Figure 7.1:</b> Real-world 131.6 km (81.7-mile) US915 LoRa link across Lake Ontario (New York to Kingston, Ontario), demonstrating unfragmented packet reception.</font>", caption_style))
+        
     story.append(PageBreak())
     
     # =========================================================================

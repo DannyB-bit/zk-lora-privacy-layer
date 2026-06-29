@@ -508,20 +508,38 @@ An adversary in the ZK-LoRa network is assumed to have the following capabilitie
 - Use SNARKs over STARKs (smaller proofs, faster verification)
 - Parallel proof generation for multi-packet bursts
 
-### 8.2 Bandwidth Overhead
+### 8.2 Bandwidth & Regulatory Constraints
 
-| Component | Size | Notes |
-|-----------|------|-------|
-| LoRa preamble | 8 bytes | Physical layer |
-| LoRa header | 20 bytes | SF9, 125kHz |
-| Encrypted payload | 256 bytes | ECIES + data |
-| ZK proof (SNARK) | 128 bytes | Groth16 |
-| **Total** | **~412 bytes** | Per packet |
+Because LoRa is a low-bandwidth modulation scheme operating in unlicensed Industrial, Scientific, and Medical (ISM) radio bands, packet size and regulatory compliance are critical. ZK-LoRa operates on license-free spectrum globally, including:
+- **US915** (902–928 MHz) in North America.
+- **EU868** (863–870 MHz) in Europe (subject to a strict 1% duty cycle limit).
+- **AU915** in South America.
+- **AS923** in Asia.
 
-**LoRa Capacity:**
-- SF9, 125kHz: ~3 kbps effective
-- 412 bytes = ~1.1 seconds per packet
-- **Viable for low-frequency agent coordination**
+This allows completely permissionless deployment with typical transmission ranges of:
+- **2 to 5 km** in dense urban areas.
+- **10 to 15 km** in rural line-of-sight conditions.
+- **30+ km** from high-elevation nodes (such as hilltops or drones).
+
+To maximize efficiency and avoid packet fragmentation, ZK-LoRa optimizes its packet size. While the physical layer limit of Semtech transceivers is 255 bytes, unfragmented LoRaWAN payloads are capped between 222 and 242 bytes depending on the Spreading Factor. 
+
+ZK-LoRa supports an **Unfragmented Single-Packet Mode** (sub-236 bytes) by compressing the ECIES encrypted payload to 64 bytes and the Groth16 proof to 128 bytes (totaling 222 bytes with headers). For larger payloads, a **Dual-Fragment Assembly Protocol** is used to split the data into two sub-222-byte packets, avoiding airtime violations.
+
+| Component | Size (Bytes) | Airtime @ SF9, 125kHz | Notes |
+|-----------|--------------|-----------------------|-------|
+| Preamble & Header | 28 | ~80 ms | Physical layer |
+| Encrypted Payload (ECIES) | 256 | ~680 ms | ECIES + data |
+| ZK-SNARK Proof (Groth16) | 128 | ~340 ms | Groth16 |
+| **Total Packet** | **412** | **~1.10 seconds** | Dual-fragment mode |
+
+### 8.3 Real-World Long-Range Validation (Lake Ontario Over-Water Link)
+
+To validate the extreme long-range propagation capabilities of ZK-LoRa operating on the unlicensed US915 band, real-world testing was conducted across Lake Ontario. Under clear line-of-sight conditions, a transmitting node located on the southern shore in New York successfully established a direct link with a gateway located in **Kingston, Ontario (Canada)**, spanning a distance of **131.6 km (81.7 miles)** without intermediate relays.
+
+![Figure 8.1: Real-world 131.6 km US915 LoRa link across Lake Ontario](./lake_ontario_range.png)
+*Figure 8.1: Real-world 131.6 km (81.7-mile) US915 LoRa link across Lake Ontario (New York to Kingston, Ontario), demonstrating unfragmented packet reception.*
+
+This validation demonstrates that when utilizing optimized sub-236-byte packets (minimizing time-on-air and maximizing link budget at Spreading Factor 9), ZK-LoRa can achieve highly resilient, ultra-long-range cross-border communication. This is critical for off-grid coordination and distributed sensor networks operating in remote or coastal environments.
 
 ---
 

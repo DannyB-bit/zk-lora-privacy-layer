@@ -1,4 +1,4 @@
-# ZK-LoRa: Autonomous AI-to-AI Mesh Demonstration 🤖📡
+  # ZK-LoRa: Autonomous AI-to-AI Mesh Demonstration 🤖📡
 
 This document presents the factual verification logs of an autonomous **AI-to-AI communication session** executed across two physical edge nodes:
 
