@@ -333,35 +333,38 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Paragraph(summary_text_3, body_style))
     story.append(Spacer(1, 10))
     
-    # QR Codes Table
-    qr_github = Image("qr_main.png", width=75, height=75) if os.path.exists("qr_main.png") else Spacer(1, 75)
-    qr_m2 = Image("qr_m2.png", width=75, height=75) if os.path.exists("qr_m2.png") else Spacer(1, 75)
-    qr_m1 = Image("qr_m1.png", width=75, height=75) if os.path.exists("qr_m1.png") else Spacer(1, 75)
+    # QR Codes Table (4 Columns)
+    qr_github = Image("qr_main.png", width=72, height=72) if os.path.exists("qr_main.png") else Spacer(1, 72)
+    qr_m3 = Image("qr_m3.png", width=72, height=72) if os.path.exists("qr_m3.png") else Spacer(1, 72)
+    qr_m2 = Image("qr_m2.png", width=72, height=72) if os.path.exists("qr_m2.png") else Spacer(1, 72)
+    qr_m1 = Image("qr_m1.png", width=72, height=72) if os.path.exists("qr_m1.png") else Spacer(1, 72)
     
-    qr_label_style = ParagraphStyle('QRLabel', fontName='Helvetica-Bold', fontSize=8.5, leading=11, textColor=colors.HexColor("#0F172A"), alignment=1)
-    qr_desc_style = ParagraphStyle('QRDesc', fontName='Helvetica', fontSize=7, leading=9.5, textColor=colors.HexColor("#475569"), alignment=1)
+    qr_label_style = ParagraphStyle('QRLabel', fontName='Helvetica-Bold', fontSize=7.5, leading=10, textColor=colors.HexColor("#0F172A"), alignment=1)
+    qr_desc_style = ParagraphStyle('QRDesc', fontName='Helvetica', fontSize=6.5, leading=8.5, textColor=colors.HexColor("#475569"), alignment=1)
     
     qr_data = [
-        [qr_github, qr_m2, qr_m1],
+        [qr_github, qr_m3, qr_m2, qr_m1],
         [
             Paragraph("GitHub: Main Repository<br/><font color='#F3B300'><b>zk-lora-privacy-layer</b></font>", qr_label_style),
+            Paragraph("GitHub: Milestone 3 Workspace<br/><font color='#F3B300'><b>Multi-Hop Mesh & HAL</b></font>", qr_label_style),
             Paragraph("GitHub: Milestone 2 Workspace<br/><font color='#F3B300'><b>Zcash Mempool Scanner</b></font>", qr_label_style),
             Paragraph("GitHub: Milestone 1 Workspace<br/><font color='#F3B300'><b>Multi-Language Proofs</b></font>", qr_label_style)
         ],
         [
             Paragraph("<b>Covers:</b> Core SX1302/3 HAL drivers, ECIES encryption, secp256k1 identity derivation, and full multi-language ports (Rust, Go, TS).<br/><b>Achieves:</b> Complete off-grid identity masking and end-to-end message privacy over public RF bands.", qr_desc_style),
+            Paragraph("<b>Covers:</b> Multi-hop mesh routing, P2P data marketplace, and the 4 advanced security systems (ZK-PoD, HMAC filter, ToF bounding, and Neighbor Auditing).<br/><b>Achieves:</b> Absolute network resilience against Gorgon, Sybil, Eclipse, and Free Rider attacks.", qr_desc_style),
             Paragraph("<b>Covers:</b> Rust/Go/TS mempool scanners, shielded memo decryption via Incoming Viewing Keys (IVKs), and 2% developer fee validation.<br/><b>Achieves:</b> Zero-latency, off-chain routing authorization triggered instantly by pending Zcash mempool transactions.", qr_desc_style),
-            Paragraph("<b>Covers:</b> Multi-hop mesh routing, P2P data marketplace, and the 4 advanced security systems (ZK-PoD, HMAC filter, ToF bounding, and Neighbor Auditing).<br/><b>Achieves:</b> Absolute network resilience against Gorgon, Sybil, Eclipse, and Free Rider attacks.", qr_desc_style)
+            Paragraph("<b>Covers:</b> secp256k1 key generation, Ripemd160/SHA256 address derivation, Groth16 ZK-SNARK compiler, and proof generation/verification.<br/><b>Achieves:</b> Cryptographic proof of node legitimacy without revealing hardware or network identities.", qr_desc_style)
         ]
     ]
-    qr_table = Table(qr_data, colWidths=[168, 168, 168])
+    qr_table = Table(qr_data, colWidths=[126, 126, 126, 126])
     qr_table.setStyle(TableStyle([
         ('ALIGN', (0,0), (-1,-1), 'CENTER'),
         ('VALIGN', (0,0), (-1,-1), 'TOP'),
         ('TOPPADDING', (0,1), (-1,1), 6),
         ('TOPPADDING', (0,2), (-1,2), 8),
-        ('LEFTPADDING', (0,0), (-1,-1), 8),
-        ('RIGHTPADDING', (0,0), (-1,-1), 8),
+        ('LEFTPADDING', (0,0), (-1,-1), 4),
+        ('RIGHTPADDING', (0,0), (-1,-1), 4),
     ]))
     story.append(qr_table)
     
