@@ -541,12 +541,19 @@ ZK-LoRa supports an **Unfragmented Single-Packet Mode** (sub-236 bytes) by compr
 | ZK-SNARK Proof (Groth16) | 128 | ~340 ms | Groth16 |
 | **Total Packet** | **412** | **~1.10 seconds** | Dual-fragment mode |
 
-### 8.3 Real-World Long-Range Validation (Lake Ontario Over-Water Link)
+### 8.3 The Real-World-Range Capabilities
 
-To validate the extreme long-range propagation capabilities of ZK-LoRa operating on the unlicensed US915 band, real-world testing was conducted across Lake Ontario. Under clear line-of-sight conditions, a transmitting node located on the southern shore in New York—utilizing a **5W RAK miner** connected to a **13 dBi Omni-directional antenna** mounted on a balcony on the **14th floor of an apartment**—successfully established a direct link with a gateway located in **Kingston, Ontario (Canada)**, spanning a distance of **131.6 km (81.7 miles)** without intermediate relays.
+LoRaWAN technology is inherently eco-friendly, operating with extremely low power consumption (requiring only 3.5W to 5W) while achieving remarkable communication distances. Under clear line-of-sight conditions, these low-power signals can propagate across vast geographical spans without intermediate infrastructure.
 
-![Figure 8.1: Real-world 131.6 km US915 LoRa link across Lake Ontario](./lake_ontario_range.png)
-*Figure 8.1: Real-world 131.6 km (81.7-mile) US915 LoRa link across Lake Ontario (New York to Kingston, Ontario), demonstrating unfragmented packet reception.*
+To demonstrate this, real-world testing was conducted across Lake Ontario. A transmitting node located on the southern shore in New York—utilizing a **5W RAK miner** connected to a **13 dBi Omni-directional antenna** mounted on a balcony on the **14th floor of an apartment**—successfully established a direct link with a gateway located in **Kingston, Ontario (Canada)**, spanning a distance of **131.6 km (81.7 miles)**.
+
+*Note: The left map below shows actual IoT miner packets (witnesses) transmitted over the public Helium network. The right map represents the future: the same physical link secured and encrypted using **ZK-LoRa**, protecting node identities via zero-knowledge proofs.*
+
+| Public IoT Network (Helium) | Private ZK-LoRa Network (Future) |
+| :---: | :---: |
+| ![Helium IoT Map](./lake_ontario_range.png) | ![ZK-LoRa Gold Map](./zk_lora_gold_map.png) |
+| **This is you...** | **OR this could be you now...** |
+| ![Zcash Logo](./zcash_logo.png) | ![Zcash Eco-Recycle Logo](./zcash_eco_recycle_logo.png) |
 
 This validation demonstrates that when utilizing optimized sub-236-byte packets (minimizing time-on-air and maximizing link budget at Spreading Factor 9), ZK-LoRa can achieve highly resilient, ultra-long-range cross-border communication. This is critical for off-grid coordination and distributed sensor networks operating in remote or coastal environments.
 

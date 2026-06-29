@@ -927,43 +927,63 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     # =========================================================================
     # PAGE 14: REAL-WORLD RANGE VALIDATION
     # =========================================================================
-    story.append(Paragraph("7.3 Real-World Long-Range Validation (Lake Ontario Over-Water Link)", h2_style))
+    story.append(Paragraph("7.3 The Real-World-Range Capabilities", h2_style))
     val_text = (
-        "To validate the extreme long-range propagation capabilities of ZK-LoRa operating on the unlicensed "
-        "US915 band, real-world testing was conducted across Lake Ontario. Under clear line-of-sight conditions, "
-        "a transmitting node located on the southern shore in New York—utilizing a <b>5W RAK miner</b> connected to a "
-        "<b>13 dBi Omni-directional antenna</b> mounted on a balcony on the <b>14th floor of an apartment</b>—successfully established "
-        "a direct link with a gateway located in <b>Kingston, Ontario (Canada)</b>, spanning a distance of <b>131.6 km (81.7 miles)</b> "
-        "without intermediate relays.<br/><br/>"
-        "This validation demonstrates that when utilizing optimized sub-236-byte packets (minimizing time-on-air and "
-        "maximizing link budget at Spreading Factor 9), ZK-LoRa can achieve highly resilient, ultra-long-range "
-        "cross-border communication. This is critical for off-grid coordination and distributed sensor networks "
-        "operating in remote or coastal environments."
+        "LoRaWAN technology is inherently eco-friendly, operating with extremely low power consumption (requiring "
+        "only 3.5W to 5W) while achieving remarkable communication distances. Under clear line-of-sight conditions, "
+        "these low-power signals can propagate across vast geographical spans without intermediate infrastructure.<br/><br/>"
+        "To demonstrate this, real-world testing was conducted across Lake Ontario. A transmitting node "
+        "located on the southern shore in New York—utilizing a <b>5W RAK miner</b> connected to a <b>13 dBi Omni-directional antenna</b> "
+        "mounted on a balcony on the <b>14th floor of an apartment</b>—successfully established a direct link with a gateway located in "
+        "<b>Kingston, Ontario (Canada)</b>, spanning a distance of <b>131.6 km (81.7 miles)</b>.<br/><br/>"
+        "<i>Note: The left map below shows actual IoT miner packets (witnesses) transmitted over the public Helium network. "
+        "The right map represents the future: the same physical link secured and encrypted using <b>ZK-LoRa</b>, protecting "
+        "node identities via zero-knowledge proofs.</i>"
     )
     story.append(Paragraph(val_text, body_style))
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 8))
     
-    # Render the cropped Mapbox map image
-    if os.path.exists("lake_ontario_range.png"):
-        img_width = 220
-        img_height = 220 * (1661 / 1079)
-        range_img = Image('lake_ontario_range.png', width=img_width, height=img_height)
-        range_img.hAlign = 'CENTER'
+    # Render the side-by-side comparison of the maps
+    if os.path.exists("lake_ontario_range.png") and os.path.exists("zk_lora_gold_map.png"):
+        img_width = 190
+        img_height = 190 * (1661 / 1079) # ~292 pt
+        img_left = Image('lake_ontario_range.png', width=img_width, height=img_height)
+        img_right = Image('zk_lora_gold_map.png', width=img_width, height=img_height)
         
-        # Display within a gold-bordered frame
-        fig_table = Table([[range_img]], colWidths=[230], rowHeights=[img_height + 10])
-        fig_table.setStyle(TableStyle([
+        map_table = Table([[img_left, img_right]], colWidths=[240, 240])
+        map_table.setStyle(TableStyle([
             ('ALIGN', (0,0), (-1,-1), 'CENTER'),
             ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
-            ('BOX', (0,0), (-1,-1), 1.5, colors.HexColor("#F3B300")),
+            ('BOX', (0,0), (0,0), 1.5, colors.HexColor("#64748B")), # Gray border for Helium
+            ('BOX', (1,0), (1,0), 1.5, colors.HexColor("#F3B300")), # Gold border for ZK-LoRa
             ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#0F172A")),
-            ('BOTTOMPADDING', (0,0), (-1,-1), 5),
-            ('TOPPADDING', (0,0), (-1,-1), 5),
+            ('BOTTOMPADDING', (0,0), (-1,-1), 8),
+            ('TOPPADDING', (0,0), (-1,-1), 8),
+            ('LEFTPADDING', (0,0), (-1,-1), 8),
+            ('RIGHTPADDING', (0,0), (-1,-1), 8),
         ]))
-        fig_table.hAlign = 'CENTER'
-        story.append(fig_table)
-        story.append(Spacer(1, 6))
-        story.append(Paragraph("<font size=8><b>Figure 7.1:</b> Real-world 131.6 km (81.7-mile) US915 LoRa link across Lake Ontario (New York to Kingston, Ontario), demonstrating unfragmented packet reception.</font>", caption_style))
+        map_table.hAlign = 'CENTER'
+        story.append(map_table)
+        story.append(Spacer(1, 10))
+        
+        # Comparison section: "This is you" vs "OR this could be you now"
+        logo_left = Image('zcash_logo.png', width=25, height=25) if os.path.exists('zcash_logo.png') else Spacer(1, 25)
+        logo_right = Image('zcash_eco_recycle_logo.png', width=35, height=35) if os.path.exists('zcash_eco_recycle_logo.png') else Spacer(1, 35)
+        
+        comparison_data = [
+            [Paragraph("<font size=9 color='#94A3B8'><b>This is you...</b></font>", ParagraphStyle('ThisIsYou', alignment=1)), 
+             Paragraph("<font size=9 color='#F3B300'><b>OR this could be you now...</b></font>", ParagraphStyle('OrThisCouldBeYou', alignment=1))],
+            [logo_left, logo_right]
+        ]
+        comparison_table = Table(comparison_data, colWidths=[240, 240])
+        comparison_table.setStyle(TableStyle([
+            ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+            ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+            ('BOTTOMPADDING', (0,0), (-1,-1), 2),
+            ('TOPPADDING', (0,0), (-1,-1), 2),
+        ]))
+        comparison_table.hAlign = 'CENTER'
+        story.append(comparison_table)
         
     story.append(PageBreak())
     
@@ -1030,13 +1050,25 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Paragraph(disclaimer_long, ParagraphStyle('DisclaimerLong', alignment=1, fontSize=8.5, leading=13, textColor=colors.HexColor("#94A3B8"))))
     story.append(Spacer(1, 20))
     
-    # Add Zcash Eco-Recycle Logo
-    if os.path.exists("zcash_eco_recycle_logo.png"):
-        story.append(Image("zcash_eco_recycle_logo.png", width=70, height=70, hAlign='CENTER'))
-        story.append(Spacer(1, 10))
-    elif os.path.exists("zcash_logo.png"):
-        story.append(Image("zcash_logo.png", width=40, height=40, hAlign='CENTER'))
-        story.append(Spacer(1, 10))
+    # Add both logos side-by-side on Page 16
+    logo_left_p16 = Image('zcash_logo.png', width=40, height=40) if os.path.exists('zcash_logo.png') else Spacer(1, 40)
+    logo_right_p16 = Image('zcash_eco_recycle_logo.png', width=50, height=50) if os.path.exists('zcash_eco_recycle_logo.png') else Spacer(1, 50)
+    
+    p16_logo_data = [
+        [logo_left_p16, logo_right_p16],
+        [Paragraph("<font size=7 color='#94A3B8'>Standard Zcash Logo</font>", caption_style),
+         Paragraph("<font size=7 color='#94A3B8'>Proposed Eco-Recycle Logo<br/>(Upon Grant Approval)</font>", caption_style)]
+    ]
+    p16_logo_table = Table(p16_logo_data, colWidths=[120, 120])
+    p16_logo_table.setStyle(TableStyle([
+        ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2),
+        ('TOPPADDING', (0,0), (-1,-1), 2),
+    ]))
+    p16_logo_table.hAlign = 'CENTER'
+    story.append(p16_logo_table)
+    story.append(Spacer(1, 10))
         
     story.append(Paragraph("<font size='14' color='#FFFFFF'><b>WE ARE</b></font>", ParagraphStyle('WeAre', alignment=1)))
     story.append(Spacer(1, 10))
