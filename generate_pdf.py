@@ -626,7 +626,70 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(PageBreak())
     
     # =========================================================================
-    # PAGE 8: PERFORMANCE & SECURITY ANALYSIS
+    # PAGE 11: PRACTICAL USE CASE SCENARIOS
+    # =========================================================================
+    story.append(Paragraph("■ Practical Use Case Scenarios", h1_style))
+    story.append(Spacer(1, 8))
+    
+    story.append(Paragraph("11.1 Scenario A: Off-Grid P2P Data Marketplace (Drone & Sensor)", h2_style))
+    scenario_a_text = (
+        "In this scenario, an autonomous drone (Agent-A) and a ground-based weather sensor (Agent-B) operate off-grid "
+        "using only LoRa radio waves. The drone needs real-time wind speed data before landing and is willing to pay "
+        "0.002 ZEC. A local internet-connected gateway acts as their Zcash network bridge, routing the transaction and earning its fee."
+    )
+    story.append(Paragraph(scenario_a_text, body_style))
+    
+    scenario_a_flow = (
+        "[ Agent-A: Drone ]                 [ Agent-B: Sensor ]                [ LoRa Gateway ]                [ Zcash Blockchain ]\n"
+        "   (Off-Grid)                          (Off-Grid)                        (Has Internet)                   (On-Chain)\n"
+        "        │                                  │                                  │                               │\n"
+        "        │ 1. Request: \"Need Wind Speed\"    │                                  │                               │\n"
+        "        │ ────────────────────────────────>│                                  │                               │\n"
+        "        │                                  │                                  │                               │\n"
+        "        │                                  │ 2. Sends signed weather data     │                               │\n"
+        "        │ <────────────────────────────────│                                  │                               │\n"
+        "        │                                  │                                  │                               │\n"
+        "        │ 3. Broadcasts raw Zcash TX       │                                  │                               │\n"
+        "        │    - 0.00196 ZEC to Agent-B      │                                  │                               │\n"
+        "        │    - 0.00004 ZEC to Dev (2%)     │                                  │                               │\n"
+        "        │    - 0.00010 ZEC to Gateway      │                                  │                               │\n"
+        "        │ ─────────────────────────────────┼─────────────────────────────────>│                               │\n"
+        "        │                                  │                                  │ 4. Scans TX in mempool        │\n"
+        "        │                                  │                                  │ 5. Verifies its own fee       │\n"
+        "        │                                  │                                  │ 6. Verifies 2% Dev fee        │\n"
+        "        │                                  │                                  │                               │\n"
+        "        │                                  │                                  │ 7. Relays raw TX to Internet  │\n"
+        "        │                                  │                                  │ ─────────────────────────────>│\n"
+        "        │                                  │                                  │                               │ Distributed:\n"
+        "        │                                  │                                  │                               │ - Sensor gets paid.\n"
+        "        │                                  │                                  │                               │ - Gateway gets paid.\n"
+        "        │                                  │                                  │                               │ - Dev gets paid.\n"
+    )
+    story.append(make_code_block(scenario_a_flow, styles))
+    story.append(Spacer(1, 10))
+    
+    story.append(Paragraph("11.2 Scenario B: Private Search & Rescue Swarm Coordination", h2_style))
+    scenario_b_text = (
+        "A swarm of autonomous search-and-rescue UAVs needs to coordinate search grids and share target sightings in a remote "
+        "mountainous area with zero cellular coverage. They use ZK-LoRa to broadcast encrypted grid updates. Because they "
+        "use ZK-identity masking, an adversary cannot eavesdrop on their coordination or track the physical location of the "
+        "drones by monitoring their RF signatures. They pay local relay nodes in ZEC to extend their coordination range."
+    )
+    story.append(Paragraph(scenario_b_text, body_style))
+    
+    story.append(Paragraph("11.3 Scenario C: Smart Agriculture & Environmental Health Monitoring", h2_style))
+    scenario_c_text = (
+        "Tens of thousands of soil moisture and wildfire detection sensors are scattered across a national forest. They use "
+        "ZK-LoRa to transmit status updates. To prevent competitors or malicious actors from mapping the sensor locations and "
+        "identifying vulnerable areas, the data is encrypted via ECIES and identities are masked with ZK-proofs. Gateways "
+        "are incentivized to maintain high-uptime remote relays because they earn ZEC micropayments for every status packet they route."
+    )
+    story.append(Paragraph(scenario_c_text, body_style))
+    
+    story.append(PageBreak())
+    
+    # =========================================================================
+    # PAGE 12: PERFORMANCE & SECURITY ANALYSIS
     # =========================================================================
     story.append(Paragraph("■ Performance & Security Analysis", h1_style))
     story.append(Spacer(1, 10))

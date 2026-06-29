@@ -242,6 +242,55 @@ Generation: O(n) time (seconds, tunable via difficulty)
 - Network transaction fees are paid directly to miners and relays
 - Programmatic Developer Fee: A small 2% inventor fee is programmatically deducted from each routing fee payment and routed to the core developer treasury address for long-term project support and protocol maintenance.
 
+### 4.4 Practical Use Case Scenarios
+
+#### Scenario A: Off-Grid P2P Data Marketplace (Drone & Sensor)
+In this scenario, an autonomous drone (Agent-A) and a ground-based weather sensor (Agent-B) operate off-grid using only LoRa radio waves. The drone needs real-time wind speed data before landing and is willing to pay 0.002 ZEC. A local internet-connected gateway acts as their Zcash network bridge, routing the transaction and earning its fee.
+
+```
+[ Agent-A: Drone ]                 [ Agent-B: Sensor ]                [ LoRa Gateway ]                [ Zcash Blockchain ]
+   (Off-Grid)                          (Off-Grid)                        (Has Internet)                   (On-Chain)
+        │                                  │                                  │                               │
+        │ 1. Request: "Need Wind Speed"    │                                  │                               │
+        │ ────────────────────────────────>│                                  │                               │
+        │                                  │                                  │                               │
+        │                                  │ 2. Sends signed weather data     │                               │
+        │ <────────────────────────────────│                                  │                               │
+        │                                  │                                  │                               │
+        │ 3. Broadcasts raw Zcash TX       │                                  │                               │
+        │    - 0.00196 ZEC to Agent-B      │                                  │                               │
+        │    - 0.00004 ZEC to Dev (2%)     │                                  │                               │
+        │    - 0.00010 ZEC to Gateway      │                                  │                               │
+        │ ─────────────────────────────────┼─────────────────────────────────>│                               │
+        │                                  │                                  │ 4. Scans TX in mempool        │
+        │                                  │                                  │ 5. Verifies its own fee       │
+        │                                  │                                  │ 6. Verifies 2% Dev fee        │
+        │                                  │                                  │                               │
+        │                                  │                                  │ 7. Relays raw TX to Internet  │
+        │                                  │                                  │ ─────────────────────────────>│
+        │                                  │                                  │                               │ Distributed:
+        │                                  │                                  │                               │ - Sensor gets paid.
+        │                                  │                                  │                               │ - Gateway gets paid.
+        │                                  │                                  │                               │ - Dev gets paid.
+```
+
+1. **The Request & Data Delivery (Off-Grid)**: Drone (Agent-A) broadcasts: "Need local wind speed at Coordinates X,Y. Will pay 0.002 ZEC + 0.0001 ZEC routing fee." Sensor (Agent-B) hears the broadcast, compiles the data, signs it with its private key, and transmits the payload back to the Drone over LoRa. At this point, the Drone has the data, but the Sensor hasn't been paid yet.
+2. **The Drone Constructs the Shielded Transaction**: The Drone constructs a single Zcash shielded transaction containing three outputs:
+   - **Output 1 (Data Payment)**: 0.00196 ZEC (98% of the data price) sent to the Sensor (Agent-B).
+   - **Output 2 (Developer Royalty)**: 0.00004 ZEC (2% of the data price) sent to the Developer Treasury.
+   - **Output 3 (Routing Fee)**: 0.00010 ZEC sent to the Gateway as compensation for internet relaying.
+   Since the Drone is off-grid, it cannot post this transaction to the blockchain. Instead, it broadcasts the raw, signed transaction hex over the air via LoRa.
+3. **The Gateway Relays the Transaction & Takes Its Cut**: The Gateway receives the raw Zcash transaction hex over the radio. The gateway's software scans the transaction outputs:
+   - It verifies that the transaction sends 0.00010 ZEC to the gateway's own address.
+   - It verifies that the transaction sends 0.00004 ZEC (2%) to the developer treasury.
+   Once verified, the gateway broadcasts the raw transaction to the Zcash blockchain via its internet connection.
+
+#### Scenario B: Private Search & Rescue Swarm Coordination
+A swarm of autonomous search-and-rescue UAVs needs to coordinate search grids and share target sightings in a remote mountainous area with zero cellular coverage. They use ZK-LoRa to broadcast encrypted grid updates. Because they use ZK-identity masking, an adversary cannot eavesdrop on their coordination or track the physical location of the drones by monitoring their RF signatures. They pay local relay nodes in ZEC to extend their coordination range.
+
+#### Scenario C: Smart Agriculture & Environmental Health Monitoring
+Tens of thousands of soil moisture and wildfire detection sensors are scattered across a national forest. They use ZK-LoRa to transmit status updates. To prevent competitors or malicious actors from mapping the sensor locations and identifying vulnerable areas, the data is encrypted via ECIES and identities are masked with ZK-proofs. Gateways are incentivized to maintain high-uptime remote relays because they earn ZEC micropayments for every status packet they route.
+
 ---
 
 ## 5. Implementation
