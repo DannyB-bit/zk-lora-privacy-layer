@@ -10,7 +10,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
 from reportlab.platypus import (
     BaseDocTemplate, PageTemplate, Frame, Paragraph, Spacer, 
-    Image, Table, TableStyle, PageBreak, NextPageTemplate
+    Image, Table, TableStyle, PageBreak, NextPageTemplate, KeepTogether
 )
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.graphics.shapes import Drawing, Rect
@@ -303,8 +303,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "300,000 RAKwireless-manufactured hotspots (RAK V2, MNTD) equipped with Semtech SX1302/SX1303 concentrator "
         "chips and Raspberry Pi units. By running open-source packet forwarders alongside or in place of original "
         "firmware, operators can participate in private edge routing, verify zero-knowledge proofs on-chip in "
-        "milliseconds, and earn shielded Zcash (ZEC) micropayments. This breathes new life into existing hardware "
-        "while expanding the physical footprint of the Zcash privacy ecosystem."
+        "milliseconds, and earn shielded Zcash (ZEC) micropayments—with a 2% split supporting the developer treasury."
     )
     story.append(Paragraph(summary_text_3, body_style))
     story.append(Spacer(1, 10))
@@ -442,8 +441,9 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     # =========================================================================
     # PAGE 6: LAYER 3: ZERO-KNOWLEDGE PROOFS
     # =========================================================================
-    story.append(Paragraph("■ Layer 3: Zero-Knowledge Proofs", h1_style))
-    story.append(Spacer(1, 10))
+    zk_story = []
+    zk_story.append(Paragraph("■ Layer 3: Zero-Knowledge Proofs", h1_style))
+    zk_story.append(Spacer(1, 10))
     
     l3_text = (
         "The core privacy mechanism of ZK-LoRa is the decoupling of authentication from identity. Instead of broadcasting "
@@ -451,8 +451,8 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "This proof mathematically demonstrates that the sender knows a valid private key corresponding to a registered "
         "identity in the network's authorized registry, without revealing the private key or the public key itself."
     )
-    story.append(Paragraph(l3_text, body_style))
-    story.append(Spacer(1, 10))
+    zk_story.append(Paragraph(l3_text, body_style))
+    zk_story.append(Spacer(1, 10))
     
     circuit_code = (
         "// ZK-SNARK Agent Validity Circuit (AgentValidityProof.circom)\n"
@@ -475,35 +475,89 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "    valid <== 1;\n"
         "}"
     )
-    story.append(make_code_block(circuit_code, styles))
+    zk_story.append(make_code_block(circuit_code, styles))
+    story.append(KeepTogether(zk_story))
     
     story.append(PageBreak())
     
     # =========================================================================
-    # PAGE 7: SHIELDED MICROPAYMENT INCENTIVES
+    # PAGE 7: SHIELDED MICROPAYMENT INCENTIVES (PART 1)
     # =========================================================================
     story.append(Paragraph("■ Shielded Micropayment Incentives", h1_style))
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 8))
     
-    payout_text = (
-        "ZK-LoRa introduces an incentivized routing mechanism powered by Zcash. Gateway nodes that receive and relay "
-        "LoRa packets are rewarded via Zcash shielded transactions. To claim the reward, the gateway must scan the "
-        "incoming mempool for a shielded transaction containing a matching packet reference hash in its memo field."
+    payout_intro = (
+        "The Zcash Shielded Micropayment mechanism is the economic engine of ZK-LoRa. It solves the biggest "
+        "problem in decentralized radio networks: <i>How do you pay gateways to route your data without revealing "
+        "who you are or where you are located?</i>"
     )
-    story.append(Paragraph(payout_text, body_style))
+    story.append(Paragraph(payout_intro, body_style))
     
-    payout_text_2 = (
-        "The gateway utilizes a local Zcash light client to decrypt incoming Sapling/Orchard memos. Once a matching "
-        "memo reference is found, the gateway validates that the payout amount is correct and that the "
-        "<b>1% programmatic developer fee</b> has been split and routed to the developer treasury address:"
+    story.append(Paragraph("7.1 The Core Problem: Altruism vs. Financial Privacy", h2_style))
+    payout_problem = (
+        "In traditional off-grid mesh networks (like Meshtastic), nodes relay packets for free out of altruism. "
+        "However, altruism does not scale to global, professional, or high-reliability networks. "
+        "Conversely, paying gateways using a public blockchain (like Bitcoin or Solana) destroys user privacy. "
+        "An observer can look at the ledger, see that Wallet-A paid Gateway-B, and instantly deduce who is transmitting, "
+        "which physical gateway routed the message (revealing their location), and the exact timing of the communication."
     )
-    story.append(Paragraph(payout_text_2, body_style))
+    story.append(Paragraph(payout_problem, body_style))
+    
+    story.append(Paragraph("7.2 The Zcash Shielded Solution", h2_style))
+    payout_solution = (
+        "ZK-LoRa solves this by using Zcash Orchard/Sapling Shielded Transactions. Zcash is the only blockchain that "
+        "offers fully shielded transactions with an encrypted memo field (512 bytes). This allows ZK-LoRa to bind a "
+        "financial payment to a physical radio packet completely in secret, leaving no trace on the public ledger."
+    )
+    story.append(Paragraph(payout_solution, body_style))
+    
+    story.append(Paragraph("7.3 The Step-by-Step Micropayment Flow", h2_style))
+    
+    ascii_flow = (
+        "[ Transmitting Agent ]                                     [ LoRa Gateway ]\n"
+        "         │                                                         │\n"
+        "         │  1. Generates LoRa Packet                               │\n"
+        "         │  2. Hashes Packet -> Hash (H)                           │\n"
+        "         │                                                         │\n"
+        "         │  3. Sends Shielded ZEC Transaction                      │\n"
+        "         │     Memo: \"ref:<Hash_H>\"                                │\n"
+        "         │  ─────────────────────────────────────────────────────> │ (Enters Zcash Mempool)\n"
+        "         │                                                         │\n"
+        "         │                                                         │ 4. Decrypts Memo using Viewing Key\n"
+        "         │                                                         │ 5. Matches \"ref:<Hash_H>\"\n"
+        "         │                                                         │ 6. Verifies 2% fee split to Treasury\n"
+        "         │                                                         │\n"
+        "         │  7. Transmits LoRa Packet (H)                           │\n"
+        "         │  ─────────────────────────────────────────────────────> │\n"
+        "         │                                                         │ 8. Gateway receives packet,\n"
+        "         │                                                         │    verifies payment in mempool,\n"
+        "         │                                                         │    and relays to WAN.\n"
+    )
+    story.append(make_code_block(ascii_flow, styles))
+    
+    story.append(PageBreak())
+    
+    # =========================================================================
+    # PAGE 8: SHIELDED MICROPAYMENT INCENTIVES (PART 2)
+    # =========================================================================
+    story.append(Paragraph("■ Shielded Micropayment Incentives (Continued)", h1_style))
+    story.append(Spacer(1, 8))
+    
+    flow_detail = (
+        "<b>1. Packet Hash Generation:</b> When the sender agent prepares a LoRa packet, it hashes the payload to generate a unique Packet Hash (H).<br/>"
+        "<b>2. Shielded Payment:</b> The sender sends a tiny amount of ZEC (e.g., 0.0001 ZEC) to the gateway's shielded address.<br/>"
+        "<b>3. The Cryptographic Bind:</b> Inside the encrypted Zcash memo field, the sender writes <i>ref:&lt;Hash_H&gt;</i>.<br/>"
+        "<b>4. Mempool Scanning:</b> The gateway runs the <i>ZcashMempoolScanner</i> (the Rust/Python engine built in Milestone 2) to scan the Zcash mempool and decrypt incoming memos using its Incoming Viewing Key (IVK).<br/>"
+        "<b>5. Instant Verification:</b> The moment the scanner detects a pending transaction in the mempool containing <i>ref:&lt;Hash_H&gt;</i>, the gateway knows the packet has been paid.<br/>"
+        "<b>6. Programmatic Split:</b> The scanner verifies that the transaction programmatically routed <b>2% of the fee</b> to the developer treasury address:<br/>"
+    )
+    story.append(Paragraph(flow_detail, body_style))
     
     fee_box_data = [
         [
             Paragraph("<b>Developer Treasury Address:</b><br/>"
                       "<font size='10' face='Courier'>t1REhE28Dv8fuNDujN2GuEyhd6JLSS5TJkH</font><br/>"
-                      "<font size='8' color='#64748B'>Programmatic 1% fee split verified on-chain via Orchard/Sapling light client</font>", body_style)
+                      "<font size='8' color='#64748B'>Programmatic 2% fee split verified on-chain via Orchard/Sapling light client</font>", body_style)
         ]
     ]
     fee_box_table = Table(fee_box_data, colWidths=[504])
@@ -513,18 +567,36 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         ('PADDING', (0,0), (-1,-1), 12),
     ]))
     story.append(fee_box_table)
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 10))
     
-    scanner_flow = (
-        "Zcash Mempool Scanner Flow:\n"
-        "1. LoRa Packet Received → Extract Packet Hash (H)\n"
-        "2. Query Zcash Mempool via lightwalletd gRPC\n"
-        "3. Decrypt Shielded Transaction Memos using Viewing Key\n"
-        "4. Find Memo matching 'ref:H'\n"
-        "5. Validate Payout: Verify 1% of total reward is sent to t1REhE28Dv...\n"
-        "6. If Valid → Approve Packet for LoRa WAN Gateway relay"
+    story.append(Paragraph("7.4 What We Are Inventing (The ZK-LoRa Innovations)", h2_style))
+    
+    innovations_text = (
+        "<b>🚀 Innovation A: Mempool-Triggered RF Routing (Zcash-to-Radio Binding)</b><br/>"
+        "Nobody has ever used the Zcash mempool as an instant, off-chain routing authorization trigger for physical radio waves. "
+        "Standard setups require waiting for block confirmations (which takes minutes) or using centralized payment gateways. "
+        "We invented a gateway node that actively sniffs the Zcash mempool, decrypts shielded memos, matches them to physical radio "
+        "packet hashes, and routes the radio packets in real-time. This is a brand-new way to operate a DePIN.<br/><br/>"
+        "<b>🚀 Innovation B: Zero-Knowledge RF Identity Masking</b><br/>"
+        "Standard LoRaWAN is highly vulnerable to physical tracking because it broadcasts static device IDs (DevAddr/DevEUI) in the clear. "
+        "We invented a system where nodes generate a fresh ZK-SNARK proof for every single packet. The gateway verifies the proof "
+        "to know the node is authorized, but never learns who the node is, making physical tracking impossible.<br/><br/>"
+        "<b>🚀 Innovation C: Native Zcash DePIN (No Custom Token Needed)</b><br/>"
+        "Most DePIN projects (like Helium, Helium Mobile, or Hivemapper) launch their own custom tokens (like HNT, MOBILE, or HONEY) "
+        "on Solana or custom chains. This adds massive complexity, regulatory risk, and economic volatility. ZK-LoRa runs natively "
+        "on Zcash, using ZEC directly for private routing fees, with the gateway nodes programmatically enforcing a 2% developer treasury split on-chip."
     )
-    story.append(make_code_block(scanner_flow, styles))
+    story.append(Paragraph(innovations_text, body_style))
+    
+    story.append(Spacer(1, 10))
+    story.append(Paragraph("7.5 Why This is a Breakthrough for the Zcash Ecosystem", h2_style))
+    
+    breakthrough_text = (
+        "<b>• Zero-Latency Routing:</b> By verifying payments in the mempool rather than waiting for block confirmations (which take 75 seconds), ZK-LoRa achieves near-instantaneous packet relaying.<br/>"
+        "<b>• Unlinkable Physical-to-Financial Mapping:</b> To an outside observer, the Zcash transaction is just encrypted noise on the blockchain, and the LoRa packet is just an encrypted RF burst. There is no mathematical way for an eavesdropper to link the two.<br/>"
+        "<b>• Sustainable Open Source:</b> The 2% fee split is enforced on-chip by the gateway. If a sender tries to bypass the developer fee, the gateway's mempool scanner rejects the transaction, and the gateway refuses to route the packet. This creates a self-sustaining funding loop for your project."
+    )
+    story.append(Paragraph(breakthrough_text, body_style))
     
     story.append(PageBreak())
     
