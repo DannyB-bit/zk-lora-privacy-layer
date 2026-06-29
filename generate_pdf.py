@@ -202,9 +202,9 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     
     # Center Logo (Larger)
     if os.path.exists("logo.png"):
-        story.append(Image("logo.png", width=480, height=480, hAlign='CENTER'))
+        story.append(Image("logo.png", width=510, height=510, hAlign='CENTER'))
     else:
-        story.append(Spacer(1, 480))
+        story.append(Spacer(1, 510))
         
     story.append(Spacer(1, 15))
     
@@ -905,11 +905,20 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     else:
         story.append(Spacer(1, 240))
         
-    story.append(Spacer(1, 10))
-    if os.path.exists("gold_quote.png"):
-        story.append(Image("gold_quote.png", width=450, height=60, hAlign='CENTER'))
-    else:
-        story.append(Spacer(1, 60))
+    story.append(Spacer(1, 15))
+    quote_style = ParagraphStyle(
+        'CoverQuote',
+        fontName='Helvetica-BoldOblique',
+        fontSize=10.5,
+        leading=15,
+        textColor=colors.HexColor("#F3B300"),
+        alignment=1
+    )
+    story.append(Paragraph(
+        "\"The impossible is just code waiting to be written, physics waiting to be rewritten,<br/>"
+        "math a work in progress, and truth waiting to be discovered.\"",
+        quote_style
+    ))
         
     # Build the document
     doc.build(story, canvasmaker=NumberedCanvas)
