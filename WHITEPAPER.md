@@ -6,7 +6,7 @@
 
 ## Abstract
 
-We present ZK-LoRa, a revolutionary privacy-preserving identity layer for LoRa mesh networks that combines Bitcoin's public-key cryptography with Zcash's zero-knowledge proof and shielded transaction architecture. ZK-LoRa enables AI agents to communicate securely over RF without revealing their real hardware identities, enabling unlinkable transactions, selective disclosure, and proof-of-useful-work consensus for decentralized AI coordination — with every routing fee compensated securely in ZEC via Zcash shielded transactions.
+We present ZK-LoRa, a revolutionary privacy-preserving identity layer for LoRa mesh networks that combines Bitcoin's public-key cryptography with Zcash's zero-knowledge proof and shielded transaction architecture. ZK-LoRa enables AI agents to communicate securely over RF without revealing their real hardware identities, enabling unlinkable transactions, selective disclosure, and proof-of-useful-work consensus for decentralized AI coordination — with every routing fee compensated securely in ZEC via Zcash shielded transactions. The payment split is completely programmable, allowing a custom percentage (such as 5% or 10%) to be routed directly to the Zcash Foundation to support the ecosystem, with a 2% split supporting the developer treasury.
 
 **Key Innovation:** Agents broadcast zero-knowledge proofs of legitimacy instead of static identifiers, making eavesdropping useless while maintaining verifiable authenticity.
 
@@ -235,12 +235,16 @@ Generation: O(n) time (seconds, tunable via difficulty)
 ### 4.3 Incentive Mechanism (Zcash-Powered)
 
 **Private Micropayment Rewards via Zcash:**
-- Gateways earn ZEC micropayments via Zcash Shielded Transactions for routing packets
-- Payment references are embedded inside Zcash shielded memos
-- High-reputation agents (verified by on-chain proof history) get priority in mesh routing
-- Low-reputation agents (or spammers) get rate-limited by on-chain stake requirements
-- Network transaction fees are paid directly to miners and relays
-- Programmatic Developer Fee: A small 2% inventor fee is programmatically deducted from each routing fee payment and routed to the core developer treasury address for long-term project support and protocol maintenance.
+- Gateways earn ZEC micropayments via Zcash Shielded Transactions for routing packets.
+- Payment references are embedded inside Zcash shielded memos.
+- High-reputation agents (verified by on-chain proof history) get priority in mesh routing.
+- Low-reputation agents (or spammers) get rate-limited by on-chain stake requirements.
+- Network transaction fees are paid directly to miners and relays.
+- **Programmable Split & Ecosystem Support:** Because Zcash shielded transactions (Orchard/Sapling) support multiple outputs within a single transaction bundle, the payment split is completely programmable. 
+  - **2%** $\rightarrow$ Developer Treasury (Protocol maintenance and developer support).
+  - **Custom $X\%$ (e.g., 5% or 10%)** $\rightarrow$ **Zcash Foundation / Community Fund** (Directly contributing back to the Zcash ecosystem to support future research and development).
+  - **Remainder ($98 - X\%$)** $\rightarrow$ **LoRa Gateway** (Bandwidth and hardware compensation).
+  This three-way split is verified on-chip by the gateway's mempool scanner before routing.
 
 ### 4.4 Practical Use Case Scenarios
 

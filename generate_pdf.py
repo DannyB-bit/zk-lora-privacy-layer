@@ -380,7 +380,9 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "300,000 RAKwireless-manufactured hotspots (RAK V2, MNTD) equipped with Semtech SX1302/SX1303 concentrator "
         "chips and Raspberry Pi units. By running open-source packet forwarders alongside or in place of original "
         "firmware, operators can participate in private edge routing, verify zero-knowledge proofs on-chip in "
-        "milliseconds, and earn shielded Zcash (ZEC) micropayments—with a 2% split supporting the developer treasury."
+        "milliseconds, and earn shielded Zcash (ZEC) micropayments. Thanks to Zcash's multi-output transaction "
+        "architecture, this payment split is completely programmable, allowing a custom percentage (e.g., 5% or 10%) "
+        "to support the Zcash Foundation, with a 2% split supporting the developer treasury."
     )
     story.append(Paragraph(summary_text_3, body_style))
     story.append(Spacer(1, 10))
@@ -592,7 +594,11 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     payout_solution = (
         "ZK-LoRa solves this by using Zcash Orchard/Sapling Shielded Transactions. Zcash is the only blockchain that "
         "offers fully shielded transactions with an encrypted memo field (512 bytes). This allows ZK-LoRa to bind a "
-        "financial payment to a physical radio packet completely in secret, leaving no trace on the public ledger."
+        "financial payment to a physical radio packet completely in secret, leaving no trace on the public ledger. "
+        "Furthermore, because Zcash shielded transactions support multiple outputs within a single transaction bundle, "
+        "the payment split is completely programmable. In addition to a 2% split supporting the developer treasury (for protocol "
+        "maintenance), a custom percentage (e.g., 5% or 10%) can be routed directly to the Zcash Foundation to support "
+        "the ecosystem, with the gateway node keeping the remaining portion as its routing fee."
     )
     story.append(Paragraph(payout_solution, body_style))
     
