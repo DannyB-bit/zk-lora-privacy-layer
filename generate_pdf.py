@@ -911,7 +911,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         fontName='Helvetica-Oblique',
         fontSize=9.5,
         leading=14,
-        textColor=colors.HexColor("#94A3B8"),
+        textColor=colors.HexColor("#F3B300"),
         alignment=1
     )
     story.append(Paragraph(
