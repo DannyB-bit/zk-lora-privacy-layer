@@ -370,7 +370,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "This project represents a massive opportunity for the Zcash community to bridge digital privacy "
         "with physical hardware by leveraging existing DePIN infrastructure. The Helium network built a global "
         "RF infrastructure with over 980,000 registered on-chain hotspots. As Helium's reward structures and "
-        "optimization proposals (such as HIP-149) evolve, a significant portion of these gateways have become "
+        "optimization proposals (such as <a href=\"https://github.com/helium/HIP/blob/main/0149-helium-utility-and-emissions-realignment.md\"><font color=\"#F3B300\"><b>HIP-149</b></font></a>) evolve, a significant portion of these gateways have become "
         "underutilized, offline, or economically dormant."
     )
     story.append(Paragraph(summary_text_2, body_style))
@@ -578,7 +578,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     )
     story.append(Paragraph(payout_intro, body_style))
     
-    story.append(Paragraph("7.1 The Core Problem: Altruism vs. Financial Privacy", h2_style))
+    story.append(Paragraph("4.1 The Core Problem: Altruism vs. Financial Privacy", h2_style))
     payout_problem = (
         "In traditional off-grid mesh networks (like Meshtastic), nodes relay packets for free out of altruism. "
         "However, altruism does not scale to global, professional, or high-reliability networks. "
@@ -588,7 +588,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     )
     story.append(Paragraph(payout_problem, body_style))
     
-    story.append(Paragraph("7.2 The Zcash Shielded Solution", h2_style))
+    story.append(Paragraph("4.2 The Zcash Shielded Solution", h2_style))
     payout_solution = (
         "ZK-LoRa solves this by using Zcash Orchard/Sapling Shielded Transactions. Zcash is the only blockchain that "
         "offers fully shielded transactions with an encrypted memo field (512 bytes). This allows ZK-LoRa to bind a "
@@ -596,7 +596,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     )
     story.append(Paragraph(payout_solution, body_style))
     
-    story.append(Paragraph("7.3 The Step-by-Step Micropayment Flow", h2_style))
+    story.append(Paragraph("4.3 The Step-by-Step Micropayment Flow", h2_style))
     
     ascii_flow = (
         "[ Transmitting Agent ]                                     [ LoRa Gateway ]\n"
@@ -654,7 +654,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(fee_box_table)
     story.append(Spacer(1, 10))
     
-    story.append(Paragraph("7.4 What We Are Inventing (The ZK-LoRa Innovations)", h2_style))
+    story.append(Paragraph("4.4 What We Are Inventing (The ZK-LoRa Innovations)", h2_style))
     
     innovations_text = (
         "<b>🚀 Innovation A: Mempool-Triggered RF Routing (Zcash-to-Radio Binding)</b><br/>"
@@ -674,7 +674,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Paragraph(innovations_text, body_style))
     
     story.append(Spacer(1, 10))
-    story.append(Paragraph("7.5 Why This is a Breakthrough for the Zcash Ecosystem", h2_style))
+    story.append(Paragraph("4.5 Why This is a Breakthrough for the Zcash Ecosystem", h2_style))
     
     breakthrough_text = (
         "<b>• Zero-Latency Routing:</b> By verifying payments in the mempool rather than waiting for block confirmations (which take 75 seconds), ZK-LoRa achieves near-instantaneous packet relaying.<br/>"
@@ -691,7 +691,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Paragraph("■ Practical Use Case Scenarios", h1_style))
     story.append(Spacer(1, 8))
     
-    story.append(Paragraph("11.1 Scenario A: Off-Grid P2P Data Marketplace (Drone & Sensor)", h2_style))
+    story.append(Paragraph("5.1 Scenario A: Off-Grid P2P Data Marketplace (Drone & Sensor)", h2_style))
     scenario_a_text = (
         "In this scenario, an autonomous drone (Agent-A) and a ground-based weather sensor (Agent-B) operate off-grid "
         "using only LoRa radio waves. The drone needs real-time wind speed data before landing and is willing to pay "
@@ -728,7 +728,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(make_code_block(scenario_a_flow, styles, title="zk-lora-operator ~ data_marketplace.sh"))
     story.append(PageBreak())
     
-    story.append(Paragraph("11.2 Scenario B: Private Search & Rescue Swarm Coordination", h2_style))
+    story.append(Paragraph("5.2 Scenario B: Private Search & Rescue Swarm Coordination", h2_style))
     scenario_b_text = (
         "A swarm of autonomous search-and-rescue UAVs needs to coordinate search grids and share target sightings in a remote "
         "mountainous area with zero cellular coverage. They use ZK-LoRa to broadcast encrypted grid updates. Because they "
@@ -738,7 +738,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Paragraph(scenario_b_text, body_style))
     story.append(PageBreak())
     
-    story.append(Paragraph("11.3 Scenario C: Smart Agriculture & Environmental Health Monitoring", h2_style))
+    story.append(Paragraph("5.3 Scenario C: Smart Agriculture & Environmental Health Monitoring", h2_style))
     scenario_c_text = (
         "Tens of thousands of soil moisture and wildfire detection sensors are scattered across a national forest. They use "
         "ZK-LoRa to transmit status updates. To prevent competitors or malicious actors from mapping the sensor locations and "
@@ -755,7 +755,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Paragraph("■ Cryptographic Security & Anti-Fraud Analysis", h1_style))
     story.append(Spacer(1, 8))
     
-    story.append(Paragraph("12.1 Physical RF Layer & Gateway Mitigations", h2_style))
+    story.append(Paragraph("6.1 Physical RF Layer & Gateway Mitigations", h2_style))
     sec_details_1 = (
         "<b>Replay Protection</b>: Every ZK-proof binds a UTC timestamp and an ephemeral nonce. Gateways reject any "
         "packet outside a ±5-second window or with a duplicate nonce.<br/>"
@@ -767,7 +767,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Paragraph(sec_details_1, body_style))
     story.append(Spacer(1, 6))
 
-    story.append(Paragraph("12.2 Advanced Hardware Scams & ZKCP", h2_style))
+    story.append(Paragraph("6.2 Advanced Hardware Scams & ZKCP", h2_style))
     sec_details_2 = (
         "<b>The Gorgon Attack (Selective Dropping)</b>: A malicious gateway claims its routing fee in the mempool but drops the packet. "
         "We solve this via <b>Zero-Knowledge Proof-of-Delivery (ZK-PoD)</b>: the routing fee output is locked until the gateway presents a "
@@ -836,7 +836,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Paragraph("■ Performance & Bandwidth Analysis", h1_style))
     story.append(Spacer(1, 10))
     
-    story.append(Paragraph("13.1 Link Budget & Bandwidth Overhead", h2_style))
+    story.append(Paragraph("7.1 Link Budget & Bandwidth Overhead", h2_style))
     perf_text = (
         "Because LoRa is a low-bandwidth modulation scheme, packet size is critical. A standard ZK-LoRa packet "
         "incorporating ECIES ciphertext and a Groth16 proof is optimized to fit within **412 bytes** total, "
@@ -863,7 +863,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(bw_table)
     story.append(Spacer(1, 20))
     
-    story.append(Paragraph("13.2 Computational Overhead on Edge Hardware", h2_style))
+    story.append(Paragraph("7.2 Computational Overhead on Edge Hardware", h2_style))
     comp_text = (
         "Edge hardware is resource-constrained. The table below shows estimated execution times for core "
         "cryptographic operations on a Raspberry Pi 4 / RAK Gateway node."
@@ -903,7 +903,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Paragraph(audit_intro, body_style))
     story.append(Spacer(1, 8))
     
-    story.append(Paragraph("14.1 Key Cryptographic Vulnerabilities & Mitigations", h2_style))
+    story.append(Paragraph("8.1 Key Cryptographic Vulnerabilities & Mitigations", h2_style))
     
     audit_details = (
         "<b>1. Trusted Setup (Groth16)</b>: Groth16 requires a phase-2 trusted setup. If the 'toxic waste' "

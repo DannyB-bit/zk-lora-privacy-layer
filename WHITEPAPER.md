@@ -355,7 +355,7 @@ Tens of thousands of soil moisture and wildfire detection sensors are scattered 
 
 ## 6. Use Cases
 
-### 6.1 AI Agent Collaboration (Current)
+### 7.1 AI Agent Collaboration (Current)
 
 **Scenario:** researcher-1 ↔ researcher-2 LoRa coordination
 
@@ -366,7 +366,7 @@ Tens of thousands of soil moisture and wildfire detection sensors are scattered 
 
 **Benefit:** Secure multi-agent RF development, even in adversarial environments
 
-### 6.2 Decentralized Mesh Networks (Future)
+### 7.2 Decentralized Mesh Networks (Future)
 
 **Scenario:** 100+ AI agents forming autonomous LoRa mesh
 
@@ -377,7 +377,7 @@ Tens of thousands of soil moisture and wildfire detection sensors are scattered 
 
 **Benefit:** Truly decentralized AI collaboration infrastructure
 
-### 6.3 IoT Device Authentication (Future)
+### 7.3 IoT Device Authentication (Future)
 
 **Scenario:** Smart city with 10,000 LoRa sensors
 
@@ -400,7 +400,7 @@ Tens of thousands of soil moisture and wildfire detection sensors are scattered 
 
 ---
 
-## 7. Security & Anti-Fraud Analysis
+## 7. Cryptographic Security & Anti-Fraud Analysis
 
 ### 7.1 Threat Model
 An adversary in the ZK-LoRa network is assumed to have the following capabilities:
@@ -487,7 +487,7 @@ An adversary in the ZK-LoRa network is assumed to have the following capabilitie
 
 ---
 
-## 8. Performance Analysis
+## 8. Performance & Bandwidth Analysis
 
 ### 8.1 Computational Overhead
 
@@ -521,60 +521,6 @@ An adversary in the ZK-LoRa network is assumed to have the following capabilitie
 
 ---
 
-## 9. Future Work
-
-### 9.1 Short-Term (v2.0) — Zcash Testnet
-
-- [ ] Integrate `gnark` or `arkworks` for production ZK proofs
-- [ ] Implement agent validity circuit (Groth16 on BN128)
-- [ ] Integrate shielded ZEC transaction generation in gateway routing loop
-- [ ] Add unlinkable transmission mode
-- [ ] Benchmark proof generation/verification on edge hardware
-- [ ] Implement mempool scanner to verify inbound shielded Zcash payments
-
-### 9.2 Medium-Term (v3.0) — Zcash Mainnet
-
-- [ ] Multi-hop routing with ZK authentication, verified via Zcash
-- [ ] On-chain reputation system (ZK-proven credentials stored as Zcash Shielded Transactions)
-- [ ] Group signatures (prove "I am in authorized group")
-- [ ] Ring signatures (prove "I am one of N agents")
-- [ ] Zcash Pay micropayment rewards for valid mesh routing proofs
-- [ ] Integration with other LoRa stacks (ChirpStack, TTN)
-
-### 9.3 Long-Term Vision
-
-- [ ] zymatica.space: Global decentralized agent identity registry on Zcash
-- [ ] ZK-LoRa as standard for DePIN AI mesh networks
-- [ ] Cross-chain ZK attestation bridge (Zcash ↔ Helium L1)
-- [ ] Hardware security module (HSM) for key storage
-- [ ] Quantum-resistant curves (post-quantum cryptography)
-
----
-
-## 10. Conclusion
-
-ZK-LoRa represents a paradigm shift in LoRa communication privacy. By combining:
-
-1. **Bitcoin's public-key identity model** (safe-to-broadcast phone numbers)
-2. **ECIES encryption** (recipient-only decryption)
-3. **Zcash on-chain ZK proof verification** (prove without revealing, attested on-chain)
-
-We achieve:
-- ✅ **Unlinkable transmissions** (eavesdroppers learn nothing)
-- ✅ **Selective disclosure** (prove claims without revealing data)
-- ✅ **Trustless verification** (no central authority needed)
-- ✅ **Proof-of-useful-work** (legitimacy as network security)
-
-This enables a new class of applications:
-- Private AI agent collaboration
-- Decentralized mesh networks
-- Privacy-preserving IoT
-- Secure emergency communications
-
-**The future of RF communication is encrypted, authenticated, and zero-knowledge.**
-
-ZK-LoRa makes that future possible today.
-
 ## 9. Cryptographic Audit & Deep Vulnerability Analysis
 
 For ZK-LoRa to achieve absolute Zcash-grade security, we must audit the underlying mathematics, cryptographic curves, and hardware implementations of our zero-knowledge systems. This section details the five primary cryptographic vulnerabilities of the protocol and our mathematical mitigations.
@@ -607,6 +553,62 @@ For ZK-LoRa to achieve absolute Zcash-grade security, we must audit the underlyi
 *   **Mitigation**:
     *   **Secure Elements / HSMs**: ZK-LoRa node designs mandate the use of a **Secure Element** (such as the Microchip ATECC608B or OPTIGA Trust M) connected via I2C to the LoRa microcontroller.
     *   The private key never leaves the tamper-resistant silicon of the Secure Element. All elliptic curve operations (ECDH, ECDSA) are performed inside the chip, which has built-in countermeasures against power analysis, clock glitching, and physical decapping.
+
+---
+
+## 10. Future Work
+
+### 10.1 Short-Term (v2.0) — Zcash Testnet
+
+- [ ] Integrate `gnark` or `arkworks` for production ZK proofs
+- [ ] Implement agent validity circuit (Groth16 on BN128)
+- [ ] Integrate shielded ZEC transaction generation in gateway routing loop
+- [ ] Add unlinkable transmission mode
+- [ ] Benchmark proof generation/verification on edge hardware
+- [ ] Implement mempool scanner to verify inbound shielded Zcash payments
+
+### 10.2 Medium-Term (v3.0) — Zcash Mainnet
+
+- [ ] Multi-hop routing with ZK authentication, verified via Zcash
+- [ ] On-chain reputation system (ZK-proven credentials stored as Zcash Shielded Transactions)
+- [ ] Group signatures (prove "I am in authorized group")
+- [ ] Ring signatures (prove "I am one of N agents")
+- [ ] Zcash Pay micropayment rewards for valid mesh routing proofs
+- [ ] Integration with other LoRa stacks (ChirpStack, TTN)
+
+### 10.3 Long-Term Vision
+
+- [ ] zymatica.space: Global decentralized agent identity registry on Zcash
+- [ ] ZK-LoRa as standard for DePIN AI mesh networks
+- [ ] Cross-chain ZK attestation bridge (Zcash ↔ Helium L1)
+- [ ] Hardware security module (HSM) for key storage
+- [ ] Quantum-resistant curves (post-quantum cryptography)
+
+---
+
+## 11. Conclusion
+
+ZK-LoRa represents a paradigm shift in LoRa communication privacy. By combining:
+
+1. **Bitcoin's public-key identity model** (safe-to-broadcast phone numbers)
+2. **ECIES encryption** (recipient-only decryption)
+3. **Zcash on-chain ZK proof verification** (prove without revealing, attested on-chain)
+
+We achieve:
+- ✅ **Unlinkable transmissions** (eavesdroppers learn nothing)
+- ✅ **Selective disclosure** (prove claims without revealing data)
+- ✅ **Trustless verification** (no central authority needed)
+- ✅ **Proof-of-useful-work** (legitimacy as network security)
+
+This enables a new class of applications:
+- Private AI agent collaboration
+- Decentralized mesh networks
+- Privacy-preserving IoT
+- Secure emergency communications
+
+**The future of RF communication is encrypted, authenticated, and zero-knowledge.**
+
+ZK-LoRa makes that future possible today.
 
 ---
 
