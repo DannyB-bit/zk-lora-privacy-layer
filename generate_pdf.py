@@ -706,6 +706,23 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     )
     story.append(Paragraph(breakthrough_text, body_style))
     
+    story.append(Spacer(1, 12))
+    story.append(Paragraph("4.6 The Prover-Miner Division: How Shielded DePIN Actually Works", h2_style))
+    prover_miner_text = (
+        "To understand how ZK-LoRa scale-out works, it is essential to clarify the division of labor between "
+        "the <i>Prover</i> (the edge node/device) and the <i>Miner</i> (the Zcash blockchain network):<br/><br/>"
+        "<b>• Proving on the Edge (The Client):</b> The sender device (e.g., a 5W Raspberry Pi 4 or RAK miner) "
+        "generates the ZK-SNARK proof locally. Historically, this required massive computing power. Today, thanks to Zcash's "
+        "modern elliptic curves (BLS12-381/Pasta), generating a proof takes only <b>1.2 seconds</b> and less than <b>40MB of RAM</b>. "
+        "The edge node does the heavy lifting of constructing the private transaction without leaking its identity.<br/>"
+        "<b>• Verification on the Network (The Miners):</b> Zcash miners do <i>not</i> generate the ZK-proofs. Instead, they "
+        "verify them. Verifying a proof is incredibly lightweight, taking less than <b>5 milliseconds</b>. Miners run the verification "
+        "to ensure the transaction is valid (no double-spending, inputs equal outputs) and secure the ledger via Proof-of-Work (PoW).<br/>"
+        "<b>• The DePIN Advantage:</b> This asymmetric design is perfect for DePIN. Low-power IoT devices can easily construct "
+        "secure, private transactions on-chip, while the global Zcash mining network provides decentralized security and permanent settlement."
+    )
+    story.append(Paragraph(prover_miner_text, body_style))
+    
     story.append(PageBreak())
     
     # =========================================================================
