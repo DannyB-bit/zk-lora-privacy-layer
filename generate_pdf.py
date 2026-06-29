@@ -830,15 +830,51 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(PageBreak())
     
     # =========================================================================
-    # PAGE 14: SPECIAL THANKS & ACKNOWLEDGEMENTS
+    # PAGE 14: CRYPTOGRAPHIC AUDIT & DEEP VULNERABILITY ANALYSIS
     # =========================================================================
-    story.append(Spacer(1, 40))
+    story.append(Paragraph("■ Cryptographic Audit & Deep Vulnerability Analysis", h1_style))
+    story.append(Spacer(1, 10))
+    
+    audit_intro = (
+        "For ZK-LoRa to achieve absolute Zcash-grade security, we must audit the underlying mathematics, "
+        "cryptographic curves, and hardware implementations of our zero-knowledge systems."
+    )
+    story.append(Paragraph(audit_intro, body_style))
+    story.append(Spacer(1, 8))
+    
+    story.append(Paragraph("14.1 Key Cryptographic Vulnerabilities & Mitigations", h2_style))
+    
+    audit_details = (
+        "<b>1. Trusted Setup (Groth16)</b>: Groth16 requires a phase-2 trusted setup. If the 'toxic waste' "
+        "(&tau;) is not destroyed, an attacker can forge proofs. <i>Mitigation:</i> We will conduct a public MPC "
+        "ceremony (Powers of Tau) with &gt;100 participants. Long-term, we will migrate to <b>Halo2</b> (transparent setup).<br/>"
+        "<b>2. Curve Security (BN254)</b>: Recent NFS advances reduce BN254's security to ~100 bits. "
+        "<i>Mitigation:</i> ZK-LoRa's production spec dictates migration to <b>BLS12-381</b> (128-bit) or the "
+        "Zcash-standard <b>Pasta</b> curves (Pallas/Vesta) for recursive proving.<br/>"
+        "<b>3. Proof Malleability</b>: Groth16 proofs are malleable; an adversary can mutate proof bytes and replay them. "
+        "<i>Mitigation:</i> We bind the proof to the transaction payload and sign the entire packet using <b>Ed25519</b>. "
+        "Any mutation invalidates the signature.<br/>"
+        "<b>4. Under-Constrained Circuits</b>: Missing constraints in Circom allow provers to cheat. "
+        "<i>Mitigation:</i> We run all circuits through <b>Circomspect</b> static analysis and enforce strict bit-decomposition range proofs.<br/>"
+        "<b>5. Side-Channel Attacks</b>: Physical access to edge nodes allows key extraction via power analysis (DPA). "
+        "<i>Mitigation:</i> Node schematics mandate external <b>Secure Elements</b> (e.g., ATECC608B) to keep keys in tamper-resistant silicon."
+    )
+    story.append(Paragraph(audit_details, body_style))
+    story.append(Spacer(1, 10))
+    
+    story.append(NextPageTemplate('Last'))
+    story.append(PageBreak())
+    
+    # =========================================================================
+    # PAGE 15: SPECIAL THANKS & ACKNOWLEDGEMENTS + THE AI COLLECTIVE LOGO (BLACK PAGE)
+    # =========================================================================
+    story.append(Spacer(1, 20))
     thanks_style = ParagraphStyle(
         'ThanksStyle',
         fontName='Helvetica-Oblique',
         fontSize=11,
         leading=16,
-        textColor=colors.HexColor("#334155"),
+        textColor=colors.HexColor("#CBD5E1"),
         alignment=1
     )
     story.append(Paragraph(
@@ -847,37 +883,31 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "research at the edge.",
         thanks_style
     ))
-    story.append(Spacer(1, 40))
+    story.append(Spacer(1, 15))
     
     disclaimer_long = (
         "This whitepaper and proposal are intended for educational and project evaluation purposes only. "
         "This ZK-LoRa codebase is currently pending to be released under the MIT License upon approval of the Grant."
     )
-    story.append(Paragraph(disclaimer_long, ParagraphStyle('DisclaimerLong', alignment=1, fontSize=8.5, leading=13, textColor=colors.HexColor("#64748B"))))
-    story.append(Spacer(1, 40))
+    story.append(Paragraph(disclaimer_long, ParagraphStyle('DisclaimerLong', alignment=1, fontSize=8.5, leading=13, textColor=colors.HexColor("#94A3B8"))))
+    story.append(Spacer(1, 20))
     
     # Add Zcash logo
     if os.path.exists("zcash_logo.png"):
-        story.append(Image("zcash_logo.png", width=60, height=60, hAlign='CENTER'))
+        story.append(Image("zcash_logo.png", width=40, height=40, hAlign='CENTER'))
         story.append(Spacer(1, 10))
         
-    story.append(Paragraph("<font size='14' color='#0F172A'><b>WE ARE</b></font>", ParagraphStyle('WeAre', alignment=1)))
-    story.append(Spacer(1, 15))
+    story.append(Paragraph("<font size='14' color='#FFFFFF'><b>WE ARE</b></font>", ParagraphStyle('WeAre', alignment=1)))
+    story.append(Spacer(1, 10))
     
-    logos_style = ParagraphStyle('Logos', fontName='Helvetica-Bold', fontSize=14, leading=18, textColor=colors.HexColor("#94A3B8"), alignment=1)
+    logos_style = ParagraphStyle('Logos', fontName='Helvetica-Bold', fontSize=14, leading=18, textColor=colors.HexColor("#F3B300"), alignment=1)
     story.append(Paragraph("THE AI COLLECTIVE", logos_style))
-    
-    story.append(NextPageTemplate('Last'))
-    story.append(PageBreak())
-    
-    # =========================================================================
-    # PAGE 15: THE AI COLLECTIVE LOGO (FULL PAGE BLACK)
-    # =========================================================================
-    story.append(Spacer(1, 140))
+    story.append(Spacer(1, 20))
+
     if os.path.exists("theaicollective_logo.jpeg"):
-        story.append(Image("theaicollective_logo.jpeg", width=380, height=380, hAlign='CENTER'))
+        story.append(Image("theaicollective_logo.jpeg", width=250, height=250, hAlign='CENTER'))
     else:
-        story.append(Spacer(1, 380))
+        story.append(Spacer(1, 250))
         
     # Build the document
     doc.build(story, canvasmaker=NumberedCanvas)
