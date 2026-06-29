@@ -694,33 +694,27 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Paragraph("■ Cryptographic Security & Anti-Fraud Analysis", h1_style))
     story.append(Spacer(1, 8))
     
-    sec_intro = (
-        "To satisfy the rigorous safety requirements of the Zcash ecosystem, ZK-LoRa implements a multi-layered "
-        "cryptographic defense. The protocol is designed to withstand physical-layer radio attacks, gateway collusion, "
-        "and metadata deanonymization."
-    )
-    story.append(Paragraph(sec_intro, body_style))
-    story.append(Spacer(1, 6))
-    
     story.append(Paragraph("12.1 Physical RF Layer & Gateway Mitigations", h2_style))
     sec_details_1 = (
         "<b>Replay Protection</b>: Every ZK-proof binds a UTC timestamp and an ephemeral nonce. Gateways reject any "
         "packet outside a ±5-second window or with a duplicate nonce.<br/>"
-        "<b>Sybil Spam Prevention</b>: Sending nodes must solve an RF-Proof-of-Work (Hashcash-style challenge) "
-        "before the gateway verifies their ZK-proof, preventing CPU exhaustion.<br/>"
+        "<b>Sybil Spam Prevention</b>: Sending nodes must solve an RF-Proof-of-Work challenge, or present a symmetric "
+        "HMAC using their registered session key (verified in &lt;1µs), protecting the ZK-SNARK engine from CPU exhaustion.<br/>"
         "<b>Lying Gateway Prevention</b>: Off-grid nodes verify block headers and Merkle paths locally (SPV). "
-        "Gateways cannot forge confirmations without spending the computational power to solve Equihash."
+        "Gateways cannot forge confirmations without spending the computational power to solve Equihash PoW."
     )
     story.append(Paragraph(sec_details_1, body_style))
     story.append(Spacer(1, 6))
 
-    story.append(Paragraph("12.2 P2P Fair Exchange & Metadata Privacy", h2_style))
+    story.append(Paragraph("12.2 Advanced Hardware Scams & ZKCP", h2_style))
     sec_details_2 = (
-        "<b>Zero-Knowledge Contingent Payments (ZKCP)</b>: Solves the Fair Exchange problem. The ZK-SNARK "
-        "circuit guarantees that the encrypted payload contains valid weather data. The payment is locked "
-        "on-chain by a hash-lock, forcing the seller to publish the decryption key to claim the funds.<br/>"
-        "<b>Metadata & Timing Protection</b>: Gateways batch and shuffle mempool broadcasts at randomized intervals, "
-        "and users can utilize pre-funded blind-signed credits to break temporal correlation between radio transmissions and Zcash transactions."
+        "<b>The Gorgon Attack (Selective Dropping)</b>: A malicious gateway claims its routing fee in the mempool but drops the packet. "
+        "We solve this via <b>Zero-Knowledge Proof-of-Delivery (ZK-PoD)</b>: the routing fee output is locked until the gateway presents a "
+        "cryptographic receipt signed by the destination node.<br/>"
+        "<b>The Eclipse Attack (Location Spoofing)</b>: Attacking nodes spoof coordinates to hijack routing. We enforce physical "
+        "<b>Time-of-Flight (ToF) RTT checks</b> using the Semtech SX1302/1303 internal nanosecond clock to verify distance at the speed of light.<br/>"
+        "<b>The Free Rider Attack (Mesh Black Holes)</b>: Relays drop packets to save battery. We implement <b>Neighbor Auditing</b>, "
+        "where surrounding nodes passively attest to transmissions, slashing the reputation of black-hole nodes."
     )
     story.append(Paragraph(sec_details_2, body_style))
     story.append(Spacer(1, 10))
@@ -734,8 +728,8 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         ],
         [
             Paragraph("Sybil Spam", table_cell_bold),
-            Paragraph("RF-Proof-of-Work", table_cell_style),
-            Paragraph("Jammers exhausted by PoW.", table_cell_style)
+            Paragraph("HMAC + RF-Proof-of-Work", table_cell_style),
+            Paragraph("Jammers exhausted / filtered.", table_cell_style)
         ],
         [
             Paragraph("Lying Gateway", table_cell_bold),
@@ -743,9 +737,19 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
             Paragraph("Cannot forge Equihash PoW.", table_cell_style)
         ],
         [
-            Paragraph("Fake Data", table_cell_bold),
-            Paragraph("ZK-SNARK (AES + Hash)", table_cell_style),
-            Paragraph("Atomic data-for-ZEC swap.", table_cell_style)
+            Paragraph("Gorgon Attack", table_cell_bold),
+            Paragraph("ZK-Proof-of-Delivery", table_cell_style),
+            Paragraph("No fee payout without delivery receipt.", table_cell_style)
+        ],
+        [
+            Paragraph("Location Spoof", table_cell_bold),
+            Paragraph("Time-of-Flight (ToF) RTT", table_cell_style),
+            Paragraph("Physical distance verified.", table_cell_style)
+        ],
+        [
+            Paragraph("Free Rider", table_cell_bold),
+            Paragraph("Neighbor Auditing", table_cell_style),
+            Paragraph("Black-hole nodes bypassed.", table_cell_style)
         ],
         [
             Paragraph("Timing Attack", table_cell_bold),
