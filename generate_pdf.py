@@ -905,6 +905,21 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     else:
         story.append(Spacer(1, 250))
         
+    story.append(Spacer(1, 15))
+    quote_style = ParagraphStyle(
+        'CoverQuote',
+        fontName='Helvetica-Oblique',
+        fontSize=9.5,
+        leading=14,
+        textColor=colors.HexColor("#94A3B8"),
+        alignment=1
+    )
+    story.append(Paragraph(
+        "\"The impossible is just code waiting to be written, physics waiting to be rewritten,<br/>"
+        "math a work in progress, and truth waiting to be discovered.\"",
+        quote_style
+    ))
+        
     # Build the document
     doc.build(story, canvasmaker=NumberedCanvas)
     print("PDF Generation complete: ZK_LoRa_Whitepaper.pdf")
