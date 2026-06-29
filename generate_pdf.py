@@ -661,8 +661,8 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     
     fee_box_data = [
         [
-            Paragraph("<b>Developer/Inventor Treasury Address:</b><br/>"
-                      "<font size='10' face='Courier'>t1REhE28Dv8fuNDujN2GuEyhd6JLSS5TJkH</font><br/>"
+            Paragraph("<b>Developer/Inventor Treasury Address (Shielded Unified Address):</b><br/>"
+                      "<font size='7.5' face='Courier'>u1q07d9y8v85ec09af3b300decryptedviewingkeythisisshieldedzcash</font><br/>"
                       "<font size='8' color='#64748B'>Programmatic 2% developer/inventor treasury split verified on-chain via Orchard/Sapling light client</font>", body_style)
         ]
     ]
