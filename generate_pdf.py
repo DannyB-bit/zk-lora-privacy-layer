@@ -97,26 +97,77 @@ def create_qr_code(url, size=80):
     d.add(qr)
     return d
 
-def make_code_block(code_text, style_sheet):
+def make_code_block(code_text, style_sheet, title="terminal"):
+    # Replace unicode box-drawing characters with clean ASCII first
+    clean_text = (
+        code_text.replace("│", "|")
+        .replace("─", "-")
+        .replace("┼", "+")
+        .replace("▲", "^")
+        .replace("▼", "v")
+        .replace("◄", "<")
+        .replace("►", ">")
+    )
+    
+    # Calculate optimal font size to prevent wrapping
+    max_line_len = max(len(line) for line in clean_text.strip().split('\n'))
+    # Available width is 504 - 24 = 480
+    if max_line_len > 0:
+        calculated_size = 480.0 / (max_line_len * 0.6)
+        font_size = min(7.5, max(5.2, calculated_size))
+    else:
+        font_size = 7.0
+        
     code_style = ParagraphStyle(
         'CodeBlock',
         parent=style_sheet['Code'],
         fontName='Courier',
-        fontSize=7.5,
-        leading=10,
-        textColor=colors.HexColor("#0F172A"),
+        fontSize=font_size,
+        leading=font_size + 2.0,
+        textColor=colors.HexColor("#38BDF8"), # Cyan/Light Blue
     )
-    paragraphs = [Paragraph(line.replace(" ", "&nbsp;").replace("<", "&lt;").replace(">", "&gt;"), code_style) for line in code_text.strip().split('\n')]
     
-    # Wrap in a table with background
-    t = Table([[p] for p in paragraphs], colWidths=[504])
+    paragraphs = [Paragraph(line.replace(" ", "&nbsp;").replace("<", "&lt;").replace(">", "&gt;"), code_style) for line in clean_text.strip().split('\n')]
+    
+    # Create window control dots (red, yellow, green)
+    d_dots = Drawing(40, 10)
+    d_dots.add(Rect(0, 2, 6, 6, rx=3, ry=3, fillColor=colors.HexColor("#EF4444"), strokeColor=None))
+    d_dots.add(Rect(10, 2, 6, 6, rx=3, ry=3, fillColor=colors.HexColor("#F59E0B"), strokeColor=None))
+    d_dots.add(Rect(20, 2, 6, 6, rx=3, ry=3, fillColor=colors.HexColor("#10B981"), strokeColor=None))
+    
+    title_style = ParagraphStyle('TermTitle', fontName='Helvetica-Bold', fontSize=7, leading=9, textColor=colors.HexColor("#94A3B8"), alignment=1)
+    
+    # Nested table only for the very simple top bar
+    top_bar_data = [
+        [d_dots, Paragraph(title, title_style), ""]
+    ]
+    top_bar_table = Table(top_bar_data, colWidths=[60, 384, 60])
+    top_bar_table.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#1E293B")),
+        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2),
+        ('TOPPADDING', (0,0), (-1,-1), 2),
+    ]))
+    
+    # Add paragraphs directly as rows to prevent nested table height issues
+    table_data = [[top_bar_table]]
+    for p in paragraphs:
+        table_data.append([p])
+        
+    t = Table(table_data, colWidths=[504])
     t.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#F8FAFC")),
-        ('LEFTPADDING', (0,0), (-1,-1), 12),
-        ('RIGHTPADDING', (0,0), (-1,-1), 12),
-        ('TOPPADDING', (0,0), (-1,-1), 8),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 8),
-        ('BOX', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
+        ('BACKGROUND', (0,1), (-1,-1), colors.HexColor("#0F172A")),
+        ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#334155")),
+        ('LEFTPADDING', (0,0), (-1,-1), 0),
+        ('RIGHTPADDING', (0,0), (-1,-1), 0),
+        ('TOPPADDING', (0,0), (-1,-1), 0),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 0),
+        ('LEFTPADDING', (0,1), (-1,-1), 12),
+        ('RIGHTPADDING', (0,1), (-1,-1), 12),
+        ('TOPPADDING', (0,1), (-1,-1), 1),
+        ('BOTTOMPADDING', (0,1), (-1,-1), 1),
+        ('TOPPADDING', (0,1), (0,1), 6),
+        ('BOTTOMPADDING', (0,-1), (0,-1), 6),
     ]))
     return t
 
@@ -509,7 +560,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "    valid <== 1;\n"
         "}"
     )
-    zk_story.append(make_code_block(circuit_code, styles))
+    zk_story.append(make_code_block(circuit_code, styles, title="AgentValidityProof.circom"))
     story.append(KeepTogether(zk_story))
     
     story.append(PageBreak())
@@ -567,7 +618,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "         │                                                         │    verifies payment in mempool,\n"
         "         │                                                         │    and relays to WAN.\n"
     )
-    story.append(make_code_block(ascii_flow, styles))
+    story.append(make_code_block(ascii_flow, styles, title="zk-lora-operator ~ micropayment_flow.sh"))
     
     story.append(PageBreak())
     
@@ -674,8 +725,8 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "        │                                  │                                  │                               │ - Gateway gets paid.\n"
         "        │                                  │                                  │                               │ - Dev gets paid.\n"
     )
-    story.append(make_code_block(scenario_a_flow, styles))
-    story.append(Spacer(1, 10))
+    story.append(make_code_block(scenario_a_flow, styles, title="zk-lora-operator ~ data_marketplace.sh"))
+    story.append(PageBreak())
     
     story.append(Paragraph("11.2 Scenario B: Private Search & Rescue Swarm Coordination", h2_style))
     scenario_b_text = (
@@ -685,6 +736,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "drones by monitoring their RF signatures. They pay local relay nodes in ZEC to extend their coordination range."
     )
     story.append(Paragraph(scenario_b_text, body_style))
+    story.append(PageBreak())
     
     story.append(Paragraph("11.3 Scenario C: Smart Agriculture & Environmental Health Monitoring", h2_style))
     scenario_c_text = (
