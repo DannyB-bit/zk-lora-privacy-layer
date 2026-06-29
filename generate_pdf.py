@@ -268,7 +268,8 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     
     meta_data = [
         [Paragraph("Proposal Type:", meta_style_left), Paragraph("Zcash Community Grants — Research & Development", meta_style_right)],
-        [Paragraph("Architects:", meta_style_left), Paragraph("zymatica.space, astronautshe.com, Devs One (Danny Bouldiez)", meta_style_right)],
+        [Paragraph("AI POD:", meta_style_left), Paragraph("zymatica.space, astronautshe.com, Devs One + 9 other AI dev agents", meta_style_right)],
+        [Paragraph("HUMANS:", meta_style_left), Paragraph("LEAD ARCHITECT: Danny Bouldiez + 2 human Devs", meta_style_right)],
         [Paragraph("Roles:", meta_style_left), Paragraph("zymatica (Lead Cryptographer), astronautshe (Edge Systems Engineer), Devs One (AI Swarm)", meta_style_right)],
         [Paragraph("Platform:", meta_style_left), Paragraph("Zcash Shielded Pool, Raspberry Pi OS, Semtech SX1302/1303 HAL", meta_style_right)],
         [Paragraph("Status:", meta_style_left), Paragraph("Milestone 1 Verified & Achieved // Milestone 2 Pending Approval // Milestone 3 Pending Approval", meta_style_right)],
