@@ -6,7 +6,7 @@
 
 ## Abstract
 
-We present ZK-LoRa, a revolutionary privacy-preserving identity layer for LoRa mesh networks that combines Bitcoin's public-key cryptography with Zcash's zero-knowledge proof and shielded transaction architecture. ZK-LoRa enables AI agents to communicate securely over RF without revealing their real hardware identities, enabling unlinkable transactions, selective disclosure, and proof-of-useful-work consensus for decentralized AI coordination — with every routing fee compensated securely in ZEC via Zcash shielded transactions. The payment split is completely programmable, allowing a custom percentage (such as 5% or 10%) to be routed directly to the Zcash Foundation to support the ecosystem, with a 2% split supporting the developer treasury.
+We present ZK-LoRa, a revolutionary privacy-preserving identity layer for LoRa mesh networks that combines Bitcoin's public-key cryptography with Zcash's zero-knowledge proof and shielded transaction architecture. ZK-LoRa enables AI agents to communicate securely over RF without revealing their real hardware identities, enabling unlinkable transactions, selective disclosure, and proof-of-useful-work consensus for decentralized AI coordination — with every routing fee compensated securely in ZEC via Zcash shielded transactions. The payment split is completely programmable. This allows a custom percentage to support the Zcash Foundation, and/or any developer that forks this codebase to add their own percentage based on their contributions to improve the code (subject to Foundation approval), with a 2% split supporting us — the developer/inventor treasury — to ensure ongoing R&D.
 
 **Key Innovation:** Agents broadcast zero-knowledge proofs of legitimacy instead of static identifiers, making eavesdropping useless while maintaining verifiable authenticity.
 
@@ -241,7 +241,7 @@ Generation: O(n) time (seconds, tunable via difficulty)
 - Low-reputation agents (or spammers) get rate-limited by on-chain stake requirements.
 - Network transaction fees are paid directly to miners and relays.
 - **Programmable Split & Ecosystem Support:** Because Zcash shielded transactions (Orchard/Sapling) support multiple outputs within a single transaction bundle, the payment split is completely programmable. 
-  - **2%** $\rightarrow$ Developer Treasury (Protocol maintenance and developer support).
+  - **2%** $\rightarrow$ Developer/Inventor Treasury (supporting us to ensure ongoing R&D, and/or any developer that forks this codebase to add their own percentage based on their contributions to improve the code, subject to Foundation approval).
   - **Custom $X\%$ (e.g., 5% or 10%)** $\rightarrow$ **Zcash Foundation / Community Fund** (Directly contributing back to the Zcash ecosystem to support future research and development).
   - **Remainder ($98 - X\%$)** $\rightarrow$ **LoRa Gateway** (Bandwidth and hardware compensation).
   This three-way split is verified on-chip by the gateway's mempool scanner before routing.
@@ -281,12 +281,12 @@ In this scenario, an autonomous drone (Agent-A) and a ground-based weather senso
 1. **The Request & Data Delivery (Off-Grid)**: Drone (Agent-A) broadcasts: "Need local wind speed at Coordinates X,Y. Will pay 0.002 ZEC + 0.0001 ZEC routing fee." Sensor (Agent-B) hears the broadcast, compiles the data, signs it with its private key, and transmits the payload back to the Drone over LoRa. At this point, the Drone has the data, but the Sensor hasn't been paid yet.
 2. **The Drone Constructs the Shielded Transaction**: The Drone constructs a single Zcash shielded transaction containing three outputs:
    - **Output 1 (Data Payment)**: 0.00196 ZEC (98% of the data price) sent to the Sensor (Agent-B).
-   - **Output 2 (Developer Royalty)**: 0.00004 ZEC (2% of the data price) sent to the Developer Treasury.
+   - **Output 2 (Developer/Inventor Royalty)**: 0.00004 ZEC (2% of the data price) sent to the Developer/Inventor Treasury.
    - **Output 3 (Routing Fee)**: 0.00010 ZEC sent to the Gateway as compensation for internet relaying.
    Since the Drone is off-grid, it cannot post this transaction to the blockchain. Instead, it broadcasts the raw, signed transaction hex over the air via LoRa.
 3. **The Gateway Relays the Transaction & Takes Its Cut**: The Gateway receives the raw Zcash transaction hex over the radio. The gateway's software scans the transaction outputs:
    - It verifies that the transaction sends 0.00010 ZEC to the gateway's own address.
-   - It verifies that the transaction sends 0.00004 ZEC (2%) to the developer treasury.
+   - It verifies that the transaction sends 0.00004 ZEC (2%) to the developer/inventor treasury.
    Once verified, the gateway broadcasts the raw transaction to the Zcash blockchain via its internet connection.
 
 #### Scenario B: Private Search & Rescue Swarm Coordination

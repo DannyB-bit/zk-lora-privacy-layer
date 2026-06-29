@@ -395,7 +395,9 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "settings and 10–15+ km in clear line-of-sight. Operators can participate in private edge routing, verify ZK-proofs "
         "on-chip, and earn shielded Zcash (ZEC) micropayments. Thanks to Zcash's multi-output transaction architecture, "
         "the payment split is completely programmable, allowing a custom percentage to support the Zcash Foundation, "
-        "with a 2% split supporting the developer treasury."
+        "and/or any developer that forks this codebase to add their own percentage based on their contributions to improve "
+        "the code (subject to Foundation approval), with a 2% split supporting us—the developer/inventor treasury—to ensure "
+        "ongoing R&amp;D."
     )
     story.append(Paragraph(summary_text_3, body_style))
     story.append(Spacer(1, 10))
@@ -653,15 +655,15 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "<b>3. The Cryptographic Bind:</b> Inside the encrypted Zcash memo field, the sender writes <i>ref:&lt;Hash_H&gt;</i>.<br/>"
         "<b>4. Mempool Scanning:</b> The gateway runs the <i>ZcashMempoolScanner</i> (the Rust/Python engine built in Milestone 2) to scan the Zcash mempool and decrypt incoming memos using its Incoming Viewing Key (IVK).<br/>"
         "<b>5. Instant Verification:</b> The moment the scanner detects a pending transaction in the mempool containing <i>ref:&lt;Hash_H&gt;</i>, the gateway knows the packet has been paid.<br/>"
-        "<b>6. Programmatic Split:</b> The scanner verifies that the transaction programmatically routed <b>2% of the fee</b> to the developer treasury address:<br/>"
+        "<b>6. Programmatic Split:</b> Thanks to Zcash's multi-output transaction architecture, the payment split is completely programmable, allowing a custom percentage to support the Zcash Foundation, and/or any developer that forks this codebase to add their own percentage based on their contributions to improve the code (subject to Foundation approval), with a 2% split supporting us—the developer/inventor treasury—to ensure ongoing R&amp;D. The scanner verifies that the transaction programmatically routed this 2% split to the developer/inventor treasury address:<br/>"
     )
     story.append(Paragraph(flow_detail, body_style))
     
     fee_box_data = [
         [
-            Paragraph("<b>Developer Treasury Address:</b><br/>"
+            Paragraph("<b>Developer/Inventor Treasury Address:</b><br/>"
                       "<font size='10' face='Courier'>t1REhE28Dv8fuNDujN2GuEyhd6JLSS5TJkH</font><br/>"
-                      "<font size='8' color='#64748B'>Programmatic 2% fee split verified on-chain via Orchard/Sapling light client</font>", body_style)
+                      "<font size='8' color='#64748B'>Programmatic 2% developer/inventor treasury split verified on-chain via Orchard/Sapling light client</font>", body_style)
         ]
     ]
     fee_box_table = Table(fee_box_data, colWidths=[504])
@@ -688,7 +690,9 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "<b>🚀 Innovation C: Native Zcash DePIN (No Custom Token Needed)</b><br/>"
         "Most DePIN projects (like Helium, Helium Mobile, or Hivemapper) launch their own custom tokens (like HNT, MOBILE, or HONEY) "
         "on Solana or custom chains. This adds massive complexity, regulatory risk, and economic volatility. ZK-LoRa runs natively "
-        "on Zcash, using ZEC directly for private routing fees, with the gateway nodes programmatically enforcing a 2% developer treasury split on-chip."
+        "on Zcash, using ZEC directly for private routing fees. The payment split is completely programmable, allowing a custom percentage "
+        "to support the Zcash Foundation, and/or any developer that forks this codebase to add their own percentage based on their contributions "
+        "to improve the code (subject to Foundation approval), with a 2% split supporting us—the developer/inventor treasury—to ensure ongoing R&amp;D."
     )
     story.append(Paragraph(innovations_text, body_style))
     
@@ -698,7 +702,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     breakthrough_text = (
         "<b>• Zero-Latency Routing:</b> By verifying payments in the mempool rather than waiting for block confirmations (which take 75 seconds), ZK-LoRa achieves near-instantaneous packet relaying.<br/>"
         "<b>• Unlinkable Physical-to-Financial Mapping:</b> To an outside observer, the Zcash transaction is just encrypted noise on the blockchain, and the LoRa packet is just an encrypted RF burst. There is no mathematical way for an eavesdropper to link the two.<br/>"
-        "<b>• Sustainable Open Source:</b> The 2% fee split is enforced on-chip by the gateway. If a sender tries to bypass the developer fee, the gateway's mempool scanner rejects the transaction, and the gateway refuses to route the packet. This creates a self-sustaining funding loop for your project."
+        "<b>• Sustainable Open Source:</b> The fee split is programmatically enforced on-chip by the gateway. Senders can route custom percentages to support the Zcash Foundation and/or any developer that forks this codebase to improve it (subject to Foundation approval), alongside the 2% split supporting the developer/inventor treasury. If a sender tries to bypass these required splits, the gateway's mempool scanner rejects the transaction, and the gateway refuses to route the packet, creating a self-sustaining funding loop for the entire ecosystem."
     )
     story.append(Paragraph(breakthrough_text, body_style))
     
