@@ -242,6 +242,15 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         spaceAfter=8
     )
 
+    body_style_compact = ParagraphStyle(
+        'BodyTextCustomCompact',
+        fontName='Helvetica',
+        fontSize=8.5,
+        leading=12.5,
+        textColor=colors.HexColor("#334155"),
+        spaceAfter=6
+    )
+
     caption_style = ParagraphStyle(
         'CaptionStyle',
         parent=body_style,
@@ -1027,7 +1036,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "extreme systemic risk of coupling zero-knowledge proof verification directly to monetary supply consensus. "
         "ZK-LoRa is architected from the ground up to be immune to such catastrophic failures."
     )
-    story.append(Paragraph(soundness_intro, body_style))
+    story.append(Paragraph(soundness_intro, body_style_compact))
     story.append(Spacer(1, 10))
     
     story.append(Paragraph("9.1 How ZK-LoRa Avoids Soundness Failures", h2_style))
@@ -1056,8 +1065,30 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "<font face='Courier'>rust/src/main.rs:L30</font>) allows developers to cross-verify proofs across multiple elliptic curves "
         "(BN254, BLS12-381, Pallas, Vesta) to ensure absolute mathematical consistency."
     )
-    story.append(Paragraph(soundness_details, body_style))
-    story.append(PageBreak())
+    story.append(Paragraph(soundness_details, body_style_compact))
+    story.append(Spacer(1, 10))
+    
+    story.append(Paragraph("9.2 Physical & Network-Layer Redundancies (Defense-in-Depth)", h2_style))
+    
+    redundancies_text = (
+        "Even if an attacker successfully exploits an unknown soundness flaw in the ZK circuit to forge a proof of "
+        "identity, ZK-LoRa implements three additional layers of physical and network-layer defense to prevent unauthorized routing:<br/>"
+        "<b>1. Time-of-Flight (ToF) Physical Bounding:</b> Senders must communicate over physical radio waves. The gateway uses "
+        "Semtech SX1302/1303 internal hardware timers to measure the Round-Trip Time (RTT) of the signal at the speed of light. If the physical "
+        "distance does not match the declared coordinate claims, the packet is immediately dropped as a location spoof, preventing remote "
+        "attackers from abusing forged proofs (See <font face='Courier'>ToF Boundary</font> in <font face='Courier'>rust/src/main.rs:L1010</font>).<br/>"
+        "<b>2. Session-Locked HMACs & Nonces:</b> The ZK proof is only verified once during the initial session handshake. Subsequent data packets "
+        "require a valid HMAC keyed with a session-specific, single-use nonce. An attacker with a forged ZK proof cannot generate valid HMACs for "
+        "new data packets without the ephemeral session key, rendering the forged proof useless for actual routing (See <font face='Courier'>SessionSecurity</font> "
+        "in <font face='Courier'>rust/src/main.rs:L917</font>).<br/>"
+        "<b>3. Neighbor Auditing & Reputation:</b> Neighboring relay nodes passively listen to the RF spectrum to audit their peers' behavior. "
+        "If a node attempts to spam the network or use forged sessions, neighboring nodes flag the anomaly, decrement its reputation score, "
+        "and dynamically route around it (See <font face='Courier'>Neighbor Audit</font> in <font face='Courier'>rust/src/main.rs:L1022</font>).<br/>"
+        "<b>4. ZK-PoW Rate Limiting (Anti-DoS):</b> Senders must solve a Proof-of-Work (PoW) puzzle (similar to Hashcash) before the gateway will "
+        "execute the ZK-verifier. This makes spamming forged proofs computationally and energetically expensive, preventing CPU-exhaustion attacks."
+    )
+    story.append(Paragraph(redundancies_text, body_style_compact))
+    story.append(Spacer(1, 15))
     
     # =========================================================================
     # PAGE 16: CRYPTOGRAPHIC AUDIT & DEEP VULNERABILITY ANALYSIS
@@ -1070,7 +1101,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "cryptographic curves, and hardware implementations of our zero-knowledge systems. Below is a forensic "
         "breakdown of key vulnerabilities, reviewer critiques, and their corresponding real-world code solutions."
     )
-    story.append(Paragraph(audit_intro, body_style))
+    story.append(Paragraph(audit_intro, body_style_compact))
     story.append(Spacer(1, 8))
     
     story.append(Paragraph("8.1 Key Cryptographic Vulnerabilities & Rust Code Mitigations", h2_style))
@@ -1096,7 +1127,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "<i>Mitigation:</i> Senders keep keys fully encrypted on disk. Keys are only decrypted in secure memory during proof generation "
         "and immediately wiped. (See <font face='Courier'>Identity::load_or_create</font> in <font face='Courier'>rust/src/main.rs:L177</font>)."
     )
-    story.append(Paragraph(audit_details, body_style))
+    story.append(Paragraph(audit_details, body_style_compact))
     story.append(Spacer(1, 10))
     
     story.append(Paragraph("8.2 Ironclad Solutions to Core Reviewer Critiques", h2_style))
@@ -1113,9 +1144,8 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "reducing packet overhead by 96% while maintaining 100% ZK-security. (See <font face='Courier'>SessionSecurity</font> in "
         "<font face='Courier'>rust/src/main.rs:L917</font>)."
     )
-    story.append(Paragraph(critique_text, body_style))
-    story.append(Spacer(1, 10))
-    story.append(PageBreak())
+    story.append(Paragraph(critique_text, body_style_compact))
+    story.append(Spacer(1, 15))
     
     # =========================================================================
     # PAGE 17: PROJECT ROADMAP & FUTURE WORK
@@ -1128,7 +1158,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "development roadmap for transitioning from the current working prototype to full production deployment "
         "on the Zcash mainnet."
     )
-    story.append(Paragraph(roadmap_intro, body_style))
+    story.append(Paragraph(roadmap_intro, body_style_compact))
     story.append(Spacer(1, 12))
     
     story.append(Paragraph("10.1 Short-Term (v2.0) — Zcash Testnet Integration", h2_style))
@@ -1141,7 +1171,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "<b>• Mempool Scanner Optimization:</b> Optimize the light-client mempool scanner to verify inbound shielded Zcash payments in "
         "under 10 milliseconds."
     )
-    story.append(Paragraph(st_text, body_style))
+    story.append(Paragraph(st_text, body_style_compact))
     story.append(Spacer(1, 12))
     
     story.append(Paragraph("10.2 Medium-Term (v3.0) — Zcash Mainnet & Mesh Scale-Out", h2_style))
@@ -1155,7 +1185,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "<b>• Zcash Pay Micropayment Integration:</b> Enable automated, real-time micropayment rewards for valid mesh routing proofs, "
         "interfacing with ChirpStack and The Things Network (TTN)."
     )
-    story.append(Paragraph(mt_text, body_style))
+    story.append(Paragraph(mt_text, body_style_compact))
     story.append(Spacer(1, 10))
     
     story.append(NextPageTemplate('Last'))
