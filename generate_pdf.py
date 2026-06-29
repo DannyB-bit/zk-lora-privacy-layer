@@ -291,10 +291,10 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     
     summary_text_2 = (
         "This project represents a massive opportunity for the Zcash community to bridge digital privacy "
-        "with physical hardware by leveraging existing DePIN infrastructure. Over the past several years, "
-        "hundreds of thousands of LoRaWAN gateways were deployed globally (with over 980,000 registered on-chain). "
-        "As network reward structures and optimization proposals (such as HIP-149) evolve, a significant portion "
-        "of these gateways have become underutilized, offline, or economically dormant."
+        "with physical hardware by leveraging existing DePIN infrastructure. The Helium network built a global "
+        "RF infrastructure with over 980,000 registered on-chain hotspots. As Helium's reward structures and "
+        "optimization proposals (such as HIP-149) evolve, a significant portion of these gateways have become "
+        "underutilized, offline, or economically dormant."
     )
     story.append(Paragraph(summary_text_2, body_style))
     
