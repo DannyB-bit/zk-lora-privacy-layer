@@ -16,6 +16,44 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.graphics.shapes import Drawing, Rect
 from reportlab.graphics.barcode.qr import QrCodeWidget
 
+from reportlab.pdfgen import canvas
+
+class NumberedCanvas(canvas.Canvas):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._saved_page_states = []
+
+    def showPage(self):
+        self._saved_page_states.append(dict(self.__dict__))
+        self._startPage()
+
+    def save(self):
+        num_pages = len(self._saved_page_states)
+        for state in self._saved_page_states:
+            self.__dict__.update(state)
+            self.draw_page_number(num_pages)
+            super().showPage()
+        super().save()
+
+    def draw_page_number(self, page_count):
+        if self._pageNumber == 1 or self._pageNumber == page_count:
+            return # Suppress on cover and last page
+        self.saveState()
+        self.setFont("Helvetica", 8)
+        self.setFillColor(colors.HexColor("#555566"))
+        
+        # Header
+        self.drawString(54, self._pagesize[1] - 36, "PROJECT ZK-LORA: ZERO-KNOWLEDGE PRIVATE AI-TO-AI MESH")
+        self.setStrokeColor(colors.HexColor("#E2E8F0"))
+        self.setLineWidth(0.5)
+        self.line(54, self._pagesize[1] - 42, self._pagesize[0] - 54, self._pagesize[1] - 42)
+        
+        # Footer
+        self.drawString(54, 36, "Zcash Community Grants // Devs One (Danny Bouldiez) // TheAiCollective.art")
+        self.drawRightString(self._pagesize[0] - 54, 36, f"Page {self._pageNumber} of {page_count}")
+        self.line(54, 48, self._pagesize[0] - 54, 48)
+        self.restoreState()
+
 # -------------------------------------------------------------------------
 # Page Background & Decoration Callbacks
 # -------------------------------------------------------------------------
@@ -41,20 +79,7 @@ def draw_cover_page(canvas, doc):
     canvas.restoreState()
 
 def draw_normal_page(canvas, doc):
-    canvas.saveState()
-    # Header
-    canvas.setFont('Helvetica', 8)
-    canvas.setFillColor(colors.HexColor("#555566"))
-    canvas.drawString(54, doc.pagesize[1] - 36, "PROJECT ZK-LORA: ZERO-KNOWLEDGE PRIVATE AI-TO-AI MESH")
-    canvas.setStrokeColor(colors.HexColor("#E2E8F0"))
-    canvas.setLineWidth(0.5)
-    canvas.line(54, doc.pagesize[1] - 42, doc.pagesize[0] - 54, doc.pagesize[1] - 42)
-    
-    # Footer
-    canvas.drawString(54, 36, "Zcash Community Grants // Devs One (Danny Bouldiez) // TheAiCollective.art")
-    canvas.drawRightString(doc.pagesize[0] - 54, 36, f"Page {doc.page} of 11")
-    canvas.line(54, 48, doc.pagesize[0] - 54, 48)
-    canvas.restoreState()
+    pass
 
 def draw_last_page(canvas, doc):
     canvas.saveState()
@@ -456,20 +481,20 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     
     circuit_code = (
         "// ZK-SNARK Agent Validity Circuit (AgentValidityProof.circom)\n"
-        "pragma circom 2.0.0;\n\n"
+        "pragma circom 2.0.0;\n"
         "include \"node_modules/circomlib/circuits/poseidon.circom\";\n"
-        "include \"node_modules/circomlib/circuits/babyjubjub.circom\";\n\n"
+        "include \"node_modules/circomlib/circuits/babyjubjub.circom\";\n"
         "template AgentValidityProof() {\n"
         "    signal input private_key;      // Witness (Secret Private Key)\n"
         "    signal input public_key_hash;  // Public Input (Registered Identity Hash)\n"
-        "    signal output valid;           // 1 if valid, 0 if invalid\n\n"
+        "    signal output valid;           // 1 if valid, 0 if invalid\n"
         "    // Derive public key on BabyJubjub curve\n"
         "    component derive_pubkey = BabyJubjubDerive();\n"
-        "    derive_pubkey.private_key <== private_key;\n\n"
+        "    derive_pubkey.private_key <== private_key;\n"
         "    // Hash the derived public key using Poseidon\n"
         "    component hasher = Poseidon(2);\n"
         "    hasher.inputs[0] <== derive_pubkey.x;\n"
-        "    hasher.inputs[1] <== derive_pubkey.y;\n\n"
+        "    hasher.inputs[1] <== derive_pubkey.y;\n"
         "    // Enforce that the hash matches the public input\n"
         "    hasher.out === public_key_hash;\n"
         "    valid <== 1;\n"
@@ -720,7 +745,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         story.append(Spacer(1, 380))
         
     # Build the document
-    doc.build(story)
+    doc.build(story, canvasmaker=NumberedCanvas)
     print("PDF Generation complete: ZK_LoRa_Whitepaper.pdf")
 
 if __name__ == "__main__":
