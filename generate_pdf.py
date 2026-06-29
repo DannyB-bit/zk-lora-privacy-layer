@@ -689,54 +689,96 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(PageBreak())
     
     # =========================================================================
-    # PAGE 12: PERFORMANCE & SECURITY ANALYSIS
+    # PAGE 12: CRYPTOGRAPHIC SECURITY & ANTI-FRAUD ANALYSIS
     # =========================================================================
-    story.append(Paragraph("■ Performance & Security Analysis", h1_style))
+    story.append(Paragraph("■ Cryptographic Security & Anti-Fraud Analysis", h1_style))
+    story.append(Spacer(1, 8))
+    
+    sec_intro = (
+        "To satisfy the rigorous safety requirements of the Zcash ecosystem, ZK-LoRa implements a multi-layered "
+        "cryptographic defense. The protocol is designed to withstand physical-layer radio attacks, gateway collusion, "
+        "and metadata deanonymization."
+    )
+    story.append(Paragraph(sec_intro, body_style))
+    story.append(Spacer(1, 6))
+    
+    story.append(Paragraph("12.1 Physical RF Layer & Gateway Mitigations", h2_style))
+    sec_details_1 = (
+        "<b>Replay Protection</b>: Every ZK-proof binds a UTC timestamp and an ephemeral nonce. Gateways reject any "
+        "packet outside a ±5-second window or with a duplicate nonce.<br/>"
+        "<b>Sybil Spam Prevention</b>: Sending nodes must solve an RF-Proof-of-Work (Hashcash-style challenge) "
+        "before the gateway verifies their ZK-proof, preventing CPU exhaustion.<br/>"
+        "<b>Lying Gateway Prevention</b>: Off-grid nodes verify block headers and Merkle paths locally (SPV). "
+        "Gateways cannot forge confirmations without spending the computational power to solve Equihash."
+    )
+    story.append(Paragraph(sec_details_1, body_style))
+    story.append(Spacer(1, 6))
+
+    story.append(Paragraph("12.2 P2P Fair Exchange & Metadata Privacy", h2_style))
+    sec_details_2 = (
+        "<b>Zero-Knowledge Contingent Payments (ZKCP)</b>: Solves the Fair Exchange problem. The ZK-SNARK "
+        "circuit guarantees that the encrypted payload contains valid weather data. The payment is locked "
+        "on-chain by a hash-lock, forcing the seller to publish the decryption key to claim the funds.<br/>"
+        "<b>Metadata & Timing Protection</b>: Gateways batch and shuffle mempool broadcasts at randomized intervals, "
+        "and users can utilize pre-funded blind-signed credits to break temporal correlation between radio transmissions and Zcash transactions."
+    )
+    story.append(Paragraph(sec_details_2, body_style))
     story.append(Spacer(1, 10))
     
-    story.append(Paragraph("Security Matrix", h2_style))
-    
     sec_data = [
-        [Paragraph("Security Property", table_hdr_style), Paragraph("ZK-LoRa Status", table_hdr_style), Paragraph("Mechanisms Used", table_hdr_style)],
+        [Paragraph("Attack Vector", table_hdr_style), Paragraph("Mitigation Mechanism", table_hdr_style), Paragraph("Security Guarantee", table_hdr_style)],
         [
-            Paragraph("Unlinkable Transmissions", table_cell_bold),
-            Paragraph("✅ FULLY SECURED", table_cell_style),
-            Paragraph("Fresh ZK proof generated per packet.", table_cell_style)
+            Paragraph("Replay Attack", table_cell_bold),
+            Paragraph("Nonces + ±5s Window", table_cell_style),
+            Paragraph("Duplicate packets rejected.", table_cell_style)
         ],
         [
-            Paragraph("Identity Masking", table_cell_bold),
-            Paragraph("✅ FULLY SECURED", table_cell_style),
-            Paragraph("HASH160 phone numbers, public keys hidden.", table_cell_style)
+            Paragraph("Sybil Spam", table_cell_bold),
+            Paragraph("RF-Proof-of-Work", table_cell_style),
+            Paragraph("Jammers exhausted by PoW.", table_cell_style)
         ],
         [
-            Paragraph("Replay Protection", table_cell_bold),
-            Paragraph("✅ FULLY SECURED", table_cell_style),
-            Paragraph("Timestamps + nonces embedded in ZK witness.", table_cell_style)
+            Paragraph("Lying Gateway", table_cell_bold),
+            Paragraph("Consensus + SPV Checks", table_cell_style),
+            Paragraph("Cannot forge Equihash PoW.", table_cell_style)
         ],
         [
-            Paragraph("Forward Secrecy", table_cell_bold),
-            Paragraph("✅ FULLY SECURED", table_cell_style),
-            Paragraph("ECIES ephemeral key exchanges.", table_cell_style)
+            Paragraph("Fake Data", table_cell_bold),
+            Paragraph("ZK-SNARK (AES + Hash)", table_cell_style),
+            Paragraph("Atomic data-for-ZEC swap.", table_cell_style)
+        ],
+        [
+            Paragraph("Timing Attack", table_cell_bold),
+            Paragraph("Batched Shuffling / Credits", table_cell_style),
+            Paragraph("Breaks temporal correlation.", table_cell_style)
         ],
     ]
-    sec_table = Table(sec_data, colWidths=[150, 120, 234])
+    sec_table = Table(sec_data, colWidths=[110, 150, 244])
     sec_table.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#0F172A")),
         ('GRID', (0,0), (-1,-1), 0.5, colors.HexColor("#CBD5E1")),
         ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor("#F8FAFC")]),
-        ('PADDING', (0,0), (-1,-1), 8),
+        ('PADDING', (0,0), (-1,-1), 5),
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
     ]))
     story.append(sec_table)
-    story.append(Spacer(1, 20))
     
-    story.append(Paragraph("Link Budget & Bandwidth Overhead", h2_style))
+    story.append(PageBreak())
+    
+    # =========================================================================
+    # PAGE 13: PERFORMANCE & BANDWIDTH ANALYSIS
+    # =========================================================================
+    story.append(Paragraph("■ Performance & Bandwidth Analysis", h1_style))
+    story.append(Spacer(1, 10))
+    
+    story.append(Paragraph("13.1 Link Budget & Bandwidth Overhead", h2_style))
     perf_text = (
         "Because LoRa is a low-bandwidth modulation scheme, packet size is critical. A standard ZK-LoRa packet "
         "incorporating ECIES ciphertext and a Groth16 proof is optimized to fit within **412 bytes** total, "
         "ensuring compliance with LoRaWAN airtime limits."
     )
     story.append(Paragraph(perf_text, body_style))
+    story.append(Spacer(1, 10))
     
     bandwidth_data = [
         [Paragraph("Component", table_hdr_style), Paragraph("Size (Bytes)", table_hdr_style), Paragraph("Airtime @ SF9, 125kHz", table_hdr_style)],
@@ -754,11 +796,37 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
     ]))
     story.append(bw_table)
+    story.append(Spacer(1, 20))
+    
+    story.append(Paragraph("13.2 Computational Overhead on Edge Hardware", h2_style))
+    comp_text = (
+        "Edge hardware is resource-constrained. The table below shows estimated execution times for core "
+        "cryptographic operations on a Raspberry Pi 4 / RAK Gateway node."
+    )
+    story.append(Paragraph(comp_text, body_style))
+    story.append(Spacer(1, 10))
+    
+    comp_data = [
+        [Paragraph("Operation", table_hdr_style), Paragraph("Execution Time", table_hdr_style), Paragraph("Frequency", table_hdr_style)],
+        [Paragraph("Key Generation (secp256k1)", table_cell_bold), Paragraph("~100 ms", table_cell_style), Paragraph("One-time setup", table_cell_style)],
+        [Paragraph("ECIES Encryption", table_cell_bold), Paragraph("~10 ms", table_cell_style), Paragraph("Per-packet", table_cell_style)],
+        [Paragraph("ZK-SNARK Proof Gen (Groth16)", table_cell_bold), Paragraph("~1.2 seconds", table_cell_style), Paragraph("Per-packet", table_cell_style)],
+        [Paragraph("ZK-SNARK Proof Verification", table_cell_bold), Paragraph("~50 ms", table_cell_style), Paragraph("Per-packet", table_cell_style)]
+    ]
+    comp_table = Table(comp_data, colWidths=[180, 140, 184])
+    comp_table.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#0F172A")),
+        ('GRID', (0,0), (-1,-1), 0.5, colors.HexColor("#CBD5E1")),
+        ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor("#F8FAFC")]),
+        ('PADDING', (0,0), (-1,-1), 8),
+        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+    ]))
+    story.append(comp_table)
     
     story.append(PageBreak())
     
     # =========================================================================
-    # PAGE 10: SPECIAL THANKS & ACKNOWLEDGEMENTS
+    # PAGE 14: SPECIAL THANKS & ACKNOWLEDGEMENTS
     # =========================================================================
     story.append(Spacer(1, 40))
     thanks_style = ParagraphStyle(
@@ -799,7 +867,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(PageBreak())
     
     # =========================================================================
-    # PAGE 11: THE AI COLLECTIVE LOGO (FULL PAGE BLACK)
+    # PAGE 15: THE AI COLLECTIVE LOGO (FULL PAGE BLACK)
     # =========================================================================
     story.append(Spacer(1, 140))
     if os.path.exists("theaicollective_logo.jpeg"):
