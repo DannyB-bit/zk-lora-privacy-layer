@@ -17,6 +17,8 @@ license: mit
 
 ![ZK-LoRa Privacy Layer Logo](./logo.png)
 
+### 📖 Download [ZK_LoRa_Whitepaper.pdf](./ZK_LoRa_Whitepaper.pdf) (18-Page PDF)
+
 > *"The impossible is just code waiting to be written, physics waiting to be rewritten, math a work in progress, and truth waiting to be discovered."*
 
 ---
