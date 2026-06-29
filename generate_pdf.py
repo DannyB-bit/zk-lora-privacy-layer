@@ -718,6 +718,10 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "<b>• Verification on the Network (The Miners):</b> Zcash miners do <i>not</i> generate the ZK-proofs. Instead, they "
         "verify them. Verifying a proof is incredibly lightweight, taking less than <b>5 milliseconds</b>. Miners run the verification "
         "to ensure the transaction is valid (no double-spending, inputs equal outputs) and secure the ledger via Proof-of-Work (PoW).<br/>"
+        "<b>• The ASIC vs. Edge Distinction:</b> Low-power edge nodes (like our 5W Raspberry Pi) never compete with high-powered ASIC "
+        "mining farms. Edge nodes only act as Provers—generating their own transaction proofs. Miners use massive ASIC farms to solve "
+        "the Equihash PoW puzzle (a global cryptographic lottery) to secure the network. The edge node simply submits its pre-proven "
+        "transaction, which miners verify in milliseconds and include in a block.<br/>"
         "<b>• The DePIN Advantage:</b> This asymmetric design is perfect for DePIN. Low-power IoT devices can easily construct "
         "secure, private transactions on-chip, while the global Zcash mining network provides decentralized security and permanent settlement."
     )
