@@ -945,8 +945,8 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     
     # Render the side-by-side comparison of the maps
     if os.path.exists("lake_ontario_range.png") and os.path.exists("zk_lora_gold_map.png"):
-        img_width = 190
-        img_height = 190 * (1661 / 1079) # ~292 pt
+        img_width = 170
+        img_height = 170 * (1661 / 1079) # ~261 pt
         img_left = Image('lake_ontario_range.png', width=img_width, height=img_height)
         img_right = Image('zk_lora_gold_map.png', width=img_width, height=img_height)
         
@@ -957,21 +957,21 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
             ('BOX', (0,0), (0,0), 1.5, colors.HexColor("#64748B")), # Gray border for Helium
             ('BOX', (1,0), (1,0), 1.5, colors.HexColor("#F3B300")), # Gold border for ZK-LoRa
             ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#0F172A")),
-            ('BOTTOMPADDING', (0,0), (-1,-1), 8),
-            ('TOPPADDING', (0,0), (-1,-1), 8),
-            ('LEFTPADDING', (0,0), (-1,-1), 8),
-            ('RIGHTPADDING', (0,0), (-1,-1), 8),
+            ('BOTTOMPADDING', (0,0), (-1,-1), 6),
+            ('TOPPADDING', (0,0), (-1,-1), 6),
+            ('LEFTPADDING', (0,0), (-1,-1), 6),
+            ('RIGHTPADDING', (0,0), (-1,-1), 6),
         ]))
         map_table.hAlign = 'CENTER'
         story.append(map_table)
-        story.append(Spacer(1, 10))
+        story.append(Spacer(1, 6))
         
-        # Comparison section: Custom description vs "OR this could be you now"
-        logo_right = Image('zcash_eco_recycle_logo.png', width=75, height=75) if os.path.exists('zcash_eco_recycle_logo.png') else Spacer(1, 75)
+        # Comparison section: Custom description vs Zcash logo + "This could be you now:"
+        logo_right = Image('zcash_eco_recycle_logo.png', width=85, height=85) if os.path.exists('zcash_eco_recycle_logo.png') else Spacer(1, 85)
         
         comparison_data = [
-            [Paragraph("<font size=9 color='#94A3B8'>This is the power of lorawan via a 13dbiomini antenna at 146ft height only consuming 5 watts of power in a rak miner.</font>", ParagraphStyle('LeftDesc', fontName='Helvetica-Oblique', fontSize=8.5, leading=12, alignment=0, textColor=colors.HexColor("#94A3B8"))), 
-             Paragraph("<font size=10 color='#F3B300'><b>OR this could be you now...</b></font>", ParagraphStyle('OrThisCouldBeYou', alignment=1))],
+            [Paragraph("<font size=9 color='#94A3B8'>This is the power of LoRaWAN via a 13 dBi Omni antenna at 146ft height only consuming 5 watts of power in a RAK miner.</font>", ParagraphStyle('LeftDesc', fontName='Helvetica-Oblique', fontSize=8.5, leading=12, alignment=0, textColor=colors.HexColor("#94A3B8"))), 
+             Paragraph("<font size=10 color='#F3B300'><img src='zcash_logo.png' width='14' height='14' valign='middle'/> <b>This could be you now:</b></font>", ParagraphStyle('OrThisCouldBeYou', alignment=1))],
             [Spacer(1, 1), logo_right]
         ]
         comparison_table = Table(comparison_data, colWidths=[240, 240])

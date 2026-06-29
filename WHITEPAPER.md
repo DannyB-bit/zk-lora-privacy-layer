@@ -552,8 +552,7 @@ To demonstrate this, real-world testing was conducted across Lake Ontario. A tra
 | Public IoT Network (Helium) | Private ZK-LoRa Network (Future) |
 | :---: | :---: |
 | ![Helium IoT Map](./lake_ontario_range.png) | ![ZK-LoRa Gold Map](./zk_lora_gold_map.png) |
-| **This is you...** | **OR this could be you now...** |
-| ![Zcash Logo](./zcash_logo.png) | ![Zcash Eco-Recycle Logo](./zcash_eco_recycle_logo.png) |
+| *This is the power of LoRaWAN via a 13 dBi Omni antenna at 146ft height only consuming 5 watts of power in a RAK miner.* | ![Zcash Logo](./zcash_logo.png) **This could be you now:** <br/><br/> ![Zcash Eco-Recycle Logo](./zcash_eco_recycle_logo.png) |
 
 This validation demonstrates that when utilizing optimized sub-236-byte packets (minimizing time-on-air and maximizing link budget at Spreading Factor 9), ZK-LoRa can achieve highly resilient, ultra-long-range cross-border communication. This is critical for off-grid coordination and distributed sensor networks operating in remote or coastal environments.
 
