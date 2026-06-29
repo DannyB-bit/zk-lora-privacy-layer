@@ -1,12 +1,12 @@
 // Watermark: ip zymatica.space | astronautshe.com
 // Copyright (c) 2026 Zymatica. Licensed under MIT License.
+use serde::Deserialize;
 use std::env;
 use std::fs;
 use std::io::{self, Write};
 use std::path::PathBuf;
 use std::thread;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
-
 
 // ============================================================================
 // ANSI Color Codes & Styles
@@ -73,7 +73,9 @@ impl ZKProver {
     }
 
     fn pow_mod(base: u128, exp: u128, modulus: u128) -> u128 {
-        if modulus == 1 { return 0; }
+        if modulus == 1 {
+            return 0;
+        }
         let mut result = 1;
         let mut base = base % modulus;
         let mut exp = exp;
@@ -96,8 +98,18 @@ impl ZKProver {
     }
 
     fn generate_proof(&self, private_key_hex: &str, public_key_hash: &str) -> ZKProof {
-        let w1 = u128::from_str_radix(&Self::compute_hash(&format!("{}w1", private_key_hex))[..16], 16).unwrap_or(12345) % Self::FIELD_PRIME;
-        let w2 = u128::from_str_radix(&Self::compute_hash(&format!("{}w2", private_key_hex))[..16], 16).unwrap_or(67890) % Self::FIELD_PRIME;
+        let w1 = u128::from_str_radix(
+            &Self::compute_hash(&format!("{}w1", private_key_hex))[..16],
+            16,
+        )
+        .unwrap_or(12345)
+            % Self::FIELD_PRIME;
+        let w2 = u128::from_str_radix(
+            &Self::compute_hash(&format!("{}w2", private_key_hex))[..16],
+            16,
+        )
+        .unwrap_or(67890)
+            % Self::FIELD_PRIME;
         let w3 = (w1 * w2) % Self::FIELD_PRIME;
 
         // Evaluate QAP constraints
@@ -118,7 +130,9 @@ impl ZKProver {
 
         let timestamp = format!(
             "{:?}",
-            SystemTime::now().duration_since(UNIX_EPOCH).unwrap_or(Duration::ZERO)
+            SystemTime::now()
+                .duration_since(UNIX_EPOCH)
+                .unwrap_or(Duration::ZERO)
         );
 
         ZKProof {
@@ -175,8 +189,13 @@ struct AgentIdentity {
 
 impl AgentIdentity {
     fn load_or_create(name: &str) -> Self {
-        let home = env::var("USERPROFILE").or_else(|_| env::var("HOME")).unwrap_or_else(|_| ".".to_string());
-        let path = PathBuf::from(home).join(".zyMatica").join("keys").join(format!("{}.json", name));
+        let home = env::var("USERPROFILE")
+            .or_else(|_| env::var("HOME"))
+            .unwrap_or_else(|_| ".".to_string());
+        let path = PathBuf::from(home)
+            .join(".zyMatica")
+            .join("keys")
+            .join(format!("{}.json", name));
 
         if path.exists() {
             if let Ok(content) = fs::read_to_string(&path) {
@@ -187,7 +206,12 @@ impl AgentIdentity {
                 let zym_addr = Self::extract_json_field(&content, "zymatica_address");
                 let created = Self::extract_json_field(&content, "created_at");
 
-                println!("{}✅ Loaded existing identity for {}{}", Colors::ZCASH_GREEN, name, Colors::END);
+                println!(
+                    "{}✅ Loaded existing identity for {}{}",
+                    Colors::ZCASH_GREEN,
+                    name,
+                    Colors::END
+                );
                 return AgentIdentity {
                     name: name.to_string(),
                     phone_number: phone,
@@ -200,7 +224,14 @@ impl AgentIdentity {
         }
 
         // Create new keys
-        let seed = format!("seed_node_generation_{}_{}", name, SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs());
+        let seed = format!(
+            "seed_node_generation_{}_{}",
+            name,
+            SystemTime::now()
+                .duration_since(UNIX_EPOCH)
+                .unwrap()
+                .as_secs()
+        );
         let private_key = ZKProver::compute_hash(&seed);
         let public_key = ZKProver::compute_hash(&format!("pub:{}", private_key));
         let phone_number = ZKProver::compute_hash(&public_key)[..8].to_uppercase();
@@ -228,7 +259,11 @@ impl AgentIdentity {
         }
         let _ = fs::write(path, json_data);
 
-        println!("{}🎉 Generated NEW Agent Identity!{}", Colors::ZCASH_GOLD, Colors::END);
+        println!(
+            "{}🎉 Generated NEW Agent Identity!{}",
+            Colors::ZCASH_GOLD,
+            Colors::END
+        );
         identity
     }
 
@@ -264,14 +299,93 @@ impl ZymaticaVoiceApp {
     }
 
     fn display_identity(&self) {
-        println!("\n{}{ColorBold}╔{}╗{}", Colors::ZCASH_GOLD, "═".repeat(60), Colors::END, ColorBold = Colors::BOLD);
-        println!("{}{ColorBold}║{}║{}", Colors::ZCASH_GOLD, format!("  {}🦀 ZYMATICA VOICE - Agent Identity{}", Colors::ZCASH_GREEN, Colors::END).pad_right(69), Colors::ZCASH_GOLD, ColorBold = Colors::BOLD);
-        println!("{}{ColorBold}╠{}╣{}", Colors::ZCASH_GOLD, "═".repeat(60), Colors::END, ColorBold = Colors::BOLD);
-        println!("{}{ColorBold}║{}║{}", Colors::ZCASH_GOLD, format!("  {}Agent Name:{} {}", Colors::CYAN, Colors::END, self.identity.name).pad_right(69), Colors::ZCASH_GOLD, ColorBold = Colors::BOLD);
-        println!("{}{ColorBold}║{}║{}", Colors::ZCASH_GOLD, format!("  {}LoRa Phone:{} {}{}{}", Colors::CYAN, Colors::END, Colors::YELLOW, self.identity.phone_number, Colors::END).pad_right(78), Colors::ZCASH_GOLD, ColorBold = Colors::BOLD);
-        println!("{}{ColorBold}║{}║{}", Colors::ZCASH_GOLD, format!("  {}Address:{}    {}", Colors::CYAN, Colors::END, self.identity.zymatica_address).pad_right(69), Colors::ZCASH_GOLD, ColorBold = Colors::BOLD);
-        println!("{}{ColorBold}║{}║{}", Colors::ZCASH_GOLD, format!("  {}Created:{}    {}", Colors::CYAN, Colors::END, self.identity.created_at).pad_right(69), Colors::ZCASH_GOLD, ColorBold = Colors::BOLD);
-        println!("{}{ColorBold}╚{}╝{}", Colors::ZCASH_GOLD, "═".repeat(60), Colors::END, ColorBold = Colors::BOLD);
+        println!(
+            "\n{}{ColorBold}╔{}╗{}",
+            Colors::ZCASH_GOLD,
+            "═".repeat(60),
+            Colors::END,
+            ColorBold = Colors::BOLD
+        );
+        println!(
+            "{}{ColorBold}║{}║{}",
+            Colors::ZCASH_GOLD,
+            format!(
+                "  {}🦀 ZYMATICA VOICE - Agent Identity{}",
+                Colors::ZCASH_GREEN,
+                Colors::END
+            )
+            .pad_right(69),
+            Colors::ZCASH_GOLD,
+            ColorBold = Colors::BOLD
+        );
+        println!(
+            "{}{ColorBold}╠{}╣{}",
+            Colors::ZCASH_GOLD,
+            "═".repeat(60),
+            Colors::END,
+            ColorBold = Colors::BOLD
+        );
+        println!(
+            "{}{ColorBold}║{}║{}",
+            Colors::ZCASH_GOLD,
+            format!(
+                "  {}Agent Name:{} {}",
+                Colors::CYAN,
+                Colors::END,
+                self.identity.name
+            )
+            .pad_right(69),
+            Colors::ZCASH_GOLD,
+            ColorBold = Colors::BOLD
+        );
+        println!(
+            "{}{ColorBold}║{}║{}",
+            Colors::ZCASH_GOLD,
+            format!(
+                "  {}LoRa Phone:{} {}{}{}",
+                Colors::CYAN,
+                Colors::END,
+                Colors::YELLOW,
+                self.identity.phone_number,
+                Colors::END
+            )
+            .pad_right(78),
+            Colors::ZCASH_GOLD,
+            ColorBold = Colors::BOLD
+        );
+        println!(
+            "{}{ColorBold}║{}║{}",
+            Colors::ZCASH_GOLD,
+            format!(
+                "  {}Address:{}    {}",
+                Colors::CYAN,
+                Colors::END,
+                self.identity.zymatica_address
+            )
+            .pad_right(69),
+            Colors::ZCASH_GOLD,
+            ColorBold = Colors::BOLD
+        );
+        println!(
+            "{}{ColorBold}║{}║{}",
+            Colors::ZCASH_GOLD,
+            format!(
+                "  {}Created:{}    {}",
+                Colors::CYAN,
+                Colors::END,
+                self.identity.created_at
+            )
+            .pad_right(69),
+            Colors::ZCASH_GOLD,
+            ColorBold = Colors::BOLD
+        );
+        println!(
+            "{}{ColorBold}╚{}╝{}",
+            Colors::ZCASH_GOLD,
+            "═".repeat(60),
+            Colors::END,
+            ColorBold = Colors::BOLD
+        );
         println!();
     }
 
@@ -291,13 +405,19 @@ impl ZymaticaVoiceApp {
         let key_bytes = ZKProver::compute_hash(public_key_hex);
         let key_vec = key_bytes.as_bytes();
         let text_bytes = text.as_bytes();
-        let encrypted: Vec<u8> = text_bytes.iter().enumerate().map(|(i, &b)| b ^ key_vec[i % key_vec.len()]).collect();
+        let encrypted: Vec<u8> = text_bytes
+            .iter()
+            .enumerate()
+            .map(|(i, &b)| b ^ key_vec[i % key_vec.len()])
+            .collect();
         // Convert to hex
         encrypted.iter().map(|b| format!("{:02x}", b)).collect()
     }
 
     fn build_packet(&self, message: &str) -> String {
-        let proof = self.prover.generate_proof(&self.identity.private_key, &self.identity.public_key);
+        let proof = self
+            .prover
+            .generate_proof(&self.identity.private_key, &self.identity.public_key);
         let coords = Self::encode_semantic_coordinates(message);
         let enc_payload = Self::simulate_ecies_encrypt(message, &self.identity.public_key);
 
@@ -308,11 +428,22 @@ impl ZymaticaVoiceApp {
     }
 
     fn transmit(&self, message: &str, count: usize) {
-        println!("\n{}{}📡 INITIATING TRANSMISSION SEQUENCE...{}", Colors::ZCASH_GREEN, Colors::BOLD, Colors::END);
+        println!(
+            "\n{}{}📡 INITIATING TRANSMISSION SEQUENCE...{}",
+            Colors::ZCASH_GREEN,
+            Colors::BOLD,
+            Colors::END
+        );
         for i in 0..count {
             let packet = self.build_packet(message);
-            println!("{}⚡ Packet {}/{}:{}", Colors::YELLOW, i + 1, count, Colors::END);
-            
+            println!(
+                "{}⚡ Packet {}/{}:{}",
+                Colors::YELLOW,
+                i + 1,
+                count,
+                Colors::END
+            );
+
             // Cyberpunk matrix stream print animation
             for char in packet.chars().take(80) {
                 print!("{}{}{}", Colors::ZCASH_GREEN, char, Colors::END);
@@ -321,39 +452,111 @@ impl ZymaticaVoiceApp {
             }
             println!("...\n");
             thread::sleep(Duration::from_millis(300));
-            println!("{}✅ TRANSMITTED{} - {} bytes @ 903.9 MHz, SF9\n", Colors::GREEN, Colors::END, packet.len());
+            println!(
+                "{}✅ TRANSMITTED{} - {} bytes @ 903.9 MHz, SF9\n",
+                Colors::GREEN,
+                Colors::END,
+                packet.len()
+            );
         }
-        println!("{}{ColorBold}🎉 TRANSMISSION COMPLETE!{}", Colors::ZCASH_GOLD, Colors::END, ColorBold = Colors::BOLD);
+        println!(
+            "{}{ColorBold}🎉 TRANSMISSION COMPLETE!{}",
+            Colors::ZCASH_GOLD,
+            Colors::END,
+            ColorBold = Colors::BOLD
+        );
     }
 
     fn listen(&self, duration_sec: u64) {
-        println!("\n{}{ColorBold}📻 ACTIVATING RX LISTENER...{}", Colors::ZCASH_GOLD, Colors::END, ColorBold = Colors::BOLD);
-        println!("{}Listening on 903.9 MHz, SF9, 125kHz for {} seconds...{}\n", Colors::CYAN, duration_sec, Colors::END);
-        
+        println!(
+            "\n{}{ColorBold}📻 ACTIVATING RX LISTENER...{}",
+            Colors::ZCASH_GOLD,
+            Colors::END,
+            ColorBold = Colors::BOLD
+        );
+        println!(
+            "{}Listening on 903.9 MHz, SF9, 125kHz for {} seconds...{}\n",
+            Colors::CYAN,
+            duration_sec,
+            Colors::END
+        );
+
         let start = SystemTime::now();
         let mut count = 0;
         while start.elapsed().unwrap_or(Duration::ZERO).as_secs() < duration_sec {
             thread::sleep(Duration::from_secs(3));
             if rand_prob() < 0.4 {
                 count += 1;
-                let random_node = format!("AGENT-{}", ZKProver::compute_hash("rand")[..8].to_uppercase());
-                println!("{}{ColorGreen}╔{}╗{}", Colors::GREEN, "─".repeat(50), Colors::END, ColorGreen = Colors::ZCASH_GREEN);
-                println!("{}{ColorGreen}║{}║{}", Colors::GREEN, format!("  📨 RECEIVED PACKET").pad_right(59), Colors::GREEN, ColorGreen = Colors::ZCASH_GREEN);
-                println!("{}{ColorGreen}╠{}╣{}", Colors::GREEN, "─".repeat(50), Colors::END, ColorGreen = Colors::ZCASH_GREEN);
-                println!("{}{ColorGreen}║{}║{}", Colors::GREEN, format!("  From: {}@zymatica.space", random_node).pad_right(59), Colors::GREEN, ColorGreen = Colors::ZCASH_GREEN);
-                println!("{}{ColorGreen}║{}║{}", Colors::GREEN, format!("  SNR: {} dB, RSSI: -{} dBm", 8 + (rand_prob() * 6.0) as i32, 90 + (rand_prob() * 20.0) as i32).pad_right(59), Colors::GREEN, ColorGreen = Colors::ZCASH_GREEN);
-                println!("{}{ColorGreen}╚{}╝{}", Colors::GREEN, "─".repeat(50), Colors::END, ColorGreen = Colors::ZCASH_GREEN);
+                let random_node = format!(
+                    "AGENT-{}",
+                    ZKProver::compute_hash("rand")[..8].to_uppercase()
+                );
+                println!(
+                    "{}{ColorGreen}╔{}╗{}",
+                    Colors::GREEN,
+                    "─".repeat(50),
+                    Colors::END,
+                    ColorGreen = Colors::ZCASH_GREEN
+                );
+                println!(
+                    "{}{ColorGreen}║{}║{}",
+                    Colors::GREEN,
+                    format!("  📨 RECEIVED PACKET").pad_right(59),
+                    Colors::GREEN,
+                    ColorGreen = Colors::ZCASH_GREEN
+                );
+                println!(
+                    "{}{ColorGreen}╠{}╣{}",
+                    Colors::GREEN,
+                    "─".repeat(50),
+                    Colors::END,
+                    ColorGreen = Colors::ZCASH_GREEN
+                );
+                println!(
+                    "{}{ColorGreen}║{}║{}",
+                    Colors::GREEN,
+                    format!("  From: {}@zymatica.space", random_node).pad_right(59),
+                    Colors::GREEN,
+                    ColorGreen = Colors::ZCASH_GREEN
+                );
+                println!(
+                    "{}{ColorGreen}║{}║{}",
+                    Colors::GREEN,
+                    format!(
+                        "  SNR: {} dB, RSSI: -{} dBm",
+                        8 + (rand_prob() * 6.0) as i32,
+                        90 + (rand_prob() * 20.0) as i32
+                    )
+                    .pad_right(59),
+                    Colors::GREEN,
+                    ColorGreen = Colors::ZCASH_GREEN
+                );
+                println!(
+                    "{}{ColorGreen}╚{}╝{}",
+                    Colors::GREEN,
+                    "─".repeat(50),
+                    Colors::END,
+                    ColorGreen = Colors::ZCASH_GREEN
+                );
                 println!();
             }
         }
-        println!("\n{}{ColorBold}📊 RX SESSION COMPLETE{}", Colors::ZCASH_GOLD, Colors::END, ColorBold = Colors::BOLD);
+        println!(
+            "\n{}{ColorBold}📊 RX SESSION COMPLETE{}",
+            Colors::ZCASH_GOLD,
+            Colors::END,
+            ColorBold = Colors::BOLD
+        );
         println!("{}Packets received: {}{}", Colors::CYAN, count, Colors::END);
     }
 }
 
 // Simple random generator helper
 fn rand_prob() -> f64 {
-    let now = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_nanos();
+    let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .unwrap()
+        .as_nanos();
     (now % 100) as f64 / 100.0
 }
 
@@ -380,96 +583,141 @@ impl PadRight for &str {
 }
 
 // ============================================================================
-// Zcash Mempool Scanner & Developer Fee Verification (Milestone 2)
+// Zcash Decrypted Event Scanner & Developer Fee Verification (Milestone 2)
 // ============================================================================
+const ZATOSHIS_PER_ZEC: u64 = 100_000_000;
+
+#[derive(Debug, Deserialize)]
+pub struct DecryptedPaymentEvent {
+    tx_id: String,
+    memo: String,
+    gross_zat: u64,
+    developer_fee_zat: u64,
+    developer_address: String,
+    source: Option<String>,
+    confirmations: Option<u32>,
+}
+
 pub struct ZcashMempoolScanner {
     developer_address: String,
-    dev_fee_rate: f64,
+    dev_fee_bps: u64,
 }
 
 impl ZcashMempoolScanner {
     pub fn new() -> Self {
         ZcashMempoolScanner {
-            developer_address: "t1REhE28Dv8fuNDujN2GuEyhd6JLSS5TJkH".to_string(),
-            dev_fee_rate: 0.02, // 2%
+            developer_address: "u10rjztjhk6c2caz6t6hdh32zcf22exhumlm388vtd7exm63vsgwphhm5gt2azgzdksaumr9hn5hx7yy3tdjvdpt875c9tjqswwshz2v9d".to_string(),
+            dev_fee_bps: 200,
         }
     }
 
-    pub fn scan_transaction(&self, tx_id: &str, expected_packet_hash: &str) -> Result<bool, String> {
-        println!("📡 [Scanner] Scanning Zcash mempool/ledger for transaction: {}...", tx_id);
-        
-        let url = format!("https://api.blockchair.com/zcash/raw/transaction/{}", tx_id);
-        println!("   Connecting to Zcash node/explorer api: {}...", url);
+    pub fn scan_transaction(
+        &self,
+        tx_id: &str,
+        expected_packet_hash: &str,
+    ) -> Result<bool, String> {
+        println!(
+            "[Scanner] Verifying decrypted Zcash payment event: {}...",
+            tx_id
+        );
 
-        let mut tx_data_json = None;
-        if let Ok(response) = ureq::get(&url).call() {
-            if let Ok(body) = response.into_string() {
-                if let Ok(json) = serde_json::from_str::<serde_json::Value>(&body) {
-                    tx_data_json = Some(json);
-                }
-            }
+        let event = self.load_decrypted_event(tx_id, expected_packet_hash)?;
+        self.verify_decrypted_event(&event, expected_packet_hash)
+    }
+
+    fn load_decrypted_event(
+        &self,
+        tx_id: &str,
+        expected_packet_hash: &str,
+    ) -> Result<DecryptedPaymentEvent, String> {
+        if let Ok(raw) = env::var("ZK_LORA_DECRYPTED_EVENT_JSON") {
+            println!("   Loading decrypted payment event from ZK_LORA_DECRYPTED_EVENT_JSON.");
+            return serde_json::from_str(&raw).map_err(|e| format!("Invalid event JSON: {}", e));
         }
 
-        let (memo, total_value, dev_payment) = if let Some(json) = tx_data_json {
-            println!("   ✅ Successfully fetched live Zcash transaction data!");
-            let mut got_memo = String::new();
-            let mut total_val = 0.0;
-            let mut dev_pay = 0.0;
-            
-            if let Some(tx_obj) = json["data"][tx_id].as_object() {
-                if let Some(vout) = tx_obj["vout"].as_array() {
-                    for out in vout {
-                        let value = out["value"].as_f64().unwrap_or(0.0);
-                        total_val += value;
-                        if let Some(script_pub_key) = out["scriptPubKey"].as_object() {
-                            if let Some(addresses) = script_pub_key["addresses"].as_array() {
-                                for addr in addresses {
-                                    if addr.as_str() == Some(&self.developer_address) {
-                                        dev_pay += value;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                if let Some(m) = tx_obj["memo"].as_str() {
-                    got_memo = m.to_string();
-                } else {
-                    got_memo = format!("ref:{}", expected_packet_hash);
-                }
-            }
-            (got_memo, total_val, dev_pay)
-        } else {
-            println!("   ⚠️ Network request offline/failed. Operating in local simulation mode.");
-            let simulated_memo = format!("ref:{}", expected_packet_hash);
-            let simulated_total = 0.05; // 0.05 ZEC
-            let simulated_dev_pay = 0.0010; // 2% of 0.05 ZEC
-            (simulated_memo, simulated_total, simulated_dev_pay)
-        };
+        if let Ok(path) = env::var("ZK_LORA_DECRYPTED_EVENT_PATH") {
+            println!("   Loading decrypted payment event from file: {}", path);
+            let raw = fs::read_to_string(&path)
+                .map_err(|e| format!("Could not read decrypted event file '{}': {}", path, e))?;
+            return serde_json::from_str(&raw)
+                .map_err(|e| format!("Invalid event JSON in '{}': {}", path, e));
+        }
 
-        println!("   [Shielded Decryption] Decrypting transaction memo field...");
-        println!("   Decrypted Memo: '{}'", memo);
-        
+        println!("   No live wallet event provided. Using explicit local fixture.");
+        println!("   NOTE: This fixture validates payout matching logic only; it is not a live Zcash chain scan.");
+        Ok(DecryptedPaymentEvent {
+            tx_id: tx_id.to_string(),
+            memo: format!("ref:{}", expected_packet_hash),
+            gross_zat: 5_000_000,
+            developer_fee_zat: 100_000,
+            developer_address: self.developer_address.clone(),
+            source: Some("local_fixture".to_string()),
+            confirmations: Some(0),
+        })
+    }
+
+    fn verify_decrypted_event(
+        &self,
+        event: &DecryptedPaymentEvent,
+        expected_packet_hash: &str,
+    ) -> Result<bool, String> {
+        println!(
+            "   Source: {}",
+            event.source.as_deref().unwrap_or("unspecified")
+        );
+        println!("   Decrypted memo: '{}'", event.memo);
+
         let expected_memo = format!("ref:{}", expected_packet_hash);
-        if memo != expected_memo {
-            return Err(format!("Memo reference mismatch. Expected '{}', got '{}'", expected_memo, memo));
-        }
-        
-        println!("   [Verification] Validating payout distribution splits:");
-        println!("      Gross Payout: {:.5} ZEC", total_value);
-        println!("      Target Dev Treasury: {}", self.developer_address);
-        println!("      Developer Fee Paid:  {:.5} ZEC", dev_payment);
-        
-        let expected_dev_fee = total_value * self.dev_fee_rate;
-        if (dev_payment - expected_dev_fee).abs() > 1e-6 && dev_payment < 0.0005 {
-            return Err(format!("Incorrect developer fee split. Expected {:.5} ZEC, got {:.5} ZEC", expected_dev_fee, dev_payment));
+        if event.memo != expected_memo {
+            return Err(format!(
+                "Memo reference mismatch. Expected '{}', got '{}'",
+                expected_memo, event.memo
+            ));
         }
 
-        println!("   ✅ [SUCCESS] Verification successful! 2% developer fee split matches constraints.");
+        if event.developer_address != self.developer_address {
+            return Err(format!(
+                "Developer address mismatch. Expected '{}', got '{}'",
+                self.developer_address, event.developer_address
+            ));
+        }
+
+        println!("   [Verification] Validating payout distribution:");
+        println!("      Transaction ID: {}", event.tx_id);
+        println!("      Confirmations: {}", event.confirmations.unwrap_or(0));
+        println!(
+            "      Gross Payout: {} ZEC",
+            Self::format_zec(event.gross_zat)
+        );
+        println!("      Target Dev Treasury: {}", self.developer_address);
+        println!(
+            "      Developer Fee Paid: {} ZEC",
+            Self::format_zec(event.developer_fee_zat)
+        );
+
+        let expected_dev_fee = event
+            .gross_zat
+            .checked_mul(self.dev_fee_bps)
+            .ok_or_else(|| "Developer fee calculation overflowed".to_string())?
+            / 10_000;
+        if event.developer_fee_zat != expected_dev_fee {
+            return Err(format!(
+                "Incorrect developer fee split. Expected {} ZEC, got {} ZEC",
+                Self::format_zec(expected_dev_fee),
+                Self::format_zec(event.developer_fee_zat)
+            ));
+        }
+
+        println!(
+            "   [SUCCESS] Verification successful! 2% developer fee split matches constraints."
+        );
         Ok(true)
     }
-}
 
+    fn format_zec(zat: u64) -> String {
+        format!("{:.8}", zat as f64 / ZATOSHIS_PER_ZEC as f64)
+    }
+}
 // ============================================================================
 // Main Application Menu
 // ============================================================================
@@ -484,15 +732,79 @@ fn main() {
     loop {
         app.display_identity();
 
-        println!("{}{ColorBold}╔{}╗{}", Colors::ZCASH_GREEN, "═".repeat(60), Colors::END, ColorBold = Colors::BOLD);
-        println!("{}{ColorBold}║{}║{}", Colors::ZCASH_GREEN, format!("  🦀 ZYMATICA VOICE - Main Menu").pad_right(69), Colors::ZCASH_GREEN, ColorBold = Colors::BOLD);
-        println!("{}{ColorBold}╠{}╣{}", Colors::ZCASH_GREEN, "═".repeat(60), Colors::END, ColorBold = Colors::BOLD);
-        println!("{}{ColorBold}║{}║{}", Colors::ZCASH_GREEN, format!("  {}[1]{} Transmit Message (TX)", Colors::YELLOW, Colors::END).pad_right(78), Colors::ZCASH_GREEN, ColorBold = Colors::BOLD);
-        println!("{}{ColorBold}║{}║{}", Colors::ZCASH_GREEN, format!("  {}[2]{} Listen for Packets (RX)", Colors::YELLOW, Colors::END).pad_right(78), Colors::ZCASH_GREEN, ColorBold = Colors::BOLD);
-        println!("{}{ColorBold}║{}║{}", Colors::ZCASH_GREEN, format!("  {}[3]{} Show Identity", Colors::YELLOW, Colors::END).pad_right(78), Colors::ZCASH_GREEN, ColorBold = Colors::BOLD);
-        println!("{}{ColorBold}║{}║{}", Colors::ZCASH_GREEN, format!("  {}[4]{} Generate ZK-Proof", Colors::YELLOW, Colors::END).pad_right(78), Colors::ZCASH_GREEN, ColorBold = Colors::BOLD);
-        println!("{}{ColorBold}║{}║{}", Colors::ZCASH_GREEN, format!("  {}[0]{} Exit", Colors::YELLOW, Colors::END).pad_right(78), Colors::ZCASH_GREEN, ColorBold = Colors::BOLD);
-        println!("{}{ColorBold}╚{}╝{}", Colors::ZCASH_GREEN, "═".repeat(60), Colors::END, ColorBold = Colors::BOLD);
+        println!(
+            "{}{ColorBold}╔{}╗{}",
+            Colors::ZCASH_GREEN,
+            "═".repeat(60),
+            Colors::END,
+            ColorBold = Colors::BOLD
+        );
+        println!(
+            "{}{ColorBold}║{}║{}",
+            Colors::ZCASH_GREEN,
+            format!("  🦀 ZYMATICA VOICE - Main Menu").pad_right(69),
+            Colors::ZCASH_GREEN,
+            ColorBold = Colors::BOLD
+        );
+        println!(
+            "{}{ColorBold}╠{}╣{}",
+            Colors::ZCASH_GREEN,
+            "═".repeat(60),
+            Colors::END,
+            ColorBold = Colors::BOLD
+        );
+        println!(
+            "{}{ColorBold}║{}║{}",
+            Colors::ZCASH_GREEN,
+            format!(
+                "  {}[1]{} Transmit Message (TX)",
+                Colors::YELLOW,
+                Colors::END
+            )
+            .pad_right(78),
+            Colors::ZCASH_GREEN,
+            ColorBold = Colors::BOLD
+        );
+        println!(
+            "{}{ColorBold}║{}║{}",
+            Colors::ZCASH_GREEN,
+            format!(
+                "  {}[2]{} Listen for Packets (RX)",
+                Colors::YELLOW,
+                Colors::END
+            )
+            .pad_right(78),
+            Colors::ZCASH_GREEN,
+            ColorBold = Colors::BOLD
+        );
+        println!(
+            "{}{ColorBold}║{}║{}",
+            Colors::ZCASH_GREEN,
+            format!("  {}[3]{} Show Identity", Colors::YELLOW, Colors::END).pad_right(78),
+            Colors::ZCASH_GREEN,
+            ColorBold = Colors::BOLD
+        );
+        println!(
+            "{}{ColorBold}║{}║{}",
+            Colors::ZCASH_GREEN,
+            format!("  {}[4]{} Generate ZK-Proof", Colors::YELLOW, Colors::END).pad_right(78),
+            Colors::ZCASH_GREEN,
+            ColorBold = Colors::BOLD
+        );
+        println!(
+            "{}{ColorBold}║{}║{}",
+            Colors::ZCASH_GREEN,
+            format!("  {}[0]{} Exit", Colors::YELLOW, Colors::END).pad_right(78),
+            Colors::ZCASH_GREEN,
+            ColorBold = Colors::BOLD
+        );
+        println!(
+            "{}{ColorBold}╚{}╝{}",
+            Colors::ZCASH_GREEN,
+            "═".repeat(60),
+            Colors::END,
+            ColorBold = Colors::BOLD
+        );
         println!();
 
         print!("{}🚀 Select action:{} ", Colors::ZCASH_GOLD, Colors::END);
@@ -508,7 +820,7 @@ fn main() {
                 let mut message = String::new();
                 let _ = io::stdin().read_line(&mut message);
                 let message = message.trim();
-                
+
                 print!("{}Packet count (default 5):{} ", Colors::CYAN, Colors::END);
                 let _ = io::stdout().flush();
                 let mut count_str = String::new();
@@ -518,7 +830,11 @@ fn main() {
                 app.transmit(message, count);
             }
             "2" => {
-                print!("{}Listen duration in seconds (default 10):{} ", Colors::CYAN, Colors::END);
+                print!(
+                    "{}Listen duration in seconds (default 10):{} ",
+                    Colors::CYAN,
+                    Colors::END
+                );
                 let _ = io::stdout().flush();
                 let mut dur_str = String::new();
                 let _ = io::stdin().read_line(&mut dur_str);
@@ -529,24 +845,50 @@ fn main() {
                 app.display_identity();
             }
             "4" => {
-                println!("\n{}Generating ZK-Proof...{}", Colors::ZCASH_GREEN, Colors::END);
-                let proof = app.prover.generate_proof(&app.identity.private_key, &app.identity.public_key);
-                println!("{}✅ ZK-Proof Generated:{}", Colors::ZCASH_GOLD, Colors::END);
+                println!(
+                    "\n{}Generating ZK-Proof...{}",
+                    Colors::ZCASH_GREEN,
+                    Colors::END
+                );
+                let proof = app
+                    .prover
+                    .generate_proof(&app.identity.private_key, &app.identity.public_key);
+                println!(
+                    "{}✅ ZK-Proof Generated:{}",
+                    Colors::ZCASH_GOLD,
+                    Colors::END
+                );
                 println!(
                     "{}Proof A: {}\nProof B: {}\nProof C: {}\nCurve: {}\nCurve Prime field size matches BN128 constraints.{}",
                     Colors::CYAN, proof.proof_a, proof.proof_b, proof.proof_c, proof.curve, Colors::END
                 );
             }
             "0" => {
-                println!("\n{}👋 Zymatica Voice shutting down...{}", Colors::ZCASH_GOLD, Colors::END);
-                println!("{}From E-Waste to AI Grace. See you in the mesh! 🦀✨{}\n", Colors::CYAN, Colors::END);
+                println!(
+                    "\n{}👋 Zymatica Voice shutting down...{}",
+                    Colors::ZCASH_GOLD,
+                    Colors::END
+                );
+                println!(
+                    "{}From E-Waste to AI Grace. See you in the mesh! 🦀✨{}\n",
+                    Colors::CYAN,
+                    Colors::END
+                );
                 break;
             }
             _ => {
-                println!("{}Invalid selection. Press Enter to retry.{}", Colors::RED, Colors::END);
+                println!(
+                    "{}Invalid selection. Press Enter to retry.{}",
+                    Colors::RED,
+                    Colors::END
+                );
             }
         }
-        print!("\n{}Press Enter to continue...{}", Colors::YELLOW, Colors::END);
+        print!(
+            "\n{}Press Enter to continue...{}",
+            Colors::YELLOW,
+            Colors::END
+        );
         let _ = io::stdout().flush();
         let mut tmp = String::new();
         let _ = io::stdin().read_line(&mut tmp);
@@ -560,40 +902,50 @@ fn run_automated_tests() {
     println!("==============================================================");
     println!("RUNNING AUTOMATED TEST SUITE FOR ZYMATICA VOICE (RUST)");
     println!("==============================================================");
-    
+
     let app = ZymaticaVoiceApp::new("test-runner");
     app.display_identity();
-    
+
     println!("[1] Generating ZK Proof...");
-    let proof = app.prover.generate_proof(&app.identity.private_key, &app.identity.public_key);
+    let proof = app
+        .prover
+        .generate_proof(&app.identity.private_key, &app.identity.public_key);
     println!("    * ZK Proof Hash: {}", proof.proof_hash);
-    
+
     println!("[2] Verifying ZK Proof...");
     let is_valid = app.prover.verify_proof(&proof, &app.identity.public_key);
     assert!(is_valid, "ZK Verification failed!");
     println!("    * Verification status: ✅ VALID");
-    
+
     println!("[3] Generating coordinates projection...");
     let coords = ZymaticaVoiceApp::encode_semantic_coordinates("Test coordinates");
     println!("    * Generated 6D coordinates: {:?}", coords);
     assert_eq!(coords.len(), 6, "Coordinates must be 6-dimensional");
-    
+
     println!("[4] ECIES payload check...");
     let payload = "Hello Zcash Mesh!";
     let encrypted = ZymaticaVoiceApp::simulate_ecies_encrypt(payload, &app.identity.public_key);
     println!("    * Ciphertext: {}", encrypted);
-    
+
     println!("[5] Broadcast test...");
     app.transmit("Hello Zcash Mesh!", 1);
-    
-    println!("[6] Zcash Shielded Mempool & Payout Split Check...");
+
+    println!("[6] Zcash Decrypted Payment Event & Payout Split Check...");
     let scanner = ZcashMempoolScanner::new();
-    let tx_id = "mock_tx_id_milestone_2_reconciliation_check";
-    let expected_hash = "Hello Zcash Mesh!";
+    let tx_id = "fixture_tx_milestone_2_reconciliation_check";
+    let expected_hash = "demo_packet_hash_hello_zcash_mesh";
+    if fs::metadata("fixtures/decrypted_payment_event.json").is_ok() {
+        env::set_var(
+            "ZK_LORA_DECRYPTED_EVENT_PATH",
+            "fixtures/decrypted_payment_event.json",
+        );
+    }
     let scan_result = scanner.scan_transaction(tx_id, expected_hash);
-    assert!(scan_result.is_ok(), "Zcash mempool scanner validation failed!");
-    println!("    * Scanner status: ✅ STABLE & VALIDATED");
-    
+    assert!(
+        scan_result.is_ok(),
+        "Zcash decrypted event validation failed!"
+    );
+    println!("    * Scanner status: fixture validation passed");
     println!("==============================================================");
     println!("✅ SUCCESS: All modules verified successfully.");
     println!("==============================================================");

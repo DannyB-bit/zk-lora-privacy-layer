@@ -4,7 +4,6 @@ import * as crypto from 'crypto';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as readline from 'readline';
-import * as https from 'https';
 
 // ============================================================================
 // ANSI Color Codes & Styles
@@ -188,7 +187,7 @@ class IdentityManager {
 }
 
 class ZymaticaVoiceApp {
-    private identity: AgentIdentity;
+    public identity: AgentIdentity;
     public prover: ZKProver;
 
     constructor(name: string) {
@@ -288,108 +287,94 @@ class ZymaticaVoiceApp {
 }
 
 // ============================================================================
-// Zcash Mempool Scanner & Developer Fee Verification (Milestone 2)
+// Zcash Decrypted Event Scanner & Developer Fee Verification (Milestone 2)
 // ============================================================================
-class ZcashMempoolScanner {
-    private developerAddress: string;
-    private devFeeRate: number;
-
-    constructor() {
-        this.developerAddress = "t1REhE28Dv8fuNDujN2GuEyhd6JLSS5TJkH";
-        this.devFeeRate = 0.02; // 2%
-    }
-
-    scanTransaction(txId: string, expectedPacketHash: string): Promise<boolean> {
-        console.log(`📡 [Scanner] Scanning Zcash mempool/ledger for transaction: ${txId}...`);
-        const url = `https://api.blockchair.com/zcash/raw/transaction/${txId}`;
-        console.log(`   Connecting to Zcash node/explorer api: ${url}...`);
-
-        return new Promise((resolve, reject) => {
-            https.get(url, (res) => {
-                let data = '';
-                res.on('data', (chunk) => {
-                    data += chunk;
-                });
-                res.on('end', () => {
-                    if (res.statusCode === 200) {
-                        try {
-                            const txData = JSON.parse(data);
-                            console.log("   ✅ Successfully fetched live Zcash transaction data!");
-                            
-                            let memo = '';
-                            let totalValue = 0;
-                            let devPayment = 0;
-
-                            const txObj = txData.data?.[txId];
-                            if (txObj) {
-                                if (Array.isArray(txObj.vout)) {
-                                    for (const out of txObj.vout) {
-                                        const value = parseFloat(out.value) || 0;
-                                        totalValue += value;
-                                        const addresses = out.scriptPubKey?.addresses;
-                                        if (Array.isArray(addresses)) {
-                                            for (const addr of addresses) {
-                                                if (addr === this.developerAddress) {
-                                                    devPayment += value;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                memo = txObj.memo || `ref:${expectedPacketHash}`;
-                            } else {
-                                memo = `ref:${expectedPacketHash}`;
-                            }
-                            
-                            this.verifyPayout(memo, totalValue, devPayment, expectedPacketHash)
-                                .then(resolve)
-                                .catch(reject);
-
-                        } catch (e) {
-                            this.runSimulation(expectedPacketHash).then(resolve).catch(reject);
-                        }
-                    } else {
-                        this.runSimulation(expectedPacketHash).then(resolve).catch(reject);
-                    }
-                });
-            }).on('error', (err) => {
-                this.runSimulation(expectedPacketHash).then(resolve).catch(reject);
-            });
-        });
-    }
-
-    private async runSimulation(expectedPacketHash: string): Promise<boolean> {
-        console.log("   ⚠️ Network request offline/failed. Operating in local simulation mode.");
-        const memo = `ref:${expectedPacketHash}`;
-        const totalValue = 0.05; // 0.05 ZEC
-        const devPayment = 0.0010; // 2% of 0.05 ZEC
-        return this.verifyPayout(memo, totalValue, devPayment, expectedPacketHash);
-    }
-
-    private async verifyPayout(memo: string, totalValue: number, devPayment: number, expectedPacketHash: string): Promise<boolean> {
-        console.log("   [Shielded Decryption] Decrypting transaction memo field...");
-        console.log(`   Decrypted Memo: '${memo}'`);
-
-        const expectedMemo = `ref:${expectedPacketHash}`;
-        if (memo !== expectedMemo) {
-            throw new Error(`Memo reference mismatch. Expected '${expectedMemo}', got '${memo}'`);
-        }
-
-        console.log("   [Verification] Validating payout distribution splits:");
-        console.log(`      Gross Payout: ${totalValue.toFixed(5)} ZEC`);
-        console.log(`      Target Dev Treasury: ${this.developerAddress}`);
-        console.log(`      Developer Fee Paid:  ${devPayment.toFixed(5)} ZEC`);
-
-        const expectedDevFee = totalValue * this.devFeeRate;
-        if (Math.abs(devPayment - expectedDevFee) > 1e-6 && devPayment < 0.0005) {
-            throw new Error(`Incorrect developer fee split. Expected ${expectedDevFee.toFixed(5)} ZEC, got ${devPayment.toFixed(5)} ZEC`);
-        }
-
-        console.log("   ✅ [SUCCESS] Verification successful! 2% developer fee split matches constraints.");
-        return true;
-    }
+interface DecryptedPaymentEvent {
+    tx_id: string;
+    memo: string;
+    gross_zat: number;
+    developer_fee_zat: number;
+    developer_address: string;
+    source?: string;
+    confirmations?: number;
 }
 
+class ZcashMempoolScanner {
+    private developerAddress: string;
+    private devFeeBps: number;
+
+    constructor() {
+        this.developerAddress = "u10rjztjhk6c2caz6t6hdh32zcf22exhumlm388vtd7exm63vsgwphhm5gt2azgzdksaumr9hn5hx7yy3tdjvdpt875c9tjqswwshz2v9d";
+        this.devFeeBps = 200;
+    }
+
+    async scanTransaction(txId: string, expectedPacketHash: string): Promise<boolean> {
+        console.log(`[Scanner] Verifying decrypted Zcash payment event: ${txId}...`);
+        const event = this.loadDecryptedEvent(txId, expectedPacketHash);
+        return this.verifyDecryptedEvent(event, expectedPacketHash);
+    }
+
+    private loadDecryptedEvent(txId: string, expectedPacketHash: string): DecryptedPaymentEvent {
+        const rawJson = process.env.ZK_LORA_DECRYPTED_EVENT_JSON;
+        if (rawJson) {
+            console.log("   Loading decrypted payment event from ZK_LORA_DECRYPTED_EVENT_JSON.");
+            return JSON.parse(rawJson) as DecryptedPaymentEvent;
+        }
+
+        const eventPath = process.env.ZK_LORA_DECRYPTED_EVENT_PATH;
+        if (eventPath) {
+            console.log(`   Loading decrypted payment event from file: ${eventPath}`);
+            return JSON.parse(fs.readFileSync(eventPath, 'utf8')) as DecryptedPaymentEvent;
+        }
+
+        console.log("   No live wallet event provided. Using explicit local fixture.");
+        console.log("   NOTE: This fixture validates payout matching logic only; it is not a live Zcash chain scan.");
+        return {
+            tx_id: txId,
+            memo: `ref:${expectedPacketHash}`,
+            gross_zat: 5000000,
+            developer_fee_zat: 100000,
+            developer_address: this.developerAddress,
+            source: "local_fixture",
+            confirmations: 0
+        };
+    }
+
+    private async verifyDecryptedEvent(event: DecryptedPaymentEvent, expectedPacketHash: string): Promise<boolean> {
+        console.log(`   Source: ${event.source || "unspecified"}`);
+        console.log(`   Decrypted memo: '${event.memo}'`);
+
+        const expectedMemo = `ref:${expectedPacketHash}`;
+        if (event.memo !== expectedMemo) {
+            throw new Error(`Memo reference mismatch. Expected '${expectedMemo}', got '${event.memo}'`);
+        }
+
+        if (event.developer_address !== this.developerAddress) {
+            throw new Error(`Developer address mismatch. Expected '${this.developerAddress}', got '${event.developer_address}'`);
+        }
+
+        console.log("   [Verification] Validating payout distribution:");
+        console.log(`      Transaction ID: ${event.tx_id}`);
+        console.log(`      Confirmations: ${event.confirmations || 0}`);
+        console.log(`      Gross Payout: ${this.formatZec(event.gross_zat)} ZEC`);
+        console.log(`      Target Dev Treasury: ${this.developerAddress}`);
+        console.log(`      Developer Fee Paid: ${this.formatZec(event.developer_fee_zat)} ZEC`);
+
+        const expectedDevFee = (BigInt(event.gross_zat) * BigInt(this.devFeeBps)) / 10000n;
+        if (BigInt(event.developer_fee_zat) !== expectedDevFee) {
+            throw new Error(`Incorrect developer fee split. Expected ${this.formatZec(Number(expectedDevFee))} ZEC, got ${this.formatZec(event.developer_fee_zat)} ZEC`);
+        }
+
+        console.log("   [SUCCESS] Verification successful! 2% developer fee split matches constraints.");
+        return true;
+    }
+
+    private formatZec(zat: number): string {
+        const whole = Math.floor(zat / 100000000);
+        const fractional = zat % 100000000;
+        return `${whole}.${fractional.toString().padStart(8, '0')}`;
+    }
+}
 // ============================================================================
 // Main Execution Menu
 // ============================================================================
@@ -498,12 +483,17 @@ async function runAutomatedTests() {
     console.log("[5] Broadcast test...");
     await app.transmit(payload, 1);
 
-    console.log("[6] Zcash Shielded Mempool & Payout Split Check...");
+    console.log("[6] Zcash Decrypted Payment Event & Payout Split Check...");
     const scanner = new ZcashMempoolScanner();
-    const simTxId = "8888888888888888888888888888888888888888888888888888888888888888";
-    const scanResult = await scanner.scanTransaction(simTxId, proof.proof_hash);
-    if (!scanResult) throw new Error("Zcash mempool scanner validation failed!");
-
+    const fixturePath = path.resolve(process.cwd(), '..', '..', 'fixtures', 'decrypted_payment_event.json');
+    if (fs.existsSync(fixturePath)) {
+        process.env.ZK_LORA_DECRYPTED_EVENT_PATH = fixturePath;
+    }
+    const scanResult = await scanner.scanTransaction(
+        "fixture_tx_milestone_2_reconciliation_check",
+        "demo_packet_hash_hello_zcash_mesh"
+    );
+    if (!scanResult) throw new Error("Zcash decrypted event validation failed!");
     console.log("==============================================================");
     console.log("✅ SUCCESS: All modules verified successfully.");
     console.log("==============================================================");
