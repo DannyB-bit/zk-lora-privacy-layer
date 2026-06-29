@@ -722,8 +722,8 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "mining farms. Edge nodes only act as Provers—generating their own transaction proofs. Miners use massive ASIC farms to solve "
         "the Equihash PoW puzzle (a global cryptographic lottery) to secure the network. The edge node simply submits its pre-proven "
         "transaction, which miners verify in milliseconds and include in a block.<br/>"
-        "<b>• The DePIN Advantage:</b> This asymmetric design is perfect for DePIN. Low-power IoT devices can easily construct "
-        "secure, private transactions on-chip, while the global Zcash mining network provides decentralized security and permanent settlement."
+        "<b><font color=\"#D4AF37\">• The DePIN Advantage:</font></b> <font color=\"#D4AF37\">This asymmetric design is perfect for DePIN. Low-power IoT devices can easily construct "
+        "secure, private transactions on-chip, while the global Zcash mining network provides decentralized security and permanent settlement.</font>"
     )
     story.append(Paragraph(prover_miner_text, body_style))
     
