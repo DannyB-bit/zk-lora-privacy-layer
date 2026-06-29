@@ -966,14 +966,13 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         story.append(map_table)
         story.append(Spacer(1, 10))
         
-        # Comparison section: "This is you" vs "OR this could be you now"
-        logo_left = Image('zcash_logo.png', width=25, height=25) if os.path.exists('zcash_logo.png') else Spacer(1, 25)
-        logo_right = Image('zcash_eco_recycle_logo.png', width=35, height=35) if os.path.exists('zcash_eco_recycle_logo.png') else Spacer(1, 35)
+        # Comparison section: Custom description vs "OR this could be you now"
+        logo_right = Image('zcash_eco_recycle_logo.png', width=75, height=75) if os.path.exists('zcash_eco_recycle_logo.png') else Spacer(1, 75)
         
         comparison_data = [
-            [Paragraph("<font size=9 color='#94A3B8'><b>This is you...</b></font>", ParagraphStyle('ThisIsYou', alignment=1)), 
-             Paragraph("<font size=9 color='#F3B300'><b>OR this could be you now...</b></font>", ParagraphStyle('OrThisCouldBeYou', alignment=1))],
-            [logo_left, logo_right]
+            [Paragraph("<font size=9 color='#94A3B8'>This is the power of lorawan via a 13dbiomini antenna at 146ft height only consuming 5 watts of power in a rak miner.</font>", ParagraphStyle('LeftDesc', fontName='Helvetica-Oblique', fontSize=8.5, leading=12, alignment=0, textColor=colors.HexColor("#94A3B8"))), 
+             Paragraph("<font size=10 color='#F3B300'><b>OR this could be you now...</b></font>", ParagraphStyle('OrThisCouldBeYou', alignment=1))],
+            [Spacer(1, 1), logo_right]
         ]
         comparison_table = Table(comparison_data, colWidths=[240, 240])
         comparison_table.setStyle(TableStyle([
