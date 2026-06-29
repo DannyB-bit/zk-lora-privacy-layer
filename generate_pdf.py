@@ -356,10 +356,6 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     ]))
     story.append(qr_table)
     
-    story.append(Spacer(1, 40))
-    disclaimer_style = ParagraphStyle('Disclaimer', fontName='Helvetica-Oblique', fontSize=7.5, leading=11, textColor=colors.HexColor("#64748B"))
-    story.append(Paragraph("<i>Disclaimer: The characters, organizations, and events depicted in the creative components of this document are fictional. Any resemblance to actual persons, living or dead, or real-world entities is purely coincidental and not intended by the author.</i>", disclaimer_style))
-    
     story.append(PageBreak())
     
     # =========================================================================
