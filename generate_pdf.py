@@ -908,9 +908,9 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Spacer(1, 15))
     quote_style = ParagraphStyle(
         'CoverQuote',
-        fontName='Helvetica-Oblique',
-        fontSize=9.5,
-        leading=14,
+        fontName='Helvetica-BoldOblique',
+        fontSize=10.5,
+        leading=15,
         textColor=colors.HexColor("#F3B300"),
         alignment=1
     )
