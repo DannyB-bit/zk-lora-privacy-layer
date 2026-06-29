@@ -420,10 +420,10 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
             Paragraph("GitHub: Milestone 3 Workspace<br/><font color='#F3B300'><b>Multi-Hop Mesh & HAL</b></font>", qr_label_style)
         ],
         [
-            Paragraph("<b>Covers:</b> Core SX1302/3 HAL drivers, ECIES encryption, secp256k1 identity, and 20-language proof validation.<br/><b>Achieved:</b> Complete off-grid identity masking and end-to-end message privacy over public RF bands.", qr_desc_style),
-            Paragraph("<b>Covers:</b> secp256k1 key generation, Ripemd160/SHA256 address derivation, Groth16 ZK-SNARK compiler, and 20-language proof verifiers.<br/><b>Achieved:</b> Cryptographic proof of node legitimacy without revealing hardware or network identities.", qr_desc_style),
-            Paragraph("<b>Covers:</b> Rust/Go/TS mempool scanners, shielded memo decryption via Incoming Viewing Keys (IVKs), and 2% developer fee validation.<br/><b>Achieved:</b> Zero-latency, off-chain routing authorization triggered instantly by pending Zcash mempool transactions.", qr_desc_style),
-            Paragraph("<b>Covers:</b> Multi-hop mesh routing, P2P data marketplace, multi-curve prover (BN254, BLS12-381, Pasta), SessionSecurity, and MempoolProtection.<br/><b>Achieved:</b> Absolute network resilience against Gorgon, Sybil, Eclipse, and Free Rider attacks.", qr_desc_style)
+            Paragraph("<b>Covers:</b> Core SX1302/3 HAL drivers, ECIES encryption, secp256k1 identity, and 20-language proof validation.<br/><b>Achieves:</b> Complete off-grid identity masking and end-to-end message privacy over public RF bands.", qr_desc_style),
+            Paragraph("<b>Covers:</b> secp256k1 key generation, Ripemd160/SHA256 address derivation, Groth16 ZK-SNARK compiler, and 20-language proof verifiers.<br/><b>Achieves:</b> Cryptographic proof of node legitimacy without revealing hardware or network identities.", qr_desc_style),
+            Paragraph("<b>Covers:</b> Rust/Go/TS mempool scanners, shielded memo decryption via Incoming Viewing Keys (IVKs), and 2% developer fee validation.<br/><b>Achieves:</b> Zero-latency, off-chain routing authorization triggered instantly by pending Zcash mempool transactions.", qr_desc_style),
+            Paragraph("<b>Covers:</b> Multi-hop mesh routing, P2P data marketplace, multi-curve prover (BN254, BLS12-381, Pasta), SessionSecurity, and MempoolProtection.<br/><b>Achieves:</b> Absolute network resilience against Gorgon, Sybil, Eclipse, and Free Rider attacks.", qr_desc_style)
         ]
     ]
     qr_table = Table(qr_data, colWidths=[126, 126, 126, 126])
