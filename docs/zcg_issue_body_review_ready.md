@@ -124,7 +124,7 @@ Covers physical parts to build 3 solar-powered outdoor mesh gateways at $980 per
 Covers operational dependencies over the 6-month period:
 
 1. Location Lease & Utilities ($4,500 requested): development computer lab lease, electricity, and high-speed network connectivity.
-2. AI API Credits ($1,500 requested): cloud GPU and dataset credits to map generative prior coordinates for Language-U.
+2. AI-assisted test-vector and payload-corpus generation ($1,500 requested): cloud/API credits used to generate reproducible semantic-coordinate packet fixtures, adversarial packet cases, and AI-to-AI routing payloads for validating the ZK-LoRa encrypted relay path, proof-reference checks, replay rejection, and Zcash payment-reference accounting.
 
 ### Compensation Costs (USD)
 

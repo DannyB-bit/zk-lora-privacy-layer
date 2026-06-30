@@ -299,7 +299,7 @@ interface DecryptedPaymentEvent {
     confirmations?: number;
 }
 
-class ZcashMempoolScanner {
+class ZcashShieldedPaymentListener {
     private developerAddress: string;
     private devFeeBps: number;
 
@@ -400,7 +400,7 @@ async function runInteractive() {
         console.log(`${Colors.ZCASH_GREEN}${Colors.BOLD}║${Colors.END}  ${Colors.YELLOW}[2]${Colors.END} Listen for Packets (RX)`.padEnd(76) + `${Colors.ZCASH_GREEN}${Colors.BOLD}║${Colors.END}`);
         console.log(`${Colors.ZCASH_GREEN}${Colors.BOLD}║${Colors.END}  ${Colors.YELLOW}[3]${Colors.END} Show Identity`.padEnd(76) + `${Colors.ZCASH_GREEN}${Colors.BOLD}║${Colors.END}`);
         console.log(`${Colors.ZCASH_GREEN}${Colors.BOLD}║${Colors.END}  ${Colors.YELLOW}[4]${Colors.END} Generate ZK-Proof`.padEnd(76) + `${Colors.ZCASH_GREEN}${Colors.BOLD}║${Colors.END}`);
-        console.log(`${Colors.ZCASH_GREEN}${Colors.BOLD}║${Colors.END}  ${Colors.YELLOW}[5]${Colors.END} Scan Zcash Mempool (M2)`.padEnd(76) + `${Colors.ZCASH_GREEN}${Colors.BOLD}║${Colors.END}`);
+        console.log(`${Colors.ZCASH_GREEN}${Colors.BOLD}║${Colors.END}  ${Colors.YELLOW}[5]${Colors.END} Decrypt Shielded Payments (M2)`.padEnd(76) + `${Colors.ZCASH_GREEN}${Colors.BOLD}║${Colors.END}`);
         console.log(`${Colors.ZCASH_GREEN}${Colors.BOLD}║${Colors.END}  ${Colors.YELLOW}[0]${Colors.END} Exit`.padEnd(76) + `${Colors.ZCASH_GREEN}${Colors.BOLD}║${Colors.END}`);
         console.log(`${Colors.ZCASH_GREEN}${Colors.BOLD}╚${border}╝${Colors.END}\n`);
 
@@ -427,7 +427,7 @@ async function runInteractive() {
             const txId = await question(`${Colors.CYAN}Enter Zcash Transaction ID (TXID):${Colors.END} `);
             const expectedHash = await question(`${Colors.CYAN}Enter Expected Packet Hash:${Colors.END} `);
             
-            const scanner = new ZcashMempoolScanner();
+            const scanner = new ZcashShieldedPaymentListener();
             try {
                 await scanner.scanTransaction(
                     txId || "8888888888888888888888888888888888888888888888888888888888888888",
@@ -484,7 +484,7 @@ async function runAutomatedTests() {
     await app.transmit(payload, 1);
 
     console.log("[6] Zcash Decrypted Payment Event & Payout Split Check...");
-    const scanner = new ZcashMempoolScanner();
+    const scanner = new ZcashShieldedPaymentListener();
     const fixturePath = path.resolve(process.cwd(), '..', '..', 'fixtures', 'decrypted_payment_event.json');
     if (fs.existsSync(fixturePath)) {
         process.env.ZK_LORA_DECRYPTED_EVENT_PATH = fixturePath;

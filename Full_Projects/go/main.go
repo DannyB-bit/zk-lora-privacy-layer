@@ -388,19 +388,19 @@ type DecryptedPaymentEvent struct {
 	Confirmations    uint32 `json:"confirmations"`
 }
 
-type ZcashMempoolScanner struct {
+type ZcashShieldedPaymentListener struct {
 	developerAddress string
 	devFeeBps        uint64
 }
 
-func NewZcashMempoolScanner() *ZcashMempoolScanner {
-	return &ZcashMempoolScanner{
+func NewZcashShieldedPaymentListener() *ZcashShieldedPaymentListener {
+	return &ZcashShieldedPaymentListener{
 		developerAddress: "u10rjztjhk6c2caz6t6hdh32zcf22exhumlm388vtd7exm63vsgwphhm5gt2azgzdksaumr9hn5hx7yy3tdjvdpt875c9tjqswwshz2v9d",
 		devFeeBps:        200,
 	}
 }
 
-func (s *ZcashMempoolScanner) ScanTransaction(txID string, expectedPacketHash string) (bool, error) {
+func (s *ZcashShieldedPaymentListener) ScanTransaction(txID string, expectedPacketHash string) (bool, error) {
 	fmt.Printf("[Scanner] Verifying decrypted Zcash payment event: %s...\n", txID)
 
 	event, err := s.loadDecryptedEvent(txID, expectedPacketHash)
@@ -410,7 +410,7 @@ func (s *ZcashMempoolScanner) ScanTransaction(txID string, expectedPacketHash st
 	return s.verifyDecryptedEvent(event, expectedPacketHash)
 }
 
-func (s *ZcashMempoolScanner) loadDecryptedEvent(txID string, expectedPacketHash string) (DecryptedPaymentEvent, error) {
+func (s *ZcashShieldedPaymentListener) loadDecryptedEvent(txID string, expectedPacketHash string) (DecryptedPaymentEvent, error) {
 	if raw := os.Getenv("ZK_LORA_DECRYPTED_EVENT_JSON"); raw != "" {
 		fmt.Println("   Loading decrypted payment event from ZK_LORA_DECRYPTED_EVENT_JSON.")
 		var event DecryptedPaymentEvent
@@ -446,7 +446,7 @@ func (s *ZcashMempoolScanner) loadDecryptedEvent(txID string, expectedPacketHash
 	}, nil
 }
 
-func (s *ZcashMempoolScanner) verifyDecryptedEvent(event DecryptedPaymentEvent, expectedPacketHash string) (bool, error) {
+func (s *ZcashShieldedPaymentListener) verifyDecryptedEvent(event DecryptedPaymentEvent, expectedPacketHash string) (bool, error) {
 	if event.Source == "" {
 		event.Source = "unspecified"
 	}
@@ -526,7 +526,7 @@ func runAutomatedTests() {
 	app.Transmit(payload, 1)
 
 	fmt.Println("[6] Zcash Decrypted Payment Event & Payout Split Check...")
-	scanner := NewZcashMempoolScanner()
+	scanner := NewZcashShieldedPaymentListener()
 	fixturePath := filepath.Join("..", "..", "fixtures", "decrypted_payment_event.json")
 	if _, err := os.Stat(fixturePath); err == nil {
 		_ = os.Setenv("ZK_LORA_DECRYPTED_EVENT_PATH", fixturePath)
@@ -566,7 +566,7 @@ func main() {
 		fmt.Printf("%s%s║  %s%s║\n", ColorZcashGreen, ColorBold, padString(ColorYellow+"[2]"+ColorEnd+" Listen for Packets (RX)").padRight(67), ColorZcashGreen)
 		fmt.Printf("%s%s║  %s%s║\n", ColorZcashGreen, ColorBold, padString(ColorYellow+"[3]"+ColorEnd+" Show Identity").padRight(67), ColorZcashGreen)
 		fmt.Printf("%s%s║  %s%s║\n", ColorZcashGreen, ColorBold, padString(ColorYellow+"[4]"+ColorEnd+" Generate ZK-Proof").padRight(67), ColorZcashGreen)
-		fmt.Printf("%s%s║  %s%s║\n", ColorZcashGreen, ColorBold, padString(ColorYellow+"[5]"+ColorEnd+" Scan Zcash Mempool (M2)").padRight(67), ColorZcashGreen)
+		fmt.Printf("%s%s║  %s%s║\n", ColorZcashGreen, ColorBold, padString(ColorYellow+"[5]"+ColorEnd+" Decrypt Shielded Payments (M2)").padRight(67), ColorZcashGreen)
 		fmt.Printf("%s%s║  %s%s║\n", ColorZcashGreen, ColorBold, padString(ColorYellow+"[0]"+ColorEnd+" Exit").padRight(67), ColorZcashGreen)
 		fmt.Printf("%s%s╚%s╝%s\n\n", ColorZcashGreen, ColorBold, border, ColorEnd)
 
@@ -620,7 +620,7 @@ func main() {
 				expectedHash = "a1b2c3d4e5f6g7h8i9j0"
 			}
 
-			m2Scanner := NewZcashMempoolScanner()
+			m2Scanner := NewZcashShieldedPaymentListener()
 			_, err := m2Scanner.ScanTransaction(txID, expectedHash)
 			if err != nil {
 				fmt.Printf("%s❌ Scan Verification Failed: %v%s\n", ColorRed, err, ColorEnd)

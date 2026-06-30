@@ -598,14 +598,14 @@ pub struct DecryptedPaymentEvent {
     confirmations: Option<u32>,
 }
 
-pub struct ZcashMempoolScanner {
+pub struct ZcashShieldedPaymentListener {
     developer_address: String,
     dev_fee_bps: u64,
 }
 
-impl ZcashMempoolScanner {
+impl ZcashShieldedPaymentListener {
     pub fn new() -> Self {
-        ZcashMempoolScanner {
+        ZcashShieldedPaymentListener {
             developer_address: "u10rjztjhk6c2caz6t6hdh32zcf22exhumlm388vtd7exm63vsgwphhm5gt2azgzdksaumr9hn5hx7yy3tdjvdpt875c9tjqswwshz2v9d".to_string(),
             dev_fee_bps: 200,
         }
@@ -931,7 +931,7 @@ fn run_automated_tests() {
     app.transmit("Hello Zcash Mesh!", 1);
 
     println!("[6] Zcash Decrypted Payment Event & Payout Split Check...");
-    let scanner = ZcashMempoolScanner::new();
+    let scanner = ZcashShieldedPaymentListener::new();
     let tx_id = "fixture_tx_milestone_2_reconciliation_check";
     let expected_hash = "demo_packet_hash_hello_zcash_mesh";
     if fs::metadata("fixtures/decrypted_payment_event.json").is_ok() {

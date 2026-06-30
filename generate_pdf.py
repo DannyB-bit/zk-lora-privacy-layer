@@ -1163,7 +1163,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "<b>&bull; Shielded Transaction Gen:</b> Integrate shielded ZEC transaction generation directly in the gateway routing loop.<br/>"
         "<b>&bull; Unlinkable Transmission Mode:</b> Implement randomized delays and packet shuffling to prevent timing-based correlation "
         "attacks by observers monitoring the RF spectrum.<br/>"
-        "<b>&bull; Mempool Scanner Optimization:</b> Optimize the light-client mempool scanner to verify inbound shielded Zcash payments in "
+        "<b>&bull; Shielded Payment Listener Optimization:</b> Optimize the light-client shielded payment listener to verify inbound shielded Zcash payments in "
         "under 10 milliseconds."
     )
     story.append(Paragraph(st_text, body_style_compact))
