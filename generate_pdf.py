@@ -398,10 +398,10 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     summary_text_3 = (
         "ZK-LoRa provides a highly realistic, secondary utility for these pre-certified devices--including over "
         "300,000 RAKwireless-manufactured hotspots (RAK V2, MNTD) equipped with Semtech SX1302/SX1303 concentrator "
-        "chips and Raspberry Pi units. Operating on unlicensed, globally available ISM bands--such as US915 (902€“928 MHz) "
-        "in North America, EU868 (863€“870 MHz) in Europe, and AU915 in South America--nodes require no FCC or local "
-        "spectrum licensing. This enables permissionless, low-cost deployments achieving ranges of 2€“5 km in urban "
-        "settings and 10€“15+ km in clear line-of-sight. Operators can participate in private edge routing, verify ZK-proofs "
+        "chips and Raspberry Pi units. Operating on unlicensed, globally available ISM bands--such as US915 (902-928 MHz) "
+        "in North America, EU868 (863-870 MHz) in Europe, and AU915 in South America--nodes require no FCC or local "
+        "spectrum licensing. This enables permissionless, low-cost deployments achieving ranges of 2-5 km in urban "
+        "settings and 10-15+ km in clear line-of-sight. Operators can participate in private edge routing, verify ZK-proofs "
         "on-chip, and earn shielded Zcash (ZEC) micropayments. Thanks to Zcash's multi-output transaction architecture, "
         "the payment split is designed to be configurable, allowing a custom percentage to support the Zcash Foundation, "
         "and/or any developer that forks this codebase to add their own percentage based on their contributions to improve "
@@ -893,7 +893,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     perf_text = (
         "Because LoRa is a low-bandwidth modulation scheme operating in unlicensed Industrial, Scientific, and Medical (ISM) "
         "radio bands, packet size and regulatory compliance are critical. ZK-LoRa operates on license-free spectrum "
-        "globally, including <b>US915</b> (902€“928 MHz) in North America, <b>EU868</b> (863€“870 MHz) in Europe (subject to "
+        "globally, including <b>US915</b> (902-928 MHz) in North America, <b>EU868</b> (863-870 MHz) in Europe (subject to "
         "a strict 1% duty cycle limit), <b>AU915</b> in South America, and <b>AS923</b> in Asia. This allows completely "
         "permissionless deployment with typical transmission ranges of <b>2 to 5 km</b> in urban areas, <b>10 to 15 km</b> "
         "in rural line-of-sight, and up to <b>30+ km</b> from high-elevation nodes (such as hilltops or drones).<br/><br/>"
