@@ -78,8 +78,9 @@ Reviewer evidence is collected in [artifacts/milestone1](./artifacts/milestone1/
 | 3-node RAK/Raspberry Pi hardware layout | Documented in [docs/milestone1_hardware_layout.md](./docs/milestone1_hardware_layout.md) |
 | RAK operator logs | Summarized in [artifacts/milestone1/rak_operator_log_summary.md](./artifacts/milestone1/rak_operator_log_summary.md) |
 | End-to-end raw LoRa RF proof | Verified in [zk-lora-milestone-1](https://github.com/DannyB-bit/zk-lora-milestone-1/tree/main/artifacts/milestone1/hardware_capture/end_to_end_rf_success) |
+| Encrypted proof-referenced secure packet RF proof | Verified in [zk-lora-milestone-1](https://github.com/DannyB-bit/zk-lora-milestone-1/tree/main/artifacts/milestone1/hardware_capture/secure_packet_rf) |
 
-Scope note: this repo proves the Milestone 1 reference prototype and verifier portability. The dedicated Milestone 1 workspace now also contains reviewer-grade raw LoRa RF evidence: RakMiner-A transmitted a deterministic 240-byte payload, RakMiner-B decoded CRC OK packets during the matching TX window, and the received payload SHA-256 matched the transmitted SHA-256. Production gnark/arkworks/halo2 proof integration remains future work.
+Scope note: this repo proves the Milestone 1 reference prototype and verifier portability. The dedicated Milestone 1 workspace now also contains reviewer-grade raw LoRa RF evidence and secure-packet evidence: RakMiner-A transmitted deterministic payloads, RakMiner-B decoded CRC OK packets, matched TX/RX SHA-256, decrypted a proof-referenced packet, verified the reference proof fields, and rejected tampered, wrong-key, and replayed packets. Production gnark/arkworks/halo2 proof integration remains future work.
 
 ## Security Properties
 

@@ -15,6 +15,7 @@ Verified locally:
 - The developer treasury split is checked as 2% using integer zatoshi math.
 - RAK operator TX/RX logs are summarized in `artifacts/milestone1/rak_operator_log_summary.md`.
 - The dedicated Milestone 1 repo contains end-to-end raw LoRa RF evidence: CRC OK packets and matching 240-byte payload SHA-256 between RakMiner-A and RakMiner-B.
+- The dedicated Milestone 1 repo also contains secure-packet RF evidence: encrypted proof-referenced packet transfer, authenticated decrypt, reference-proof verification, tamper rejection, wrong-key rejection, replay rejection, and matching packet SHA-256.
 
 Do not overclaim:
 - The current scanner does not decrypt shielded memos from the public chain by itself.
@@ -27,6 +28,7 @@ Forum checklist:
 - Link to the four repos and this readiness note.
 - Link `artifacts/milestone1/README.md` and `docs/milestone1_hardware_layout.md`.
 - Link the Milestone 1 RF result: `zk-lora-milestone-1/artifacts/milestone1/hardware_capture/end_to_end_rf_success/node-b-rx_20260630T012005Z/result_summary.txt`.
+- Link the Milestone 1 secure-packet result: `zk-lora-milestone-1/artifacts/milestone1/hardware_capture/secure_packet_rf/node-b-rx_20260630T135643Z/result_summary.txt`.
 - Say the current milestone proves deterministic packet-reference and 2% fee validation from decrypted events.
 - Say the next grant-funded integration is real Zcash testnet/regtest wallet scanning plus production proof integration.
 - Avoid "fully private", "production", "on-chain verified split", or "live mempool decrypted" language until those pieces are demonstrated.

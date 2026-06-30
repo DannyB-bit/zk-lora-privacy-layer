@@ -1,8 +1,8 @@
 # Raspberry Pi / RAK Setup Report
 
-Status: application-level RAK operator logs present in this repo; reviewer-grade raw LoRa RF evidence is now committed in the dedicated Milestone 1 repo.
+Status: application-level RAK operator logs present in this repo; reviewer-grade raw LoRa RF and secure-packet RF evidence is now committed in the dedicated Milestone 1 repo.
 
-Milestone 1 now includes a 3-node hardware layout in `docs/milestone1_hardware_layout.md`. The dedicated Milestone 1 repo contains the strongest physical-layer evidence: RakMiner-A transmitted a deterministic 240-byte raw LoRa payload, RakMiner-B decoded CRC OK packets during the matching TX window, and the received payload SHA-256 matched the transmitted payload SHA-256.
+Milestone 1 now includes a 3-node hardware layout in `docs/milestone1_hardware_layout.md`. The dedicated Milestone 1 repo contains the strongest physical-layer evidence: RakMiner-A transmitted deterministic raw and secure packets, RakMiner-B decoded CRC OK packets during matching TX windows, TX/RX SHA-256 matched, and the secure-packet run proved authenticated decrypt, reference-proof verification, tamper rejection, wrong-key rejection, and replay rejection.
 
 The main repo contains supporting application logs:
 
