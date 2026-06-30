@@ -105,7 +105,7 @@ def make_code_block(code_text, style_sheet, title="terminal"):
         .replace("â”¼", "+")
         .replace("â–²", "^")
         .replace("â–¼", "v")
-        .replace("â—„", "<")
+        .replace("â--„", "<")
         .replace("â–º", ">")
     )
     
@@ -1106,7 +1106,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Paragraph("8.1 Key Cryptographic Vulnerabilities & Rust Code Mitigations", h2_style))
     
     audit_details = (
-        "<b>1. Trusted Setup (Groth16):</b> If the phase-2 'toxic waste' (&tau;) is not destroyed, an attacker can forge proofs. "
+        "<b>1. Trusted Setup (Groth16):</b> If the phase-2 'toxic waste' (tau) is not destroyed, an attacker can forge proofs. "
         "<i>Mitigation:</i> We conduct a public MPC ceremony. The Rust engine verifies this on-chip by rejecting any proof that "
         "does not match the compiled ceremony hash. (See <font face='Courier'>ZKProver::verify_proof</font> in "
         "<font face='Courier'>rust/src/main.rs:L114</font>).<br/>"
@@ -1132,12 +1132,12 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Paragraph("8.2 Design Responses to Core Reviewer Critiques", h2_style))
     
     critique_text = (
-        "<b>• Mempool / Double-Spend Risk:</b> Reviewers note that a sender could broadcast a transaction, get a packet routed, "
+        "<b>&bull; Mempool / Double-Spend Risk:</b> Reviewers note that a sender could broadcast a transaction, get a packet routed, "
         "and then attempt replacement or eviction before confirmation. The grant-funded integration should treat mempool observations "
         "as provisional, require configurable confirmation or trust thresholds for higher-value routing, and use wallet/light-client "
         "code that supplies decrypted shielded payment events. The current Milestone 1 prototype proves packet-reference matching and "
         "2% fee-split validation from deterministic decrypted-event fixtures; production wallet integration is planned for Milestone 2.<br/>"
-        "<b>• LoRa Bandwidth Constraints (Session-Based ZK):</b> Fitting a full proof and encrypted payload into one LoRa packet is tight. "
+        "<b>&bull; LoRa Bandwidth Constraints (Session-Based ZK):</b> Fitting a full proof and encrypted payload into one LoRa packet is tight. "
         "The design path is to keep the unfragmented RF payload small, establish authorization/session state separately, and send compact "
         "per-packet authenticators or references during data transfer. The current Milestone 1 hardware evidence proves a 240-byte raw "
         "LoRa payload can be transmitted and verified byte-for-byte between two RAK miners; production session security remains future work."
