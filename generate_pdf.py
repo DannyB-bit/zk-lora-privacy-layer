@@ -709,9 +709,9 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Paragraph("4.5 Why This is a Breakthrough for the Zcash Ecosystem", h2_style))
     
     breakthrough_text = (
-        "<b>€¢ Near-Instantaneous Routing:</b> By verifying payments via decrypted wallet/light-client event data before block confirmation, ZK-LoRa achieves near-instantaneous packet relaying.<br/>"
-        "<b>€¢ Unlinkable Physical-to-Financial Mapping:</b> To an outside observer, the Zcash transaction is just encrypted noise on the blockchain, and the LoRa packet is just an encrypted RF burst. There is no mathematical way for an eavesdropper to link the two.<br/>"
-        "<b>€¢ Sustainable Open Source:</b> The fee split is designed to be configurable. Senders can route custom percentages to support the Zcash Foundation and/or any developer that forks this codebase to improve it, alongside the proposed 2% split supporting the developer/inventor treasury. If a sender tries to bypass these splits, the gateway's verification module rejects the transaction, creating a self-sustaining funding loop for the entire ecosystem."
+        "<b>&bull; Near-Instantaneous Routing:</b> By verifying payments via decrypted wallet/light-client event data before block confirmation, ZK-LoRa achieves near-instantaneous packet relaying.<br/>"
+        "<b>&bull; Unlinkable Physical-to-Financial Mapping:</b> To an outside observer, the Zcash transaction is just encrypted noise on the blockchain, and the LoRa packet is just an encrypted RF burst. There is no mathematical way for an eavesdropper to link the two.<br/>"
+        "<b>&bull; Sustainable Open Source:</b> The fee split is designed to be configurable. Senders can route custom percentages to support the Zcash Foundation and/or any developer that forks this codebase to improve it, alongside the proposed 2% split supporting the developer/inventor treasury. If a sender tries to bypass these splits, the gateway's verification module rejects the transaction, creating a self-sustaining funding loop for the entire ecosystem."
     )
     story.append(Paragraph(breakthrough_text, body_style))
     
@@ -720,18 +720,18 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     prover_miner_text = (
         "To understand how ZK-LoRa scale-out works, it is essential to clarify the division of labor between "
         "the <i>Prover</i> (the edge node/device) and the <i>Miner</i> (the Zcash blockchain network):<br/><br/>"
-        "<b>€¢ Proving on the Edge (The Client):</b> The sender device (e.g., a 5W Raspberry Pi 4 or RAK miner) "
+        "<b>&bull; Proving on the Edge (The Client):</b> The sender device (e.g., a 5W Raspberry Pi 4 or RAK miner) "
         "generates the ZK-SNARK proof locally. Historically, this required massive computing power. Today, thanks to Zcash's "
         "modern elliptic curves (BLS12-381/Pasta), generating a proof takes only <b>1.2 seconds</b> and less than <b>40MB of RAM</b>. "
         "The edge node does the heavy lifting of constructing the private transaction without leaking its identity.<br/>"
-        "<b>€¢ Verification on the Network (The Miners):</b> Zcash miners do <i>not</i> generate the ZK-proofs. Instead, they "
+        "<b>&bull; Verification on the Network (The Miners):</b> Zcash miners do <i>not</i> generate the ZK-proofs. Instead, they "
         "verify them. Verifying a proof is incredibly lightweight, taking less than <b>5 milliseconds</b>. Miners run the verification "
         "to ensure the transaction is valid (no double-spending, inputs equal outputs) and secure the ledger via Proof-of-Work (PoW).<br/>"
-        "<b>€¢ The ASIC vs. Edge Distinction:</b> Low-power edge nodes (like our 5W Raspberry Pi) never compete with high-powered ASIC "
+        "<b>&bull; The ASIC vs. Edge Distinction:</b> Low-power edge nodes (like our 5W Raspberry Pi) never compete with high-powered ASIC "
         "mining farms. Edge nodes only act as Provers--generating their own transaction proofs. Miners use massive ASIC farms to solve "
         "the Equihash PoW puzzle (a global cryptographic lottery) to secure the network. The edge node simply submits its pre-proven "
         "transaction, which miners verify in milliseconds and include in a block.<br/>"
-        "<b><font color=\"#D4AF37\">€¢ The DePIN Advantage:</font></b> <font color=\"#D4AF37\">This asymmetric design is perfect for DePIN. Low-power IoT devices can easily construct "
+        "<b><font color=\"#D4AF37\">&bull; The DePIN Advantage:</font></b> <font color=\"#D4AF37\">This asymmetric design is perfect for DePIN. Low-power IoT devices can easily construct "
         "secure, private transactions on-chip, while the global Zcash mining network provides decentralized security and permanent settlement.</font>"
     )
     story.append(Paragraph(prover_miner_text, body_style))
@@ -1159,11 +1159,11 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     
     story.append(Paragraph("10.1 Short-Term (v2.0) -- Zcash Testnet Integration", h2_style))
     st_text = (
-        "<b>€¢ Production ZK Proofs:</b> Integrate production-grade ZK-proof generation on embedded hardware (e.g., using gnark or arkworks).<br/>"
-        "<b>€¢ Shielded Transaction Gen:</b> Integrate shielded ZEC transaction generation directly in the gateway routing loop.<br/>"
-        "<b>€¢ Unlinkable Transmission Mode:</b> Implement randomized delays and packet shuffling to prevent timing-based correlation "
+        "<b>&bull; Production ZK Proofs:</b> Integrate production-grade ZK-proof generation on embedded hardware (e.g., using gnark or arkworks).<br/>"
+        "<b>&bull; Shielded Transaction Gen:</b> Integrate shielded ZEC transaction generation directly in the gateway routing loop.<br/>"
+        "<b>&bull; Unlinkable Transmission Mode:</b> Implement randomized delays and packet shuffling to prevent timing-based correlation "
         "attacks by observers monitoring the RF spectrum.<br/>"
-        "<b>€¢ Mempool Scanner Optimization:</b> Optimize the light-client mempool scanner to verify inbound shielded Zcash payments in "
+        "<b>&bull; Mempool Scanner Optimization:</b> Optimize the light-client mempool scanner to verify inbound shielded Zcash payments in "
         "under 10 milliseconds."
     )
     story.append(Paragraph(st_text, body_style_compact))
@@ -1171,13 +1171,13 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     
     story.append(Paragraph("10.2 Medium-Term (v3.0) -- Zcash Mainnet & Mesh Scale-Out", h2_style))
     mt_text = (
-        "<b>€¢ Multi-Hop Routing with ZK Auth:</b> Implement multi-hop routing where intermediate relay nodes authenticate "
+        "<b>&bull; Multi-Hop Routing with ZK Auth:</b> Implement multi-hop routing where intermediate relay nodes authenticate "
         "packets using zero-knowledge proofs, verified via the Zcash ledger.<br/>"
-        "<b>€¢ On-Chain Reputation System:</b> Store ZK-proven node credentials as shielded Zcash transactions to maintain "
+        "<b>&bull; On-Chain Reputation System:</b> Store ZK-proven node credentials as shielded Zcash transactions to maintain "
         "reputation scores without leaking node identities.<br/>"
-        "<b>€¢ Group & Ring Signatures:</b> Allow nodes to prove membership in an authorized group (e.g., \"I am an authorized "
+        "<b>&bull; Group & Ring Signatures:</b> Allow nodes to prove membership in an authorized group (e.g., \"I am an authorized "
         "weather sensor\") without revealing which specific node they are.<br/>"
-        "<b>€¢ Zcash Pay Micropayment Integration:</b> Enable automated, real-time micropayment rewards for valid mesh routing proofs, "
+        "<b>&bull; Zcash Pay Micropayment Integration:</b> Enable automated, real-time micropayment rewards for valid mesh routing proofs, "
         "interfacing with ChirpStack and The Things Network (TTN)."
     )
     story.append(Paragraph(mt_text, body_style_compact))
