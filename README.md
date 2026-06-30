@@ -66,8 +66,9 @@ Reviewer evidence is collected in [artifacts/milestone1](./artifacts/milestone1/
 | Proof generation and verification benchmark | Complete for local reference host |
 | 3-node RAK/Raspberry Pi hardware layout | Documented in [docs/milestone1_hardware_layout.md](./docs/milestone1_hardware_layout.md) |
 | RAK operator logs | Summarized in [artifacts/milestone1/rak_operator_log_summary.md](./artifacts/milestone1/rak_operator_log_summary.md) |
+| End-to-end raw LoRa RF proof | Verified in [zk-lora-milestone-1](https://github.com/DannyB-bit/zk-lora-milestone-1/tree/main/artifacts/milestone1/hardware_capture/end_to_end_rf_success) |
 
-Scope note: this repo proves the Milestone 1 reference prototype and verifier portability. Production gnark/arkworks/halo2 proof integration and photo-backed RAK packet-forwarder capture remain future hardware/integration work.
+Scope note: this repo proves the Milestone 1 reference prototype and verifier portability. The dedicated Milestone 1 workspace now also contains reviewer-grade raw LoRa RF evidence: RakMiner-A transmitted a deterministic 240-byte payload, RakMiner-B decoded CRC OK packets during the matching TX window, and the received payload SHA-256 matched the transmitted SHA-256. Production gnark/arkworks/halo2 proof integration remains future work.
 
 ## Security Properties
 
@@ -86,9 +87,9 @@ A verified autonomous execution log demonstrating mesh communication between RAK
 ## Milestone Workspaces
 
 For structured tracking and evaluation by Zcash Community Grants reviewers, dedicated workspaces are maintained:
-- **Milestone 1**: [zk-lora-milestone-1](https://github.com/DannyB-bit/zk-lora-milestone-1) (Private) — Prototype completed with artifact pack
-- **Milestone 2**: [zk-lora-milestone-2](https://github.com/DannyB-bit/zk-lora-milestone-2) (Private) — In Progress
-- **Milestone 3**: [zk-lora-milestone-3](https://github.com/DannyB-bit/zk-lora-milestone-3) (Private) — Scheduled
+- **Milestone 1**: [zk-lora-milestone-1](https://github.com/DannyB-bit/zk-lora-milestone-1) - Prototype, verifier artifacts, and end-to-end RF evidence completed
+- **Milestone 2**: [zk-lora-milestone-2](https://github.com/DannyB-bit/zk-lora-milestone-2) - Zcash integration workspace
+- **Milestone 3**: [zk-lora-milestone-3](https://github.com/DannyB-bit/zk-lora-milestone-3) - Hardware mesh / field SDK workspace
 
 ## License
 
