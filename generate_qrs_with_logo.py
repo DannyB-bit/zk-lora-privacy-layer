@@ -57,6 +57,4 @@ def generate_custom_qr(url, filename, logo_path="logo.png"):
 
 if __name__ == "__main__":
     generate_custom_qr("https://github.com/DannyB-bit/zk-lora-privacy-layer", "qr_main.png")
-    generate_custom_qr("https://github.com/DannyB-bit/zk-lora-milestone-3", "qr_m3.png")
-    generate_custom_qr("https://github.com/DannyB-bit/zk-lora-milestone-2", "qr_m2.png")
     generate_custom_qr("https://github.com/DannyB-bit/zk-lora-milestone-1", "qr_m1.png")
