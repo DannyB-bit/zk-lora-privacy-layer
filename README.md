@@ -107,8 +107,8 @@ A verified autonomous execution log demonstrating mesh communication between RAK
 
 For structured tracking and evaluation by Zcash Community Grants reviewers, dedicated workspaces are maintained:
 - **Milestone 1**: [zk-lora-milestone-1](https://github.com/DannyB-bit/zk-lora-milestone-1) - Prototype, verifier artifacts, and end-to-end RF evidence completed
-- **Milestone 2**: [zk-lora-milestone-2](https://github.com/DannyB-bit/zk-lora-milestone-2) - Zcash integration workspace
-- **Milestone 3**: [zk-lora-milestone-3](https://github.com/DannyB-bit/zk-lora-milestone-3) - Hardware mesh / field SDK workspace
+- **Milestone 2**: proposed funded Zcash SDK wallet/light-client integration work; implementation will be opened as grant deliverables progress
+- **Milestone 3**: proposed funded field SDK and deployment work; implementation will be opened as grant deliverables progress
 
 ## License
 
