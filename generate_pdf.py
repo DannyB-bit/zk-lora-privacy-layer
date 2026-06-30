@@ -811,9 +811,9 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Paragraph("6.1 Physical RF Layer & Gateway Mitigations", h2_style))
     sec_details_1 = (
         "<b>Replay Protection</b>: Every ZK-proof binds a UTC timestamp and an ephemeral nonce. Gateways reject any "
-        "packet outside a Â±5-second window or with a duplicate nonce.<br/>"
+        "packet outside a Â&plusmn;5-second window or with a duplicate nonce.<br/>"
         "<b>Sybil Spam Prevention</b>: Sending nodes must solve an RF-Proof-of-Work challenge, or present a symmetric "
-        "HMAC using their registered session key (verified in &lt;1Âµs), protecting the ZK-SNARK engine from CPU exhaustion.<br/>"
+        "HMAC using their registered session key (verified in &lt;1Â&micro;s), protecting the ZK-SNARK engine from CPU exhaustion.<br/>"
         "<b>Lying Gateway Prevention</b>: Off-grid nodes verify block headers and Merkle paths locally (SPV). "
         "Gateways cannot forge confirmations without spending the computational power to solve Equihash PoW."
     )
@@ -837,7 +837,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         [Paragraph("Attack Vector", table_hdr_style), Paragraph("Mitigation Mechanism", table_hdr_style), Paragraph("Security Guarantee", table_hdr_style)],
         [
             Paragraph("Replay Attack", table_cell_bold),
-            Paragraph("Nonces + Â±5s Window", table_cell_style),
+            Paragraph("Nonces + Â&plusmn;5s Window", table_cell_style),
             Paragraph("Duplicate packets rejected.", table_cell_style)
         ],
         [
