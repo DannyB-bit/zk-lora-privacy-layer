@@ -1213,16 +1213,13 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Paragraph(disclaimer_long, ParagraphStyle('DisclaimerLong', alignment=1, fontSize=8.5, leading=13, textColor=colors.HexColor("#94A3B8"))))
     story.append(Spacer(1, 20))
     
-    # Add both logos side-by-side on Page 16
-    logo_left_p16 = Image('zcash_logo.png', width=40, height=40) if os.path.exists('zcash_logo.png') else Spacer(1, 40)
-    logo_right_p16 = Image('zcash_eco_recycle_logo.png', width=50, height=50) if os.path.exists('zcash_eco_recycle_logo.png') else Spacer(1, 50)
+    # Center the Zcash logo on Page 18
+    logo_left_p16 = Image('zcash_logo.png', width=80, height=80) if os.path.exists('zcash_logo.png') else Spacer(1, 80)
     
     p16_logo_data = [
-        [logo_left_p16, logo_right_p16],
-        [Paragraph("<font size=7 color='#94A3B8'>Standard Zcash Logo</font>", caption_style),
-         Paragraph("<font size=7 color='#94A3B8'>Proposed Eco-Recycle Logo<br/>(Upon Grant Approval)</font>", caption_style)]
+        [logo_left_p16]
     ]
-    p16_logo_table = Table(p16_logo_data, colWidths=[120, 120])
+    p16_logo_table = Table(p16_logo_data, colWidths=[240])
     p16_logo_table.setStyle(TableStyle([
         ('ALIGN', (0,0), (-1,-1), 'CENTER'),
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
