@@ -687,16 +687,16 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Paragraph("4.4 What We Are Inventing (The ZK-LoRa Innovations)", h2_style))
     
     innovations_text = (
-        "<b>ðŸš€ Innovation A: Wallet-Event-Triggered RF Routing (Zcash-to-Radio Binding)</b><br/>"
+        "<b>&bull; Innovation A: Wallet-Event-Triggered RF Routing (Zcash-to-Radio Binding)</b><br/>"
         "We propose a gateway architecture that verifies routing authorization based on decrypted shielded payment events. "
         "Instead of waiting for block confirmations or using centralized payment gateways, the gateway verifies Zcash "
         "shielded memos via wallet/light-client viewing capabilities, matching them to physical radio packet hashes to authorize routing. "
         "This represents a novel, privacy-preserving approach to DePIN operation.<br/><br/>"
-        "<b>ðŸš€ Innovation B: Zero-Knowledge RF Identity Masking</b><br/>"
+        "<b>&bull; Innovation B: Zero-Knowledge RF Identity Masking</b><br/>"
         "Standard LoRaWAN is highly vulnerable to physical tracking because it broadcasts static device IDs (DevAddr/DevEUI) in the clear. "
         "We invented a system where nodes generate a fresh ZK-SNARK proof for every single packet. The gateway verifies the proof "
         "to know the node is authorized, but never learns who the node is, designed to prevent physical tracking.<br/><br/>"
-        "<b>ðŸš€ Innovation C: Native Zcash DePIN (No Custom Token Needed)</b><br/>"
+        "<b>&bull; Innovation C: Native Zcash DePIN (No Custom Token Needed)</b><br/>"
         "Most DePIN projects (like Helium, Helium Mobile, or Hivemapper) launch their own custom tokens (like HNT, MOBILE, or HONEY) "
         "on Solana or custom chains. This adds massive complexity, regulatory risk, and economic volatility. ZK-LoRa runs natively "
         "on Zcash, using ZEC directly for private routing fees. The payment split is designed to be configurable, allowing a custom percentage "
