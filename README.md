@@ -8,7 +8,7 @@ tags:
 - lora
 - privacy
 - depin
-license: mit
+license: conditional-grant
 ---
 
 # ZK-LoRa Privacy Layer
@@ -112,4 +112,4 @@ For structured tracking and evaluation by Zcash Community Grants reviewers, dedi
 
 ## License
 
-MIT License — see [LICENSE](./LICENSE)
+Conditional Open-Source Grant License — see [LICENSE](./LICENSE)
