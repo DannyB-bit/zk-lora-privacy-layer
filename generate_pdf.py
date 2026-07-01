@@ -635,6 +635,17 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "authorized for relay, and the packet is rejected or held until a valid payment event is observed."
     )
     story.append(Paragraph(fee_split_rule, body_style))
+    story.append(Spacer(1, 6))
+
+    validator_tamper_resistance = (
+        "<b>Validator Tamper Resistance:</b> Because gateway hosts physically control their hardware, ZK-LoRa "
+        "treats local validator tampering as a detectability and network-eligibility problem rather than assuming "
+        "perfect prevention. Official nodes publish signed validator binaries, fee-policy hashes, and treasury-address "
+        "manifests. Each routing decision produces a signed receipt binding the packet hash, decrypted payment event, "
+        "validator binary hash, fee-policy hash, and node key. Nodes that cannot produce valid receipts from an approved "
+        "validator/policy hash are excluded from official relay accounting, reputation, and reward eligibility."
+    )
+    story.append(Paragraph(validator_tamper_resistance, body_style))
     story.append(Spacer(1, 8))
     
     story.append(Paragraph("4.3 The Step-by-Step Micropayment Flow", h2_style))
