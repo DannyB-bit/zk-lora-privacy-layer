@@ -300,6 +300,7 @@ Tens of thousands of soil moisture and wildfire detection sensors are scattered 
 *   **Zero-Latency Routing**: By verifying payments via decrypted wallet/light-client event data before block confirmation, ZK-LoRa achieves near-instantaneous packet relaying.
 *   **Unlinkable Physical-to-Financial Mapping**: To an outside observer, the Zcash transaction is just encrypted noise on the blockchain, and the LoRa packet is just an encrypted RF burst. There is no mathematical way for an eavesdropper to link the two.
 *   **Sustainable Open Source**: The fee split is designed to be configurable. Senders can route custom percentages to support the Zcash Foundation and/or any developer that forks this codebase to improve it, alongside the proposed 2% split supporting the developer/inventor treasury. If a sender tries to bypass these splits, the gateway's verification module rejects the transaction, creating a self-sustaining funding loop for the entire ecosystem.
+*   **Fee-Split Enforcement Rule**: If any required configured fee output is missing, underpaid, malformed, or not routed to its expected shielded treasury address — including the developer/maintenance fee and any configured ecosystem-support allocation such as a Zcash Foundation fee — the gateway payment-reference validator marks the payment event invalid. The corresponding packet hash is not authorized for relay, and the packet is rejected or held until a valid payment event is observed.
 
 ### 4.6 The Prover-Miner Division: How Shielded DePIN Actually Works
 
