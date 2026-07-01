@@ -1183,6 +1183,56 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     story.append(Paragraph(mt_text, body_style_compact))
     story.append(Spacer(1, 10))
     
+    story.append(PageBreak())
+    
+    # =========================================================================
+    # SECTION 11: APPENDIX: ARCHITECTURAL Q&A SECTION
+    # =========================================================================
+    story.append(Paragraph("11. Appendix: Architectural Q&A Section", h1_style))
+    story.append(Spacer(1, 10))
+    
+    story.append(Paragraph("11.1 Offline Sync & Bandwidth Management (Push vs. Pull)", h2_style))
+    sync_text = (
+        "In off-grid and bandwidth-constrained IoT scenarios, downloading or syncing block data locally is not feasible. "
+        "ZK-LoRa bypasses this by utilizing a <b>push-based gateway-egress architecture</b>:<br/>"
+        "<b>&bull; Off-Grid Clients:</b> End-user nodes operate completely offline. When submitting a packet, they generate the ZK proof "
+        "locally and only transmit a compact routing token (packet hash, temporary proof reference, and signature) over the LoRa RF link, "
+        "avoiding packet fragmentation and staying well within the 222-byte LoRa payload constraint.<br/>"
+        "<b>&bull; Egress Gateways:</b> Physical gateways act as the mesh egress points, equipped with backhaul connectivity (LTE, Starlink, "
+        "or directional Wi-Fi links). The gateways run local light-client adapters utilizing registered <b>Incoming Viewing Keys (IVKs)</b> "
+        "to scan the Zcash blockchain, decrypt incoming shielded transaction notes, and match payment references asynchronously."
+    )
+    story.append(Paragraph(sync_text, body_style_compact))
+    story.append(Spacer(1, 12))
+    
+    story.append(Paragraph("11.2 On-Chain Project Funding & Fee Distribution", h2_style))
+    fee_text = (
+        "To ensure sustainable and decentralized maintenance of the routing infrastructure, a transparent 2% developer fee "
+        "is implemented:<br/>"
+        "<b>&bull; On-Chain Output Splitting:</b> The developer and maintenance fee is enforced at the transaction construction layer within "
+        "the client-side SDK. When a payment is constructed, the library automatically structures the transaction outputs to split the value: "
+        "98% is allocated to the gateway relay node, and 2% is sent directly to the project's developer/maintenance multisig treasury address.<br/>"
+        "<b>&bull; Gateway Enforcement:</b> Gateway routing daemons validate incoming payments and automatically reject packets if the corresponding "
+        "on-chain transaction does not contain the required developer fee split, ensuring trustless and audit-compliant operations."
+    )
+    story.append(Paragraph(fee_text, body_style_compact))
+    story.append(Spacer(1, 12))
+    
+    story.append(Paragraph("11.3 Offline Edge AI Diagnostics & Energy Management", h2_style))
+    ai_text = (
+        "Running intelligent nodes on solar power requires strict computational budget segregation:<br/>"
+        "<b>&bull; Routing vs. Diagnostics:</b> 100% of standard packet routing, decryption, and zero-knowledge verification runs "
+        "on highly optimized Rust and C++ binaries that complete in milliseconds. The quantized local LLM is never in the packet-forwarding path.<br/>"
+        "<b>&bull; Autopilot Recovery:</b> The local LLM acts strictly as an asynchronous system autopilot. When a critical fault is detected "
+        "(e.g., concentrator SPI bus errors or RF interference loops), the LLM daemon evaluates local system logs and telemetry against its "
+        "pre-trained runbooks to generate precise recovery commands (such as safe GPIO power-cycling or duty-cycle adjustments) without internet.<br/>"
+        "<b>&bull; Battery-Gated Inference:</b> The diagnostic LLM remains idle (0% CPU/RAM footprint) during standard operations. Furthermore, "
+        "the gateway daemon implements a hardware-level safety gate: if the local battery bank falls below 30% capacity, the LLM daemon is "
+        "completely disabled, falling back to a low-power sleep state to preserve core cryptographic routing functionality."
+    )
+    story.append(Paragraph(ai_text, body_style_compact))
+    story.append(Spacer(1, 10))
+    
     story.append(NextPageTemplate('Last'))
     story.append(PageBreak())
     
