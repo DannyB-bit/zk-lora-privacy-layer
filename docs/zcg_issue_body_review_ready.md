@@ -220,13 +220,15 @@ The $7,500 startup funding is required upfront to cover:
   Amount (USD): 5500
   Expected Completion Date: 2026-09-25
   User Stories:
-    - "As a ZK-LoRa developer, I want a tested open-source SDK and an offline edge operations agent, so I can deploy and maintain private, autonomous physical communication meshes across different terrains."
+    - "As a ZK-LoRa developer, I want a tested open-source SDK and an offline edge AI agent, so I can deploy private, autonomous physical communication meshes across different terrains."
   Deliverables:
     - Deploy the 5 physical nodes in the field and run 4 weeks of range/RF loops.
     - Harden the production proof/payment adapter path.
-    - **Offline Edge Operations Agent**: After the ZK-LoRa relay path, Zcash wallet/light-client payment-reference validation, proof/payment adapter, and field deployment logs are produced, we will use the completed runbooks, packet evidence, RF failure cases, concentrator recovery logs, LoRaWAN/RAK configuration data, and Zcash integration notes to further train & RAG-index a compact offline edge agent. The purpose is not to replace the cryptographic protocol, but to give field nodes and operators a local troubleshooting and operations layer for packet routing, RX/TX diagnosis, concentrator reset guidance, secure packet verification, and shielded payment-reference validation without internet access.
-    - Publish the SDK package, open-source developer setup documentation, and the pre-trained offline edge agent weights/RAG index.
-  Acceptance Criteria: Field routing reports show 100+ end-to-end off-grid semantic-coordinate packet transfers; payment-reference validation evidence is published for the routing events; edge node logs verify the offline LLM successfully generating structured routing and hardware control instructions locally on the Raspberry Pi without internet in under 2 seconds; public npm/GitHub links to the MIT-licensed SDK and GGUF model files are available.
+    - **Offline Edge AI Agent**: Fine-tune, quantize, and compile a domain-specific LLM agent fully trained specifically on the Zcash core codebase, LoRaWAN specs, and ZK-LoRa protocol. Integrate this model to run offline on edge hardware (Raspberry Pi/RAK Miners) serving as the local "brain" for a custom made agentic AI framework (e.g like nemoclaw, hermes) to handle packet routing decisions, automated concentrator resets, and shielded payment triggers.
+    - Publish the SDK package, open-source developer setup documentation, and the pre-trained offline edge AI model GGUF weights.
+  Acceptance Criteria: Field routing reports show 100+ end-to-end off-grid semantic-coordinate packet transfers; payment-reference validation evidence is published for the routing events; edge node logs verify the offline LLM successfully generating structured routing and hardware control instructions locally on the Raspberry Pi without internet in under 2 seconds; public npm/GitHub links to the MIT-licensed SDK and GGUF model files are available. 
+
+The offline Edge Operations Agent: After the ZK-LoRa relay path, Zcash wallet/light-client payment-reference validation, proof/payment adapter, and field deployment logs are produced, we will use the completed runbooks, packet evidence, RF failure cases, concentrator recovery logs, LoRaWAN/RAK configuration data, and Zcash integration notes to further train & RAG-index a compact offline edge agent. The purpose is not to replace the cryptographic protocol, but to give field nodes and operators a local troubleshooting and operations layer for packet routing, RX/TX diagnosis, concentrator reset guidance, secure packet verification, and shielded payment-reference validation without internet access.
 
 ### Supporting Documents
 
