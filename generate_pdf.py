@@ -1231,6 +1231,40 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         "completely disabled, falling back to a low-power sleep state to preserve core cryptographic routing functionality."
     )
     story.append(Paragraph(ai_text, body_style_compact))
+    story.append(Spacer(1, 12))
+    
+    story.append(Paragraph("11.4 Proving Overhead & Multi-Language Verification Latency", h2_style))
+    overhead_text = (
+        "Zero-knowledge proof verification must run efficiently to avoid latency bottlenecks at the physical edge:<br/>"
+        "<b>&bull; Verification Speed:</b> The ZK-LoRa verifier is compiled to run natively on ARM (optimized C++ utilizing SIMD and "
+        "NEON instructions) rather than in high-overhead wrappers. Verification takes less than 20 milliseconds on a standard Raspberry Pi, "
+        "ensuring packets are authenticated in real-time.<br/>"
+        "<b>&bull; Portability Layer:</b> Compiling the verification stack to WebAssembly (WASM) enables zero-overhead execution within web-based "
+        "gateway consoles and edge management interfaces, keeping deployment independent of host CPU architectures."
+    )
+    story.append(Paragraph(overhead_text, body_style_compact))
+    story.append(Spacer(1, 12))
+    
+    story.append(Paragraph("11.5 Shielded Note Management & Address Reuse Prevention", h2_style))
+    note_text = (
+        "Protecting identity metadata requires careful handling of transaction outputs and local wallet databases:<br/>"
+        "<b>&bull; Ephemeral note commitments:</b> To prevent linkages between physical gateway nodes and static addresses, the client SDK "
+        "utilizes derived sub-keys or throwaway single-use shielded addresses to structure rewards.<br/>"
+        "<b>&bull; Local Database Pruning:</b> Storage constraints on low-flash edge gateways are mitigated by aggressive database pruning. "
+        "Once a transaction nullifier is validated and confirmed in a block, the local database prunes transaction metadata to save flash memory."
+    )
+    story.append(Paragraph(note_text, body_style_compact))
+    story.append(Spacer(1, 12))
+    
+    story.append(Paragraph("11.6 Radio Link Replay Prevention & Timing Defenses", h2_style))
+    replay_text = (
+        "Because radio transmissions are subject to playback attacks by eavesdroppers, the network protocol enforces local defenses:<br/>"
+        "<b>&bull; Bound Sequence Numbers:</b> Each LoRa packet features a unique, monotonically increasing sequence number signed within "
+        "the zero-knowledge proof payload. Egress gateways log validated sequence numbers and discard duplicates.<br/>"
+        "<b>&bull; Sliding Window Expiration:</b> Packets are tagged with a cryptographic timestamp bound to the proof. Gateways enforce a strict "
+        "30-second sliding time window, rejecting any radio packet that is replayed outside the window to prevent playback spam."
+    )
+    story.append(Paragraph(replay_text, body_style_compact))
     story.append(Spacer(1, 10))
     
     story.append(NextPageTemplate('Last'))
