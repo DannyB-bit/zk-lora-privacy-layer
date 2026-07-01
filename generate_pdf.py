@@ -432,7 +432,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
             Paragraph("<b>Covers:</b> Core SX1302/3 HAL drivers, ECIES encryption, secp256k1 identity, and 20-language proof validation.<br/><b>Achieves:</b> Off-grid identity masking and privacy-preserving message privacy over public RF bands.", qr_desc_style),
             Paragraph("<b>Covers:</b> secp256k1 key generation, Ripemd160/SHA256 address derivation, Groth16 ZK-SNARK compiler, and 20-language proof verifiers.<br/><b>Achieves:</b> Cryptographic proof designed to demonstrate node legitimacy without revealing hardware or network identities.", qr_desc_style),
             Paragraph("<b>Planned Work:</b> Real Zcash testnet/regtest wallet/light-client integration, shielded memo decryption via Incoming Viewing Keys (IVKs), and configurable fee validation.<br/><b>Goal:</b> Routing authorization triggered by decrypted wallet/light-client payment events.", qr_desc_style),
-            Paragraph("<b>Planned Work:</b> Edge AI integration (offline LLM brain for frameworks like nemoclaw, hermes), hardware mesh proof, multi-hop routing, P2P data marketplace, and physical verification.<br/><b>Goal:</b> Autonomous offline routing, hardware control, and network resilience.", qr_desc_style)
+            Paragraph("<b>Planned Work:</b> Edge AI integration (offline agent for local troubleshooting & recovery), hardware mesh proof, multi-hop routing, and physical verification.<br/><b>Goal:</b> Provide offline edge diagnostics, reset guidance, and validation.", qr_desc_style)
         ]
     ]
     qr_table = Table(qr_data, colWidths=[126, 126, 126, 126])
