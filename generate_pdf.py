@@ -343,7 +343,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         [Paragraph("HUMANS:", meta_style_left), Paragraph("LEAD ARCHITECT: Danny Bouldiez + 2 human Devs", meta_style_right)],
         [Paragraph("Roles:", meta_style_left), Paragraph("zymatica (Lead Cryptographer), astronautshe (Edge Systems Engineer), Devs One (AI Swarm)", meta_style_right)],
         [Paragraph("Platform:", meta_style_left), Paragraph("Zcash Shielded Pool, Raspberry Pi OS, Semtech SX1302/1303 HAL", meta_style_right)],
-        [Paragraph("Status:", meta_style_left), Paragraph("Milestone 1 (Prototype) Completed // Milestone 2 (Integration) Completed // Milestone 3 (Mesh & Edge AI) Planned", meta_style_right)],
+        [Paragraph("Status:", meta_style_left), Paragraph("Milestone 1 (Prototype) Completed // Milestone 2 (Integration) Planned // Milestone 3 (Mesh & Edge AI) Planned", meta_style_right)],
     ]
     meta_table = Table(meta_data, colWidths=[100, 404])
     meta_table.setStyle(TableStyle([
@@ -425,13 +425,13 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         [
             Paragraph("GitHub: Main Repository<br/><font color='#F3B300'><b>zk-lora-privacy-layer</b></font>", qr_label_style),
             Paragraph("GitHub: Milestone 1 Workspace<br/><font color='#F3B300'><b>Completed Prototype</b></font>", qr_label_style),
-            Paragraph("GitHub: Milestone 2 Workspace<br/><font color='#38A169'><b>Completed Integration</b></font>", qr_label_style),
+            Paragraph("GitHub: Milestone 2 Workspace<br/><font color='#F3B300'><b>Zcash Integration (Planned)</b></font>", qr_label_style),
             Paragraph("GitHub: Milestone 3 Workspace<br/><font color='#F3B300'><b>Mesh & Edge AI (Planned)</b></font>", qr_label_style)
         ],
         [
             Paragraph("<b>Covers:</b> Core SX1302/3 HAL drivers, ECIES encryption, secp256k1 identity, and 20-language proof validation.<br/><b>Achieves:</b> Off-grid identity masking and privacy-preserving message privacy over public RF bands.", qr_desc_style),
             Paragraph("<b>Covers:</b> secp256k1 key generation, Ripemd160/SHA256 address derivation, Groth16 ZK-SNARK compiler, and 20-language proof verifiers.<br/><b>Achieves:</b> Cryptographic proof designed to demonstrate node legitimacy without revealing hardware or network identities.", qr_desc_style),
-            Paragraph("<b>Covers:</b> Real Zcash light-client events, shielded memo decryption via Incoming Viewing Keys (IVKs), dynamic 2% developer fee split checks, and 20-language verifiers enforcing a hardcoded developer shielded address (u10rjztj...) and Validator Tamper Resistance.<br/><b>Achieves:</b> Routing authorization triggered by decrypted wallet/light-client payment events.", qr_desc_style),
+            Paragraph("<b>Planned Work:</b> Real Zcash light-client events, shielded memo decryption via Incoming Viewing Keys (IVKs), dynamic 2% developer fee split checks, and 20-language verifiers enforcing a hardcoded developer shielded address (u10rjztj...) and Validator Tamper Resistance.<br/><b>Goal:</b> Routing authorization triggered by decrypted wallet/light-client payment events.", qr_desc_style),
             Paragraph("<b>Planned Work:</b> Edge AI integration (offline agent for local troubleshooting & recovery), hardware mesh proof, multi-hop routing, and physical verification.<br/><b>Goal:</b> Provide offline edge diagnostics, reset guidance, and validation.", qr_desc_style)
         ]
     ]
