@@ -343,7 +343,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         [Paragraph("HUMANS:", meta_style_left), Paragraph("LEAD ARCHITECT: Danny Bouldiez + 2 human Devs", meta_style_right)],
         [Paragraph("Roles:", meta_style_left), Paragraph("zymatica (Lead Cryptographer), astronautshe (Edge Systems Engineer), Devs One (AI Swarm)", meta_style_right)],
         [Paragraph("Platform:", meta_style_left), Paragraph("Zcash Shielded Pool, Raspberry Pi OS, Semtech SX1302/1303 HAL", meta_style_right)],
-        [Paragraph("Status:", meta_style_left), Paragraph("Milestone 1 (Prototype) Completed // Milestone 2 (Integration) Planned // Milestone 3 (Mesh & Edge AI) Planned", meta_style_right)],
+        [Paragraph("Status:", meta_style_left), Paragraph("Milestone 1 (Prototype) Completed // Milestone 2 (Integration) Completed // Milestone 3 (Mesh & Edge AI) Planned", meta_style_right)],
     ]
     meta_table = Table(meta_data, colWidths=[100, 404])
     meta_table.setStyle(TableStyle([
