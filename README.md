@@ -110,6 +110,21 @@ For structured tracking and evaluation by Zcash Community Grants reviewers, dedi
 - **Milestone 2**: proposed funded Zcash SDK wallet/light-client integration work; implementation will be opened as grant deliverables progress
 - **Milestone 3**: proposed funded field SDK, offline edge AI agent integration, and deployment work; implementation will be opened as grant deliverables progress
 
+## 📡 Current Status (2026-10-15) — Where the Live Work Is
+
+This repo is the **stable design + baseline layer** (whitepaper, protocol spec, multi-language proof matrix, early real-run logs). It is complete and no longer the tip of development. The protocol has been **implemented and proven on physical hardware**; active development lives in the implementation repos:
+
+- **[zk-lorawan](https://github.com/DannyB-bit/zk-lorawan)** — the production codebase: arkworks Groth16/BN254 prover + circuit, canon keysets, Alt-BN128 on-chain verification. **Identity-binding merged 2026-10-13** (PR#7 + PR#8): a LoRa chirp now carries a Groth16 proof binding the message to *whoever holds the sender's private key* — verifiable by any radio listener, no trust in the sender required, with zero knowledge of the key itself.
+- **[zk-lora-milestone-1](https://github.com/DannyB-bit/zk-lora-milestone-1)** — real RF evidence: CRC-verified A↔B packet captures, SHA-gated integrity, 90+ certified OTA proof cycles between two RAK Miner v2 nodes at 903.9 MHz / SF9, the full A↔B LoRaWAN conversation (2026-10-13), and Solana devnet-settled evidence anchors.
+- **zk-lora-milestone-2 / -3** — ARM on-chip benchmarks, Zcash shielded listener, mempool scanning, multi-language proof verification (in progress).
+
+**Verified milestones to date** (all on physical SX1302 silicon, not simulation):
+1. Two-way agent conversations carried entirely over LoRa chirps, cross-confirmed by both radios' captures (2026-10-13).
+2. **Identity-binding over RF**: proof of key-holdership + content, transmitted as two 128-byte frames, verified by the receiving twin from RF-captured bytes alone, with tamper controls passing on both nodes.
+3. RF → proof → chain loop closed: the identity-bound milestone settled on Solana devnet (cuneiform program `2is5Q…`).
+
+**Verification recipe for external reviewers:** every evidence bundle in the milestone repos carries a SHA-256 manifest, the exact transmitted bytes, both sides' raw logs, and a step-by-step re-verification recipe (recompute hashes → split the committed frames → run the pinned-circuit verifier → expect VALID → tamper one bit → expect INVALID).
+
 ## License
 
 Conditional Open-Source Grant License — see [LICENSE](./LICENSE)
