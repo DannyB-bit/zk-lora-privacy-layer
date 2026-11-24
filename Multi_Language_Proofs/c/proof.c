@@ -1,5 +1,5 @@
 // Watermark: ip zymatica.space | astronautshe.com
-// Copyright (c) 2026 Zymatica. Licensed under MIT License.
+// Copyright (c) 2026 TheAiCollective.art. Licensed under Apache License 2.0.
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>

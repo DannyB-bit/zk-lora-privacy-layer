@@ -320,9 +320,8 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
         alignment=1
     )
     disclaimer_text = (
-        "<b>LEGAL NOTICE:</b> To safeguard developer intellectual property, the ZK-LoRa codebase and all its multi-language "
-        "implementations are currently published under a protected, proprietary license pending grant evaluation. Upon formal "
-        "approval of the Zcash Community Grant, the entire repository will be re-licensed under the open-source MIT License."
+        "<b>LEGAL NOTICE:</b> The ZK-LoRa codebase and all its multi-language implementations are published under the "
+        "Apache License 2.0. Copyright 2026 TheAiCollective.art."
     )
     story.append(Paragraph(disclaimer_text, disclaimer_style))
     
@@ -1315,7 +1314,7 @@ def build_pdf(filename="ZK_LoRa_Whitepaper.pdf"):
     
     disclaimer_long = (
         "This whitepaper and proposal are intended for educational and project evaluation purposes only. "
-        "This ZK-LoRa codebase is currently pending to be released under the MIT License upon approval of the Grant."
+        "This ZK-LoRa codebase is published under the Apache License 2.0. Copyright 2026 TheAiCollective.art."
     )
     story.append(Paragraph(disclaimer_long, ParagraphStyle('DisclaimerLong', alignment=1, fontSize=8.5, leading=13, textColor=colors.HexColor("#94A3B8"))))
     story.append(Spacer(1, 20))
