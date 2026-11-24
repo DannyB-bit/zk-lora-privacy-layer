@@ -234,10 +234,10 @@ The offline Edge Operations Agent: After the ZK-LoRa relay path, Zcash wallet/li
 
 ```files.yaml
 - Link 1: Main Repository: https://github.com/DannyB-bit/zk-lora-privacy-layer
-- Link 2: Milestone 1 Repository: https://github.com/DannyB-bit/zk-lora-milestone-1
-- Link 3: Milestone 1 Reviewer Evidence: https://github.com/DannyB-bit/zk-lora-milestone-1/blob/main/docs/MILESTONE_1_REVIEWER_EVIDENCE.md
-- Link 4: Secure Packet RF Result: https://github.com/DannyB-bit/zk-lora-milestone-1/blob/main/artifacts/milestone1/hardware_capture/secure_packet_rf/node-b-rx_20260630T135643Z/result_summary.txt
-- Link 5: Raw RF Result: https://github.com/DannyB-bit/zk-lora-milestone-1/blob/main/artifacts/milestone1/hardware_capture/end_to_end_rf_success/node-b-rx_20260630T012005Z/result_summary.txt
+- Link 2: Milestone 1 Repository: https://github.com/DannyB-bit/zk-lorawan/tree/master/milestones/milestone-1
+- Link 3: Milestone 1 Reviewer Evidence: https://github.com/DannyB-bit/zk-lorawan/blob/master/milestones/milestone-1/docs/MILESTONE_1_REVIEWER_EVIDENCE.md
+- Link 4: Secure Packet RF Result: https://github.com/DannyB-bit/zk-lorawan/blob/master/milestones/milestone-1/artifacts/milestone1/hardware_capture/secure_packet_rf/node-b-rx_20260630T135643Z/result_summary.txt
+- Link 5: Raw RF Result: https://github.com/DannyB-bit/zk-lorawan/blob/master/milestones/milestone-1/artifacts/milestone1/hardware_capture/end_to_end_rf_success/node-b-rx_20260630T012005Z/result_summary.txt
 - Link 6: ZK-LoRa Privacy Architecture Whitepaper: https://github.com/DannyB-bit/zk-lora-privacy-layer/blob/main/ZK_LoRa_Whitepaper.pdf
 - Link 7: Milestone 2: proposed funded Zcash SDK wallet/light-client integration work; implementation will be opened as deliverables progress
 - Link 8: Milestone 3: proposed funded field SDK, offline edge AI agent integration, and deployment work; implementation will be opened as deliverables progress

@@ -5,11 +5,11 @@ public Milestone 1 evidence package. The grant-review source of truth is the
 Milestone 1 repository and its committed artifacts:
 
 - Milestone 1 reviewer evidence:
-  https://github.com/DannyB-bit/zk-lora-milestone-1/blob/main/docs/MILESTONE_1_REVIEWER_EVIDENCE.md
+  https://github.com/DannyB-bit/zk-lorawan/blob/master/milestones/milestone-1/docs/MILESTONE_1_REVIEWER_EVIDENCE.md
 - Secure packet RF result:
-  https://github.com/DannyB-bit/zk-lora-milestone-1/blob/main/artifacts/milestone1/hardware_capture/secure_packet_rf/node-b-rx_20260630T135643Z/result_summary.txt
+  https://github.com/DannyB-bit/zk-lorawan/blob/master/milestones/milestone-1/artifacts/milestone1/hardware_capture/secure_packet_rf/node-b-rx_20260630T135643Z/result_summary.txt
 - Raw RF result:
-  https://github.com/DannyB-bit/zk-lora-milestone-1/blob/main/artifacts/milestone1/hardware_capture/end_to_end_rf_success/node-b-rx_20260630T012005Z/result_summary.txt
+  https://github.com/DannyB-bit/zk-lorawan/blob/master/milestones/milestone-1/artifacts/milestone1/hardware_capture/end_to_end_rf_success/node-b-rx_20260630T012005Z/result_summary.txt
 
 ## Scope
 
