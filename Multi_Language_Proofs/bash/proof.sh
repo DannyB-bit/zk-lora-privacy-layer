@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Watermark: ip zymatica.space | astronautshe.com
-# Copyright (c) 2026 Zymatica. Licensed under MIT License.
+# Copyright (c) 2026 TheAiCollective.art. Licensed under Apache License 2.0.
 
 echo "=========================================================="
 # Zcash Gold color style (\033[38;2;243;179;0m)

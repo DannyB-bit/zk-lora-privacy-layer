@@ -8,7 +8,7 @@ tags:
 - lora
 - privacy
 - depin
-license: conditional-grant
+license: apache-2.0
 ---
 
 # ZK-LoRa Privacy Layer
@@ -136,4 +136,4 @@ This repo is the **stable design + baseline layer** (whitepaper, protocol spec, 
 
 ## License
 
-**[TheAiCollective.art](https://github.com/DannyB-bit/zk-lora-privacy-layer)** — Conditional Open-Source Grant License. Copyright (c) 2026 DannyB-bit / TheAiCollective.art / Zymatica. See [LICENSE](./LICENSE).
+**[TheAiCollective.art](https://github.com/DannyB-bit/zk-lora-privacy-layer)** — Apache License 2.0. Copyright 2026 TheAiCollective.art. See [LICENSE](./LICENSE).
