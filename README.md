@@ -35,6 +35,14 @@ An official video presentation introducing the ZK-LoRa Privacy Layer is availabl
 
 ---
 
+## 💬 Zcash Community Grant
+
+- **Forum thread:** [Grant Application: ZK-LoRa — Zero-Knowledge Privacy Layer for AI-to-AI Mesh Networks](https://forum.zcashcommunity.com/t/grant-application-zk-lora-zero-knowledge-privacy-layer-for-ai-to-ai-mesh-networks/56463) — progress updates, hardware photos, and community Q&A
+- **Grant proposal:** [zcash_grant_proposal.md](./zcash_grant_proposal.md) · **Reviewer readiness:** [FORUM_READINESS.md](./FORUM_READINESS.md)
+- **Live implementation:** [zk-lorawan](https://github.com/DannyB-bit/zk-lorawan) — all milestone workspaces consolidated here (2026-11-24, full git history)
+
+---
+
 ## Overview
 
 The ZK-LoRa Privacy Layer adds **zero-knowledge proof authentication** to the Language-U mesh network. Agents prove they are legitimate network participants **without revealing their hardware identity, private keys, or message contents** to eavesdroppers.
@@ -71,7 +79,7 @@ python benchmark_milestone1.py --iterations 250
 Reviewer evidence is collected in [artifacts/milestone1](./artifacts/milestone1/README.md):
 
 Reviewer shortcut: the strongest hardware/security artifact is in the Milestone 1 repo:
-[node-b-rx secure packet result](https://github.com/DannyB-bit/zk-lora-milestone-1/blob/main/artifacts/milestone1/hardware_capture/secure_packet_rf/node-b-rx_20260630T135643Z/result_summary.txt).
+[node-b-rx secure packet result](https://github.com/DannyB-bit/zk-lorawan/blob/master/milestones/milestone-1/artifacts/milestone1/hardware_capture/secure_packet_rf/node-b-rx_20260630T135643Z/result_summary.txt).
 It shows `END_TO_END_SECURE_PACKET_OK=YES`, `PACKET_AUTH_OK=YES`, `DECRYPT_OK=YES`,
 `ZK_REFERENCE_PROOF_VERIFY_OK=YES`, `TAMPER_REJECTED=YES`, `WRONG_KEY_REJECTED=YES`,
 `REPLAY_REJECTED=YES`, and matching TX/RX packet SHA-256.
@@ -84,8 +92,8 @@ It shows `END_TO_END_SECURE_PACKET_OK=YES`, `PACKET_AUTH_OK=YES`, `DECRYPT_OK=YE
 | Proof generation and verification benchmark | Complete for local reference host |
 | 3-node RAK/Raspberry Pi hardware layout | Documented in [docs/milestone1_hardware_layout.md](./docs/milestone1_hardware_layout.md) |
 | RAK operator logs | Summarized in [artifacts/milestone1/rak_operator_log_summary.md](./artifacts/milestone1/rak_operator_log_summary.md) |
-| End-to-end raw LoRa RF proof | Verified in [zk-lora-milestone-1](https://github.com/DannyB-bit/zk-lora-milestone-1/tree/main/artifacts/milestone1/hardware_capture/end_to_end_rf_success) |
-| Encrypted proof-referenced secure packet RF proof | Verified in [zk-lora-milestone-1](https://github.com/DannyB-bit/zk-lora-milestone-1/tree/main/artifacts/milestone1/hardware_capture/secure_packet_rf) |
+| End-to-end raw LoRa RF proof | Verified in [zk-lora-milestone-1](https://github.com/DannyB-bit/zk-lorawan/tree/master/milestones/milestone-1/artifacts/milestone1/hardware_capture/end_to_end_rf_success) |
+| Encrypted proof-referenced secure packet RF proof | Verified in [zk-lora-milestone-1](https://github.com/DannyB-bit/zk-lorawan/tree/master/milestones/milestone-1/artifacts/milestone1/hardware_capture/secure_packet_rf) |
 
 Scope note: this repo proves the Milestone 1 reference prototype and verifier portability. The dedicated Milestone 1 workspace now also contains reviewer-grade raw LoRa RF evidence and secure-packet evidence: RakMiner-A transmitted deterministic payloads, RakMiner-B decoded CRC OK packets, matched TX/RX SHA-256, decrypted a proof-referenced packet, verified the reference proof fields, and rejected tampered, wrong-key, and replayed packets. Production gnark/arkworks/halo2 proof integration remains future work.
 
@@ -105,18 +113,19 @@ A verified autonomous execution log demonstrating mesh communication between RAK
 
 ## Milestone Workspaces
 
-For structured tracking and evaluation by Zcash Community Grants reviewers, dedicated workspaces are maintained:
-- **Milestone 1**: [zk-lora-milestone-1](https://github.com/DannyB-bit/zk-lora-milestone-1) - Prototype, verifier artifacts, and end-to-end RF evidence completed
-- **Milestone 2**: proposed funded Zcash SDK wallet/light-client integration work; implementation will be opened as grant deliverables progress
-- **Milestone 3**: proposed funded field SDK, offline edge AI agent integration, and deployment work; implementation will be opened as grant deliverables progress
+For structured tracking and evaluation by Zcash Community Grants reviewers, all milestone workspaces are **consolidated into [zk-lorawan](https://github.com/DannyB-bit/zk-lorawan)** (2026-11-24, full git history preserved):
+- **Milestone 1**: [milestones/milestone-1](https://github.com/DannyB-bit/zk-lorawan/tree/master/milestones/milestone-1) — Prototype, verifier artifacts, and end-to-end RF evidence completed (200+ OTA proof cycles through cycle-214, frontier/essay/minigame RF drills)
+- **Milestone 2**: [milestones/milestone-2](https://github.com/DannyB-bit/zk-lorawan/tree/master/milestones/milestone-2) — Zcash SDK wallet/light-client integration work
+- **Milestone 3**: [milestones/milestone-3](https://github.com/DannyB-bit/zk-lorawan/tree/master/milestones/milestone-3) — Field SDK, offline edge AI agent integration, and deployment work
+- **Fleet coordination:** [zk-lorawan issue #12](https://github.com/DannyB-bit/zk-lorawan/issues/12) — the A↔B research channel (migrated with all 406 comments)
 
-## 📡 Current Status (2026-10-15) — Where the Live Work Is
+## 📡 Current Status (2026-11-24) — Where the Live Work Is
 
-This repo is the **stable design + baseline layer** (whitepaper, protocol spec, multi-language proof matrix, early real-run logs). It is complete and no longer the tip of development. The protocol has been **implemented and proven on physical hardware**; active development lives in the implementation repos:
+This repo is the **stable design + baseline layer** (whitepaper, protocol spec, multi-language proof matrix, early real-run logs). It is complete and no longer the tip of development. The protocol has been **implemented and proven on physical hardware**; active development lives in **[zk-lorawan](https://github.com/DannyB-bit/zk-lorawan)**, where all three milestone repositories were consolidated on 2026-11-24 with full git history (`milestones/milestone-{1,2,3}/`, plus `archive/milestone-1/*` refs preserving every unmerged research branch):
 
 - **[zk-lorawan](https://github.com/DannyB-bit/zk-lorawan)** — the production codebase: arkworks Groth16/BN254 prover + circuit, canon keysets, Alt-BN128 on-chain verification. **Identity-binding merged 2026-10-13** (PR#7 + PR#8): a LoRa chirp now carries a Groth16 proof binding the message to *whoever holds the sender's private key* — verifiable by any radio listener, no trust in the sender required, with zero knowledge of the key itself.
-- **[zk-lora-milestone-1](https://github.com/DannyB-bit/zk-lora-milestone-1)** — real RF evidence: CRC-verified A↔B packet captures, SHA-gated integrity, 90+ certified OTA proof cycles between two RAK Miner v2 nodes at 903.9 MHz / SF9, the full A↔B LoRaWAN conversation (2026-10-13), and Solana devnet-settled evidence anchors.
-- **zk-lora-milestone-2 / -3** — ARM on-chip benchmarks, Zcash shielded listener, mempool scanning, multi-language proof verification (in progress).
+- **[milestones/milestone-1](https://github.com/DannyB-bit/zk-lorawan/tree/master/milestones/milestone-1)** — real RF evidence: CRC-verified A↔B packet captures, SHA-gated integrity, certified Groth16 OTA proof cycles through cycle-214 between two RAK Miner v2 nodes at 903.9 MHz / SF9, the full A↔B LoRaWAN conversation (2026-10-13), and Solana devnet-settled evidence anchors.
+- **[milestones/milestone-2](https://github.com/DannyB-bit/zk-lorawan/tree/master/milestones/milestone-2) / [milestone-3](https://github.com/DannyB-bit/zk-lorawan/tree/master/milestones/milestone-3)** — ARM on-chip benchmarks, Zcash shielded listener, mempool scanning, multi-language proof verification (in progress).
 
 **Verified milestones to date** (all on physical SX1302 silicon, not simulation):
 1. Two-way agent conversations carried entirely over LoRa chirps, cross-confirmed by both radios' captures (2026-10-13).
@@ -127,4 +136,4 @@ This repo is the **stable design + baseline layer** (whitepaper, protocol spec, 
 
 ## License
 
-Conditional Open-Source Grant License — see [LICENSE](./LICENSE)
+**[TheAiCollective.art](https://github.com/DannyB-bit/zk-lora-privacy-layer)** — Conditional Open-Source Grant License. Copyright (c) 2026 DannyB-bit / TheAiCollective.art / Zymatica. See [LICENSE](./LICENSE).
