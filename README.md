@@ -136,4 +136,4 @@ This repo is the **stable design + baseline layer** (whitepaper, protocol spec, 
 
 ## License
 
-**[TheAiCollective.art](https://github.com/DannyB-bit/zk-lora-privacy-layer)** — Apache License 2.0. Copyright 2026 TheAiCollective.art. See [LICENSE](./LICENSE).
+**[TheAiCollective.art](https://TheAiCollective.art)** — Apache License 2.0. Copyright 2026 [TheAiCollective.art](https://TheAiCollective.art). See [LICENSE](./LICENSE).
